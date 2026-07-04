@@ -202,15 +202,11 @@ body {
   }
 
   .search-field {
-    @apply relative w-full max-h-9 md:max-w-72;
-
-    .search-icon {
-      @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary;
-    }
+    @apply flex items-center flex-1 relative;
   }
 
-  .actions-row {
-    @apply flex flex-col gap-3 sm:flex-row sm:gap-2 w-full sm:w-auto;
+  .action-row {
+    @apply flex flex-row items-center justify-between gap-4 w-full;
   }
 
   .sign-up {
@@ -468,6 +464,7 @@ body {
         @apply h-72 w-full bg-slate-200;
       }
     }
+
     .details-card {
       @apply p-6 sm:p-8 space-y-3 shadow-md;
     }
@@ -531,6 +528,7 @@ body {
         @apply text-sm font-medium mb-2;
       }
     }
+
     .department {
       @apply space-y-2;
 
@@ -550,6 +548,7 @@ body {
         }
       }
     }
+
     .subject {
       @apply space-y-2;
 
@@ -576,6 +575,7 @@ body {
 
     .join {
       @apply space-y-2;
+
       h2 {
         @apply text-xs font-bold text-muted-foreground uppercase tracking-wider;
       }
