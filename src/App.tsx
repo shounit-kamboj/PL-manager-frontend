@@ -13,10 +13,15 @@ import { useNotificationProvider } from "./components/refine-ui/notification/use
 import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
 import { dataProvider } from "./providers/data";
 import Dashboard from "@/pages/dashboard.tsx";
-import {Home, Users} from "lucide-react";
+import {Home, Users,Trophy,Medal} from "lucide-react";
 import {Layout} from "@/components/refine-ui/layout/layout.tsx";
 import AthletesList from "@/pages/athletes/list.tsx";
 import AthletesCreate from "@/pages/athletes/create.tsx";
+import UpComingMeetsList from "@/pages/competitions/list.tsx";
+import AthleteCompetitionsList from "@/pages/athletecompetitions/list.tsx";
+import AthleteCompetitionsCreate from "@/pages/athletes/create.tsx";
+
+
 
 
 function App() {
@@ -50,6 +55,26 @@ function App() {
                           label: 'Athletes',
                           icon: <Users />
                       }
+                  },
+                  {
+                      name: 'athleteCompetitions',
+                      list: '/athleteCompetitions',
+                      create: '/athleteCompetitions/create',
+                      show: '/athleteCompetitions/show/:id',
+                      meta: {
+                          label: 'My Athlete Competitions',
+                          icon: <Medal/>
+                      }
+                  },
+
+                  {
+                      name: 'competitions',
+                      list: '/competitions',
+                      show: '/competitions/show/:id',
+                      meta: {
+                          label: 'All Competitions',
+                          icon: <Trophy/>
+                      }
                   }
 
               ]}
@@ -64,6 +89,13 @@ function App() {
                     <Route path="athletes">
                         <Route index element={<AthletesList />} />
                         <Route path="create" element={<AthletesCreate />} />
+                    </Route>
+                    <Route path="athletecompetitions">
+                        <Route index element={<AthleteCompetitionsList />} />
+                        <Route path="create" element={<AthleteCompetitionsCreate />} />
+                    </Route>
+                    <Route path="competitions">
+                        <Route index element={<UpComingMeetsList />} />
                     </Route>
                 </Route>
               </Routes>

@@ -9,8 +9,10 @@ export type WeightClass = typeof WEIGHTCLASSES[number];
 export type Competition = {
     id: number;
     name: string;
-    date: string;
+    startDate: string;
+    endDate: string;
     location?: string;
+    url?: string;
 };
 
 
@@ -75,12 +77,13 @@ export type Athlete = {
 
 export type AthleteCompetition = {
     id: number;
+    athlete: Athlete;
     athleteId: number;
     competitionId: number;
     competition?: Competition;
     date: string;
-    weighInTime: string;
-    startTime: string;
+    weighInTime?: string;
+    startTime?: string;
     notes?: string;
     createdAt: string;
     updatedAt: string;
