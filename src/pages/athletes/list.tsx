@@ -31,18 +31,18 @@ const AthletesList = () => {
             {
                 id: 'name',
                 accessorKey: 'name',
-                size:150,
+                size:120,
                 header: () => <p className='column-title'>Name</p>,
                 cell: ({getValue}) =>
                     <span className="text-foreground">
                         {getValue<string>()}
                     </span>,
-                filterFn: 'includesString'
+                filterFn: 'includesString' as const
             },
             {
                 id: 'weightClass',
                 accessorKey: 'weightClass',
-                size: 100,
+                size: 70,
                 header: () => <p className='column-title'>Weight Class</p>,
                 cell: ({getValue}) => <Badge variant={"secondary"}>
                     {getValue<string>()}
@@ -51,7 +51,7 @@ const AthletesList = () => {
 
             {
                 id: 'ageclass',
-                size: 100,
+                size: 70,
                 header: () => <p className='column-title'>Age Group</p>,
 
                 cell: ({row}) => {
@@ -72,7 +72,7 @@ const AthletesList = () => {
             {
                 id: 'trainingBlock',
                 accessorKey: 'trainginBlock.endDate',
-                size: 200,
+                size: 90,
                 header: () => <p className='column-title'>Training End Date</p>,
                 cell: ({row}) => (
                     <span className="text-foreground">
@@ -84,7 +84,7 @@ const AthletesList = () => {
             {
                 id: 'dueDate',
                 accessorKey: 'payment.dueDate',
-                size: 200,
+                size: 90,
                 header: () => <p className='column-title'>Payment Due Date</p>,
                 cell: ({row}) => (
                     <span className={row.original.payment?.overdue ? "text-destructive" : "text-foreground"}>
@@ -95,12 +95,24 @@ const AthletesList = () => {
             {
                 id: 'overdue',
                 accessorKey: 'payment.overdue',
-                size: 100,
+                size: 60,
                 header: () => <p className='column-title'>Payment Status</p>,
                 cell: ({row}) => (
                     <Badge variant={row.original.payment?.overdue ? "destructive" : "secondary"}>
                         {row.original.payment?.overdue ? "Unpaid" : "Paid"}
                     </Badge>
+                ),
+            },
+
+            {
+                id: 'nextcompetitiondate',
+                accessorKey: 'nextCompetitionDetails.date',
+                size: 55,
+                header: () => <p className='column-title'>Next Comp Date</p>,
+                cell: ({row}) => (
+                    <span className="text-foreground">
+            {row.original.nextCompetitionDetails?.date ?? '-'}
+        </span>
                 ),
             }
 

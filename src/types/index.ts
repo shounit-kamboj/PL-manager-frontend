@@ -59,6 +59,7 @@ export type Athlete = {
     isActive: boolean;
 
     nextCompetition?: Competition;
+    nextCompetitionDetails?: AthleteCompetition;
 
     createdAt: string;
     updatedAt: string;
@@ -68,3 +69,16 @@ export type Athlete = {
 
 
 }
+
+export type AthleteCompetition = {
+    id: number;
+    athleteId: number;
+    competitionId: number;
+    competition?: Competition;
+    date: string;
+    weighInTime: string;
+    startTime: string;
+    notes?: string;
+    createdAt: string;
+    updatedAt: string;
+};
