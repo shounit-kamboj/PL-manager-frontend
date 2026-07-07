@@ -73,10 +73,10 @@ const AthletesList = () => {
                 id: 'trainingBlock',
                 accessorKey: 'trainginBlock.endDate',
                 size: 90,
-                header: () => <p className='column-title'>Training End Date</p>,
+                header: () => <p className='column-title'>Next Block Update</p>,
                 cell: ({row}) => (
                     <span className="text-foreground">
-                          {row.original.trainingBlock?.endDate}
+                          {row.original.trainingBlock?.nextUpdateDate}
                     </span>
                 )
             },
@@ -84,7 +84,7 @@ const AthletesList = () => {
             {
                 id: 'dueDate',
                 accessorKey: 'payment.dueDate',
-                size: 90,
+                size: 70,
                 header: () => <p className='column-title'>Payment Due Date</p>,
                 cell: ({row}) => (
                     <span className={row.original.payment?.overdue ? "text-destructive" : "text-foreground"}>
@@ -107,7 +107,7 @@ const AthletesList = () => {
             {
                 id: 'nextcompetitiondate',
                 accessorKey: 'nextCompetitionDetails.date',
-                size: 55,
+                size: 70,
                 header: () => <p className='column-title'>Next Comp Date</p>,
                 cell: ({row}) => (
                     <span className="text-foreground">
