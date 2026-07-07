@@ -6,8 +6,8 @@ export const WEIGHTCLASSES_OPTIONS = WEIGHTCLASSES.map((wgtclss) => ({
     label: `${wgtclss} Kg`,
 }))
 
-export const AGECLASSES = ['Sub Junior','Junior', 'Open',
-    'Masters 1','Masters 2','Masters 3','Masters 4'
+export const AGECLASSES = ['SJR','JR', 'O',
+    'M1','M2','M3','M4'
 ] as const;
 
 export const AGECLASSES_OPTIONS = AGECLASSES.map((ageclss) => ({

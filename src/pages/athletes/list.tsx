@@ -31,7 +31,7 @@ const AthletesList = () => {
             {
                 id: 'name',
                 accessorKey: 'name',
-                size:300,
+                size:150,
                 header: () => <p className='column-title'>Name</p>,
                 cell: ({getValue}) =>
                     <span className="text-foreground">
@@ -42,7 +42,7 @@ const AthletesList = () => {
             {
                 id: 'weightClass',
                 accessorKey: 'weightClass',
-                size: 200,
+                size: 100,
                 header: () => <p className='column-title'>Weight Class</p>,
                 cell: ({getValue}) => <Badge variant={"secondary"}>
                     {getValue<string>()}
@@ -51,7 +51,7 @@ const AthletesList = () => {
 
             {
                 id: 'ageclass',
-                size: 200,
+                size: 100,
                 header: () => <p className='column-title'>Age Group</p>,
 
                 cell: ({row}) => {
@@ -67,7 +67,43 @@ const AthletesList = () => {
                         </Badge>
                     );
                 },
+            },
+
+            {
+                id: 'trainingBlock',
+                accessorKey: 'trainginBlock.endDate',
+                size: 200,
+                header: () => <p className='column-title'>Training End Date</p>,
+                cell: ({row}) => (
+                    <span className="text-foreground">
+                          {row.original.trainingBlock?.endDate}
+                    </span>
+                )
+            },
+
+            {
+                id: 'dueDate',
+                accessorKey: 'payment.dueDate',
+                size: 200,
+                header: () => <p className='column-title'>Payment Due Date</p>,
+                cell: ({row}) => (
+                    <span className={row.original.payment?.overdue ? "text-destructive" : "text-foreground"}>
+            {row.original.payment?.dueDate}
+        </span>
+                ),
+            },
+            {
+                id: 'overdue',
+                accessorKey: 'payment.overdue',
+                size: 100,
+                header: () => <p className='column-title'>Payment Status</p>,
+                cell: ({row}) => (
+                    <Badge variant={row.original.payment?.overdue ? "destructive" : "secondary"}>
+                        {row.original.payment?.overdue ? "Unpaid" : "Paid"}
+                    </Badge>
+                ),
             }
+
 
         ],[]),
         refineCoreProps: {

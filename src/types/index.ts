@@ -14,6 +14,28 @@ export type Competition = {
 };
 
 
+export type CoachRef = {
+    id: number;
+    name: string;
+};
+
+export type Payment = {
+    id: number;
+    coachId: number;
+    athleteId: number;
+    amount: number;
+    overdue: boolean;
+    dueDate: string;
+}
+
+export type TrainingBlock ={
+    id: number;
+    coachId: number;
+    athleteId: number;
+    startDate: string;
+    endDate: string;
+}
+
 export type Athlete = {
     id: number;
     name: string;
@@ -32,6 +54,7 @@ export type Athlete = {
     PRTotal?: number;
 
     coachId: number;
+    coach?: CoachRef;
     joinedAt: string;
     isActive: boolean;
 
@@ -39,5 +62,9 @@ export type Athlete = {
 
     createdAt: string;
     updatedAt: string;
+
+    trainingBlock: TrainingBlock;
+    payment: Payment;
+
 
 }
