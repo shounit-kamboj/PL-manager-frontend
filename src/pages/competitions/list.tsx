@@ -6,10 +6,23 @@ import {useTable} from "@refinedev/react-table";
 import {Competition} from "@/types";
 import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge.tsx";
-import {Search} from "lucide-react";
+import {ArrowUpDown, Search} from "lucide-react";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+
+const SORTOPTIONS = [
+    { field: 'id',                     order: 'desc' as const, label: 'Default' },
+    { field: 'startDate',  order: 'asc'  as const, label: 'Comp Start Date ↑' },
+    { field: 'startDate',  order: 'desc' as const, label: 'Comp Start Date ↓' },
+];
 
 const UpcomingCompetitionsList = () => {
     const [searchQuery, setSearchQuery] = useState("");
+    const [sortIndex, setSortIndex] = useState(0);
+    const currentSort = SORTOPTIONS[sortIndex];
+
+    const searchFilters = searchQuery ? [
+        {field: 'name', operator: 'contains' as const, value: searchQuery}
+    ]:[];
 
     const competitionTable = useTable<Competition>({
         columns: useMemo<ColumnDef<Competition>[]>(() => [
@@ -88,8 +101,12 @@ const UpcomingCompetitionsList = () => {
         refineCoreProps: {
             resource: 'competitions',
             pagination: {pageSize: 20, mode: 'server'},
-            filters: {},
-            sorters: {}
+            filters: {
+                permanent: [...searchFilters]
+            },
+            sorters: {
+                permanent: [{ field: currentSort.field, order: currentSort.order }]
+            }
         }
     });
 
@@ -109,6 +126,22 @@ const UpcomingCompetitionsList = () => {
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
+                    <Select
+                        value={String(sortIndex)}
+                        onValueChange={(val) => setSortIndex(Number(val))}
+                    >
+                        <SelectTrigger>
+                            <ArrowUpDown className="h-4 w-4 mr-2" />
+                            <SelectValue placeholder="Sort by" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {SORTOPTIONS.map((option, index) => (
+                                <SelectItem key={index} value={String(index)}>
+                                    {option.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
 
                 </div>
             </div>

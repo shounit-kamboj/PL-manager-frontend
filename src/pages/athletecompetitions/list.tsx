@@ -5,12 +5,26 @@ import {DataTable} from "@/components/refine-ui/data-table/data-table.tsx";
 import {useTable} from "@refinedev/react-table";
 import {AthleteCompetition} from "@/types";
 import {ColumnDef} from "@tanstack/react-table";
-// import {Badge} from "@/components/ui/badge.tsx";
 import {CreateButton} from "@/components/refine-ui/buttons/create.tsx";
-import {ExternalLink, Search} from "lucide-react";
+import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
+import {EditButton} from "@/components/refine-ui/buttons/edit.tsx";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+
+const SORTOPTIONS = [
+    { field: 'id',                     order: 'desc' as const, label: 'Default' },
+    { field: 'date',  order: 'asc'  as const, label: 'Comp Date ↑' },
+    { field: 'date',  order: 'desc' as const, label: 'Comp Date ↓' },
+];
 
 const AthleteCompetitionsList = () => {
     const [searchQuery, setSearchQuery] = useState("");
+    const [sortIndex, setSortIndex] = useState(0);
+    const currentSort = SORTOPTIONS[sortIndex];
+
+    const searchFilters = searchQuery ? [
+        {field: 'name', operator: 'contains' as const, value: searchQuery}
+    ]:[];
+
 
 
     const athleteCompetitionTable = useTable<AthleteCompetition>({
@@ -18,7 +32,7 @@ const AthleteCompetitionsList = () => {
             {
                 id: 'name',
                 accessorKey: 'athlete.name',
-                size: 180,
+                size: 100,
                 header: () => <p className='column-title'>Athlete</p>,
                 cell: ({row}) => (
                     <span className="text-foreground">
@@ -53,7 +67,7 @@ const AthleteCompetitionsList = () => {
             {
                 id: 'weighInTime',
                 accessorKey: 'weighInTime',
-                size: 120,
+                size: 100,
                 header: () => <p className='column-title'>Weigh In Time</p>,
                 cell: ({getValue}) => (
                     <span className="text-foreground">
@@ -64,7 +78,7 @@ const AthleteCompetitionsList = () => {
             {
                 id: 'startTime',
                 accessorKey: 'startTime',
-                size: 120,
+                size: 100,
                 header: () => <p className='column-title'>Start Time</p>,
                 cell: ({getValue}) => (
                     <span className="text-foreground">
@@ -76,7 +90,7 @@ const AthleteCompetitionsList = () => {
             {
                 id: 'website',
                 accessorKey: 'competition.url',
-                size: 80,
+                size: 60,
                 header: () => <p className='column-title'>Website</p>,
                 cell: ({row}) => {
                     const url = row.original.competition?.url;
@@ -88,12 +102,24 @@ const AthleteCompetitionsList = () => {
                     );
                 },
             },
+            {
+                id: 'actions',
+                size: 20,
+                header: () => <p className='column-title'>Edit</p>,
+                cell: ({row}) => (
+                    <EditButton recordItemId={row.original.id} />
+                ),
+            },
         ], []),
         refineCoreProps: {
             resource: 'athlete-competitions',
             pagination: {pageSize: 20, mode: 'server'},
-            filters: {},
-            sorters: {}
+            filters: {
+                permanent: [...searchFilters]
+            },
+            sorters: {
+                permanent: [{ field: currentSort.field, order: currentSort.order }]
+            }
         }
     });
 
@@ -113,6 +139,22 @@ const AthleteCompetitionsList = () => {
                             onChange={(e) => setSearchQuery(e.target.value)} //on chnage  it sets searchq to new val
                         />
                     </div>
+                    <Select
+                        value={String(sortIndex)}
+                        onValueChange={(val) => setSortIndex(Number(val))}
+                    >
+                        <SelectTrigger>
+                            <ArrowUpDown className="h-4 w-4 mr-2" />
+                            <SelectValue placeholder="Sort by" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {SORTOPTIONS.map((option, index) => (
+                                <SelectItem key={index} value={String(index)}>
+                                    {option.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                     <CreateButton />
                 </div>
             </div>

@@ -37,7 +37,7 @@ export type TrainingBlock ={
     startDate: string;
     endDate: string;
     nextUpdateDate: string;
-    weeksTillUpdate: number;
+    daysTillUpdate: number;
     
 }
 
@@ -87,4 +87,16 @@ export type AthleteCompetition = {
     notes?: string;
     createdAt: string;
     updatedAt: string;
+};
+
+export type CoachTask = {
+    id: number;
+    coachId: number;
+    athleteId?: number; // optional for manual todos
+    title: string;
+    dueDate?: string;
+    completed: boolean;
+    type: 'manual' | 'auto';
+    status: 'pending' | 'completed' | 'overdue';
+    createdAt: string;
 };

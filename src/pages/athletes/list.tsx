@@ -1,10 +1,11 @@
 import React, {useMemo, useState} from 'react';
 import {ListView} from "@/components/refine-ui/views/list-view.tsx"
 import {Breadcrumb} from "@/components/refine-ui/layout/breadcrumb.tsx"
-import {Search} from "lucide-react";
+import {ArrowUpDown, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {AGECLASSES_OPTIONS, WEIGHTCLASSES_OPTIONS} from "@/constants";
 import {CreateButton} from "@/components/refine-ui/buttons/create.tsx";
+import {EditButton} from "@/components/refine-ui/buttons/edit.tsx";
 import {DataTable} from "@/components/refine-ui/data-table/data-table.tsx";
 import {useTable} from "@refinedev/react-table";
 import {Athlete} from "@/types";
@@ -13,21 +14,40 @@ import {Badge} from "@/components/ui/badge.tsx";
 import {getAgeClass} from "@/lib/getAgeClass.ts";
 
 
+const SORTOPTIONS = [
+    { field: 'id',                           order: 'desc' as const, label: 'Default' },
+    { field: 'trainingBlock.nextUpdateDate', order: 'asc'  as const, label: 'Block Update ↑' },
+    { field: 'trainingBlock.nextUpdateDate', order: 'desc' as const, label: 'Block Update ↓' },
+    { field: 'payment.dueDate',              order: 'asc'  as const, label: 'Payment Due ↑' },
+    { field: 'payment.dueDate',              order: 'desc' as const, label: 'Payment Due ↓' },
+    { field: 'nextCompetitionDetails.date',  order: 'asc'  as const, label: 'Comp Date ↑' },
+    { field: 'nextCompetitionDetails.date',  order: 'desc' as const, label: 'Comp Date ↓' },
+];
+
 const AthletesList = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const[selectedWeightClass, setselectedWeightClass] = useState("all");
     const[selectedAgeClass, setselectedAgeClass] = useState("all");
 
+    const athleteWeightFilters = selectedWeightClass === 'all' ? []:
+        [
+            {field: 'weightClass', operator: 'eq' as const, value: selectedWeightClass}
+        ];
+
+    const athleteAgeFilters = selectedAgeClass === 'all' ? []:
+        [
+            {field: 'ageClass', operator: 'eq' as const, value: selectedAgeClass}
+        ];
+    const searchFilters = searchQuery ? [
+        {field: 'name', operator: 'contains' as const, value: searchQuery}
+    ]:[];
+
+    const [sortIndex, setSortIndex] = useState(0);
+    const currentSort = SORTOPTIONS[sortIndex];
+
     const athleteTable = useTable<Athlete>({
         columns:useMemo<ColumnDef<Athlete>[]>(() => [
-            // {
-            //     id: 'name',
-            //     accessorKey: 'code',
-            //     size:150,
-            //     header: () => <p className='column-title ml-2'>Code</p>,
-            //     cell: ({getValue}) => <Badge>{getValue<string>()}</Badge>
-            // },
             {
                 id: 'name',
                 accessorKey: 'name',
@@ -71,7 +91,7 @@ const AthletesList = () => {
 
             {
                 id: 'trainingBlock',
-                accessorKey: 'trainginBlock.endDate',
+                accessorKey: 'trainingBlock.nextUpdateDate',
                 size: 90,
                 header: () => <p className='column-title'>Next Block Update</p>,
                 cell: ({row}) => (
@@ -107,22 +127,34 @@ const AthletesList = () => {
             {
                 id: 'nextcompetitiondate',
                 accessorKey: 'nextCompetitionDetails.date',
-                size: 70,
+                size: 90,
                 header: () => <p className='column-title'>Next Comp Date</p>,
                 cell: ({row}) => (
                     <span className="text-foreground">
             {row.original.nextCompetitionDetails?.date ?? '-'}
         </span>
                 ),
-            }
+            },
+            {
+                id: 'actions',
+                size: 20,
+                header: () => <p className='column-title'>Edit</p>,
+                cell: ({row}) => (
+                    <EditButton recordItemId={row.original.id} />
+                ),
+            },
 
 
         ],[]),
         refineCoreProps: {
             resource: 'athletes',
             pagination:{pageSize:20,mode:'server'},
-            filters: {},
-            sorters:{}
+            filters: {
+                permanent: [...athleteWeightFilters,...athleteAgeFilters,...searchFilters]
+            },
+            sorters: {
+                permanent: [{ field: currentSort.field, order: currentSort.order }]
+            }
         }
     });
     return (
@@ -172,6 +204,23 @@ const AthletesList = () => {
                                  {AGECLASSES_OPTIONS.map(ageclass => (
                                      <SelectItem key ={ageclass.value} value={ageclass.value}>
                                          {ageclass.label}
+                                     </SelectItem>
+                                 ))}
+                             </SelectContent>
+                             </Select>
+
+                         <Select
+                             value={String(sortIndex)}
+                             onValueChange={(val) => setSortIndex(Number(val))}
+                         >
+                             <SelectTrigger>
+                                 <ArrowUpDown className="h-4 w-4 mr-2" />
+                                 <SelectValue placeholder="Sort by" />
+                             </SelectTrigger>
+                             <SelectContent>
+                                 {SORTOPTIONS.map((option, index) => (
+                                     <SelectItem key={index} value={String(index)}>
+                                         {option.label}
                                      </SelectItem>
                                  ))}
                              </SelectContent>
