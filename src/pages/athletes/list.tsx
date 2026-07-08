@@ -51,7 +51,7 @@ const AthletesList = () => {
             {
                 id: 'name',
                 accessorKey: 'name',
-                size:120,
+                size:100,
                 header: () => <p className='column-title'>Name</p>,
                 cell: ({getValue}) =>
                     <span className="text-foreground">
@@ -62,7 +62,7 @@ const AthletesList = () => {
             {
                 id: 'weightClass',
                 accessorKey: 'weightClass',
-                size: 70,
+                size: 50,
                 header: () => <p className='column-title'>Weight Class</p>,
                 cell: ({getValue}) => <Badge variant={"secondary"}>
                     {getValue<string>()}
@@ -137,7 +137,7 @@ const AthletesList = () => {
             },
             {
                 id: 'actions',
-                size: 20,
+                size: 60,
                 header: () => <p className='column-title'>Edit</p>,
                 cell: ({row}) => (
                     <EditButton recordItemId={row.original.id} />
