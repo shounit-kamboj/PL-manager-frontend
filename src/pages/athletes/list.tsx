@@ -12,6 +12,7 @@ import {Athlete} from "@/types";
 import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge.tsx";
 import {getAgeClass} from "@/lib/getAgeClass.ts";
+import {isLastYearOfAgeClass} from "@/lib/isLastYear.ts";
 
 
 const SORTOPTIONS = [
@@ -22,6 +23,8 @@ const SORTOPTIONS = [
     { field: 'payment.dueDate',              order: 'desc' as const, label: 'Payment Due ↓' },
     { field: 'nextCompetitionDetails.date',  order: 'asc'  as const, label: 'Comp Date ↑' },
     { field: 'nextCompetitionDetails.date',  order: 'desc' as const, label: 'Comp Date ↓' },
+    { field: 'dateOfBirth',  order: 'asc' as const, label: 'Date of birth ↑' },
+    { field: 'dateOfBirth',  order: 'desc' as const, label: 'Date of birth ↓' }
 ];
 
 const AthletesList = () => {
@@ -29,6 +32,7 @@ const AthletesList = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const[selectedWeightClass, setselectedWeightClass] = useState("all");
     const[selectedAgeClass, setselectedAgeClass] = useState("all");
+    const[selectedPaymentStatus, setselectedPaymentStatus] = useState("all");
 
     const athleteWeightFilters = selectedWeightClass === 'all' ? []:
         [
@@ -42,6 +46,11 @@ const AthletesList = () => {
     const searchFilters = searchQuery ? [
         {field: 'name', operator: 'contains' as const, value: searchQuery}
     ]:[];
+
+    const athletePaymentFilter =  selectedPaymentStatus === "all" ? [] :
+        [
+                {field: "payment.paymentStatus", operator: "eq" as const, value: selectedPaymentStatus},
+            ];
 
     const [sortIndex, setSortIndex] = useState(0);
     const currentSort = SORTOPTIONS[sortIndex];
@@ -81,10 +90,18 @@ const AthletesList = () => {
                         return <span className="text-muted-foreground">—</span>;
                     }
 
+                    if(isLastYearOfAgeClass(dob)){
+                        return (
+                            <div className="flex items-center gap-1">
+                                <Badge variant="secondary">Last Year {getAgeClass(dob)}</Badge>
+                                </div>
+                        )
+                    }
+
                     return (
-                        <Badge variant="secondary">
-                            {getAgeClass(dob)}
-                        </Badge>
+                        <div className="flex items-center gap-1">
+                            <Badge variant="secondary">{getAgeClass(dob)}</Badge>
+                        </div>
                     );
                 },
             },
@@ -119,7 +136,7 @@ const AthletesList = () => {
                 header: () => <p className='column-title'>Payment Status</p>,
                 cell: ({row}) => (
                     <Badge variant={row.original.payment?.overdue ? "destructive" : "secondary"}>
-                        {row.original.payment?.overdue ? "Unpaid" : "Paid"}
+                        {row.original.payment?.paymentStatus}
                     </Badge>
                 ),
             },
@@ -150,7 +167,7 @@ const AthletesList = () => {
             resource: 'athletes',
             pagination:{pageSize:20,mode:'server'},
             filters: {
-                permanent: [...athleteWeightFilters,...athleteAgeFilters,...searchFilters]
+                permanent: [...athleteWeightFilters,...athleteAgeFilters,...searchFilters,...athletePaymentFilter]
             },
             sorters: {
                 permanent: [{ field: currentSort.field, order: currentSort.order }]
@@ -209,6 +226,20 @@ const AthletesList = () => {
                              </SelectContent>
                              </Select>
 
+                         <Select
+                             value={selectedPaymentStatus}
+                             onValueChange={setselectedPaymentStatus}>
+                             <SelectTrigger>
+                                 <SelectValue placeholder="Filter by Payment Status" />
+                             </SelectTrigger>
+
+                             <SelectContent>
+                                 <SelectItem value="all">All Payment Status</SelectItem>
+                                 <SelectItem value="paid">Paid</SelectItem>
+                                 <SelectItem value="unpaid">Unpaid</SelectItem>
+                                 <SelectItem value="overdue">Overdue</SelectItem>
+                             </SelectContent>
+                         </Select>
                          <Select
                              value={String(sortIndex)}
                              onValueChange={(val) => setSortIndex(Number(val))}

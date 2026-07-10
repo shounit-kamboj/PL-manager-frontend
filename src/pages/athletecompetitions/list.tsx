@@ -44,7 +44,7 @@ const AthleteCompetitionsList = () => {
             {
                 id: 'compName',
                 accessorKey: 'competition.name',
-                size: 180,
+                size: 150,
                 header: () => <p className='column-title'>Competition</p>,
                 cell: ({row}) => (
                     <span className="text-foreground">
@@ -56,7 +56,7 @@ const AthleteCompetitionsList = () => {
             {
                 id: 'date',
                 accessorKey: 'date',
-                size: 120,
+                size: 100,
                 header: () => <p className='column-title'>Date</p>,
                 cell: ({getValue}) => (
                     <span className="text-foreground">
@@ -104,7 +104,7 @@ const AthleteCompetitionsList = () => {
             },
             {
                 id: 'actions',
-                size: 20,
+                size: 80,
                 header: () => <p className='column-title'>Edit</p>,
                 cell: ({row}) => (
                     <EditButton recordItemId={row.original.id} />

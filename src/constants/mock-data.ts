@@ -1,12 +1,12 @@
-import {Athlete, AthleteCompetition, Competition} from "@/types";
-import {BaseRecord} from "@refinedev/core";
+import { Athlete, AthleteCompetition, Competition } from "@/types";
+import { BaseRecord } from "@refinedev/core";
 
 export const mockAthletes: Athlete[] = [
     {
         id: 1,
         name: "Shounit Kamboj",
         gender: "male",
-        dateOfBirth: "2000-04-15",
+        dateOfBirth: "2003-04-15",
         email: "shounit@email.com",
         phone: "604-000-0000",
         weightClass: "93",
@@ -19,6 +19,7 @@ export const mockAthletes: Athlete[] = [
         coach: { id: 1, name: "Coach Mike" },
         joinedAt: "2024-01-10",
         isActive: true,
+
         trainingBlock: {
             id: 1,
             coachId: 1,
@@ -28,6 +29,7 @@ export const mockAthletes: Athlete[] = [
             nextUpdateDate: "2026-07-14",
             daysTillUpdate: 7,
         },
+
         payment: {
             id: 1,
             coachId: 1,
@@ -35,7 +37,9 @@ export const mockAthletes: Athlete[] = [
             amount: 150,
             overdue: true,
             dueDate: "2026-06-10",
+            paymentStatus: "overdue",
         },
+
         nextCompetitionDetails: {
             id: 1,
             athlete: {} as Athlete,
@@ -55,14 +59,18 @@ export const mockAthletes: Athlete[] = [
             createdAt: "2026-06-01",
             updatedAt: "2026-06-01",
         },
+
         createdAt: "2024-01-10",
         updatedAt: "2026-07-01",
+        notes: "",
+        deleted: false,
     },
+
     {
         id: 2,
         name: "Alex Chen",
         gender: "male",
-        dateOfBirth: "1998-09-22",
+        dateOfBirth: "2002-09-22",
         email: "alex@email.com",
         weightClass: "74",
         equipment: "Classic",
@@ -74,6 +82,7 @@ export const mockAthletes: Athlete[] = [
         coach: { id: 1, name: "Coach Mike" },
         joinedAt: "2024-03-01",
         isActive: true,
+
         trainingBlock: {
             id: 2,
             coachId: 1,
@@ -83,6 +92,7 @@ export const mockAthletes: Athlete[] = [
             nextUpdateDate: "2026-07-21",
             daysTillUpdate: 14,
         },
+
         payment: {
             id: 2,
             coachId: 1,
@@ -90,15 +100,20 @@ export const mockAthletes: Athlete[] = [
             amount: 150,
             overdue: false,
             dueDate: "2026-07-30",
+            paymentStatus: "paid",
         },
+
         createdAt: "2024-03-01",
         updatedAt: "2026-07-01",
+        notes: "",
+        deleted: false,
     },
+
     {
         id: 3,
         name: "Jordan Park",
         gender: "female",
-        dateOfBirth: "2003-12-05",
+        dateOfBirth: "2009-12-05",
         email: "jordan@email.com",
         weightClass: "59",
         equipment: "Equipped",
@@ -110,6 +125,7 @@ export const mockAthletes: Athlete[] = [
         coach: { id: 1, name: "Coach Mike" },
         joinedAt: "2025-01-15",
         isActive: true,
+
         trainingBlock: {
             id: 3,
             coachId: 1,
@@ -119,6 +135,7 @@ export const mockAthletes: Athlete[] = [
             nextUpdateDate: "2026-07-28",
             daysTillUpdate: 21,
         },
+
         payment: {
             id: 3,
             coachId: 1,
@@ -126,7 +143,9 @@ export const mockAthletes: Athlete[] = [
             amount: 150,
             overdue: false,
             dueDate: "2026-08-01",
+            paymentStatus: "unpaid",
         },
+
         nextCompetitionDetails: {
             id: 2,
             athlete: {} as Athlete,
@@ -146,8 +165,11 @@ export const mockAthletes: Athlete[] = [
             createdAt: "2026-06-15",
             updatedAt: "2026-06-15",
         },
+
         createdAt: "2025-01-15",
         updatedAt: "2026-07-01",
+        notes: "",
+        deleted: false,
     },
 ];
 
@@ -208,5 +230,5 @@ export const mockAthleteCompetitions: AthleteCompetition[] = [
 export const mockData: Record<string, BaseRecord[]> = {
     athletes: mockAthletes,
     competitions: mockCompetitions,
-    'athlete-competitions': mockAthleteCompetitions,
+    "athlete-competitions": mockAthleteCompetitions,
 };

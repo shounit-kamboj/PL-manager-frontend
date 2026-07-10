@@ -1,6 +1,7 @@
 export type Gender = 'male' | 'female' | 'non-binary' | 'prefer-not-to-say';
 
 export type Equip = 'Classic'| 'Equipped';
+export type PaymentStatus =  "paid" | "unpaid" | "overdue";
 
 import { WEIGHTCLASSES } from '@/constants';
 
@@ -21,13 +22,16 @@ export type CoachRef = {
     name: string;
 };
 
+
+
 export type Payment = {
     id: number;
     coachId: number;
     athleteId: number;
     amount: number;
-    overdue: boolean;
     dueDate: string;
+    paymentStatus: PaymentStatus;
+    overdue?: boolean;
 }
 
 export type TrainingBlock ={
@@ -45,13 +49,13 @@ export type Athlete = {
     id: number;
     name: string;
     gender: Gender;
-    dateOfBirth?: string;
+    dateOfBirth: string;
     email?: string;
     phone?: string;
 
 
 
-    weightClass?: WeightClass;
+    weightClass: WeightClass;
     equipment?: Equip;
     PRSquat?: number;
     PRBench?: number;
@@ -71,6 +75,11 @@ export type Athlete = {
 
     trainingBlock: TrainingBlock;
     payment: Payment;
+
+    notes: string;
+
+    deleted: boolean;
+    deletedAt?: string;
 
 
 }
