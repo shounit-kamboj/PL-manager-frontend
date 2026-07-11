@@ -157,7 +157,7 @@ export const mockAthletes: Athlete[] = [
                 startDate: "2026-09-05",
                 endDate: "2026-09-06",
                 location: "Vancouver, BC",
-                url: "https://www.bcpowerlifting.ca",
+                url: "https://bc-powerlifting.com/calendar/",
             },
             date: "2026-09-05",
             weighInTime: "08:00",
@@ -188,7 +188,7 @@ export const mockCompetitions: Competition[] = [
         startDate: "2026-09-05",
         endDate: "2026-09-06",
         location: "Vancouver, BC",
-        url: "https://www.bcpowerlifting.ca",
+        url: "https://bc-powerlifting.com/calendar/",
     },
     {
         id: 3,

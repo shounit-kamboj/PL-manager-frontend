@@ -6,7 +6,7 @@ import {useTable} from "@refinedev/react-table";
 import {Competition} from "@/types";
 import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge.tsx";
-import {ArrowUpDown, Search} from "lucide-react";
+import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 
 const SORTOPTIONS = [
@@ -91,8 +91,8 @@ const UpcomingCompetitionsList = () => {
                     const url = getValue<string>();
                     if (!url) return <span className="text-muted-foreground">-</span>;
                     return (
-                        <a href={url} target="_blank" rel="noreferrer" className="text-primary underline">
-                            Link
+                        <a href={url} target="_blank" rel="noreferrer" className="text-primary flex items-center gap-1">
+                            <ExternalLink className="h-4 w-4" />
                         </a>
                     );
                 },

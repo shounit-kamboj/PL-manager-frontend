@@ -10,6 +10,7 @@ export type WeightClass = typeof WEIGHTCLASSES[number];
 export type Competition = {
     id: number;
     name: string;
+    federation?: string;
     startDate: string;
     endDate: string;
     location?: string;
@@ -42,6 +43,7 @@ export type TrainingBlock ={
     endDate: string;
     nextUpdateDate: string;
     daysTillUpdate: number;
+    url?: string;
     
 }
 
@@ -76,7 +78,7 @@ export type Athlete = {
     trainingBlock: TrainingBlock;
     payment: Payment;
 
-    notes: string;
+    notes?: string;
 
     deleted: boolean;
     deletedAt?: string;
