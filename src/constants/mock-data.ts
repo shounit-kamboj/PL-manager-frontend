@@ -28,7 +28,9 @@ export const mockAthletes: Athlete[] = [
             endDate: "2026-08-01",
             nextUpdateDate: "2026-07-14",
             daysTillUpdate: 7,
-            lastUpdateDate: "2026-07-7"
+            lastUpdateDate: "2026-07-7",
+            sendOverviewReminder: false,
+
         },
 
         payment: {
@@ -52,13 +54,12 @@ export const mockAthletes: Athlete[] = [
                 startDate: "2026-08-02",
                 endDate: "2026-08-04",
                 location: "Toronto, ON",
-                url: "https://www.cpu.ca",
+               // url: "https://www.cpu.ca",
             },
             date: "2026-08-02",
             weighInTime: "07:00",
             startTime: "09:00",
-            createdAt: "2026-06-01",
-            updatedAt: "2026-06-01",
+
         },
 
         createdAt: "2024-01-10",
@@ -92,7 +93,8 @@ export const mockAthletes: Athlete[] = [
             endDate: "2026-08-01",
             nextUpdateDate: "2026-07-21",
             daysTillUpdate: 14,
-            lastUpdateDate: "2026-07-7"
+            lastUpdateDate: "2026-07-7",
+            sendOverviewReminder: false
         },
 
         payment: {
@@ -136,7 +138,9 @@ export const mockAthletes: Athlete[] = [
             endDate: "2026-09-01",
             nextUpdateDate: "2026-07-28",
             daysTillUpdate: 21,
-            lastUpdateDate: "2026-07-7"
+            lastUpdateDate: "2026-07-7",
+            sendOverviewReminder: false
+
         },
 
         payment: {
@@ -165,8 +169,7 @@ export const mockAthletes: Athlete[] = [
             date: "2026-09-05",
             weighInTime: "08:00",
             startTime: "10:00",
-            createdAt: "2026-06-15",
-            updatedAt: "2026-06-15",
+
         },
 
         createdAt: "2025-01-15",
@@ -183,7 +186,7 @@ export const mockCompetitions: Competition[] = [
         startDate: "2026-08-02",
         endDate: "2026-08-04",
         location: "Toronto, ON",
-        url: "https://www.cpu.ca",
+       // url: "https://www.cpu.ca",
     },
     {
         id: 2,
@@ -213,8 +216,7 @@ export const mockAthleteCompetitions: AthleteCompetition[] = [
         date: "2026-08-02",
         weighInTime: "07:00",
         startTime: "09:00",
-        createdAt: "2026-06-01",
-        updatedAt: "2026-06-01",
+
     },
     {
         id: 2,
@@ -225,9 +227,7 @@ export const mockAthleteCompetitions: AthleteCompetition[] = [
         date: "2026-09-05",
         weighInTime: "08:00",
         startTime: "10:00",
-        createdAt: "2026-06-15",
-        updatedAt: "2026-06-15",
-    },
+    }
 ];
 
 export const mockData: Record<string, BaseRecord[]> = {

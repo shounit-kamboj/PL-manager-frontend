@@ -49,6 +49,7 @@ export type TrainingBlock ={
     daysTillUpdate: number;
     lastUpdateDate: string;
     url?: string;
+    sendOverviewReminder: boolean;
     
 }
 
@@ -102,15 +103,14 @@ export type AthleteCompetition = {
     weighInTime?: string;
     startTime?: string;
     notes?: string;
-    createdAt: string;
-    updatedAt: string;
 };
 
 export type CoachTask = {
     id: number;
     coachId: number;
-    athleteId?: number; // optional for manual todos
+    traingBlock?: TrainingBlock; // optional for manual todos
     title: string;
+    descrip: string;
     dueDate?: string;
     completed: boolean;
     type: 'manual' | 'auto';
