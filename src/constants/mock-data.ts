@@ -16,7 +16,7 @@ export const mockAthletes: Athlete[] = [
         PRDeadlift: 260,
         PRTotal: 620,
         coachId: 1,
-        coach: { id: 1, name: "Coach Mike" },
+        coach: { id: 1, name: "Coach Mike",email:" " },
         joinedAt: "2024-01-10",
         isActive: true,
 
@@ -28,6 +28,7 @@ export const mockAthletes: Athlete[] = [
             endDate: "2026-08-01",
             nextUpdateDate: "2026-07-14",
             daysTillUpdate: 7,
+            lastUpdateDate: "2026-07-7"
         },
 
         payment: {
@@ -79,7 +80,7 @@ export const mockAthletes: Athlete[] = [
         PRDeadlift: 220,
         PRTotal: 520,
         coachId: 1,
-        coach: { id: 1, name: "Coach Mike" },
+        coach: { id: 1, name: "Coach Mike",email:" " },
         joinedAt: "2024-03-01",
         isActive: true,
 
@@ -91,6 +92,7 @@ export const mockAthletes: Athlete[] = [
             endDate: "2026-08-01",
             nextUpdateDate: "2026-07-21",
             daysTillUpdate: 14,
+            lastUpdateDate: "2026-07-7"
         },
 
         payment: {
@@ -122,7 +124,7 @@ export const mockAthletes: Athlete[] = [
         PRDeadlift: 160,
         PRTotal: 380,
         coachId: 1,
-        coach: { id: 1, name: "Coach Mike" },
+        coach: { id: 1, name: "Coach Mike",email:" " },
         joinedAt: "2025-01-15",
         isActive: false,
 
@@ -134,6 +136,7 @@ export const mockAthletes: Athlete[] = [
             endDate: "2026-09-01",
             nextUpdateDate: "2026-07-28",
             daysTillUpdate: 21,
+            lastUpdateDate: "2026-07-7"
         },
 
         payment: {

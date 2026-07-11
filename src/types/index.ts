@@ -45,8 +45,9 @@ export type TrainingBlock ={
     athleteId: number;
     startDate: string;
     endDate: string;
-    nextUpdateDate: string;
+    nextUpdateDate?: string;
     daysTillUpdate: number;
+    lastUpdateDate: string;
     url?: string;
     
 }
