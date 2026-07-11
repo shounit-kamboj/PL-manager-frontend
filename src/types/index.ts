@@ -78,7 +78,7 @@ export type Athlete = {
     trainingBlock: TrainingBlock;
     payment: Payment;
 
-    notes?: string;
+    notes: string;
 
     deleted: boolean;
     deletedAt?: string;
