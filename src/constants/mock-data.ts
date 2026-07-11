@@ -124,7 +124,7 @@ export const mockAthletes: Athlete[] = [
         coachId: 1,
         coach: { id: 1, name: "Coach Mike" },
         joinedAt: "2025-01-15",
-        isActive: true,
+        isActive: false,
 
         trainingBlock: {
             id: 3,

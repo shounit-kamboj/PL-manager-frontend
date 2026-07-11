@@ -21,6 +21,10 @@ export type Competition = {
 export type CoachRef = {
     id: number;
     name: string;
+    email: string;
+    bio?: string;
+    createdAt?: string;
+
 };
 
 
@@ -54,6 +58,7 @@ export type Athlete = {
     dateOfBirth: string;
     email?: string;
     phone?: string;
+    location?: string;
 
 
 
@@ -65,7 +70,7 @@ export type Athlete = {
     PRTotal?: number;
 
     coachId: number;
-    coach?: CoachRef;
+    coach: CoachRef;
     joinedAt: string;
     isActive: boolean;
 
@@ -110,4 +115,9 @@ export type CoachTask = {
     type: 'manual' | 'auto';
     status: 'pending' | 'completed' | 'overdue';
     createdAt: string;
+};
+
+export type AuthResponse = {
+    coach: CoachRef;
+    token: string;
 };

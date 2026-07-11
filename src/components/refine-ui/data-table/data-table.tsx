@@ -160,12 +160,14 @@ export function DataTable<TData extends BaseRecord>({
                 </TableRow>
               </>
             ) : getRowModel().rows?.length ? (
-              getRowModel().rows.map((row) => {
-                return (
-                  <TableRow
-                    key={row.original?.id ?? row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
+                getRowModel().rows.map((row) => {
+                  const isActive = (row.original as any)?.isActive;
+                  return (
+                      <TableRow
+                          key={row.original?.id ?? row.id}
+                          data-state={row.getIsSelected() && "selected"}
+                          className={isActive === false ? "opacity-40" : ""}
+                      >
                     {row.getVisibleCells().map((cell) => {
                       return (
                         <TableCell
