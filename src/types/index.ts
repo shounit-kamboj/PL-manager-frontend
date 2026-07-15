@@ -60,7 +60,11 @@ export type Athlete = {
     dateOfBirth: string;
     email?: string;
     phone?: string;
-    location?: string;
+    country?: string;
+    city?: string;
+    provinceOrState?: string;
+    timezone?: string;
+    link?: string; //for openpl/arenapl
 
 
 
@@ -103,6 +107,7 @@ export type AthleteCompetition = {
     weighInTime?: string;
     startTime?: string;
     notes?: string;
+    equipment?: Equip;
 };
 
 export type CoachTask = {
