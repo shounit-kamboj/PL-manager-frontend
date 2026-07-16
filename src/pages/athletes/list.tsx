@@ -47,10 +47,10 @@ const AthletesList = () => {
         {field: 'name', operator: 'contains' as const, value: searchQuery}
     ]:[];
 
-    const athletePaymentFilter =  selectedPaymentStatus === "all" ? [] :
+    const athletePaymentFilter = selectedPaymentStatus === "all" ? [] :
         [
-                {field: "payment.paymentStatus", operator: "eq" as const, value: selectedPaymentStatus},
-            ];
+            {field: "paymentStatus", operator: "eq" as const, value: selectedPaymentStatus},
+        ];
 
     const [sortIndex, setSortIndex] = useState(0);
     const currentSort = SORTOPTIONS[sortIndex];
