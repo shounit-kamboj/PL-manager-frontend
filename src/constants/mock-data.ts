@@ -216,6 +216,7 @@ export const mockAthleteCompetitions: AthleteCompetition[] = [
         date: "2026-08-02",
         weighInTime: "07:00",
         startTime: "09:00",
+        equipment:'Classic',
 
     },
     {

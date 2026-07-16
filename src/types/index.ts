@@ -118,7 +118,6 @@ export type CoachTask = {
     descrip: string;
     dueDate?: string;
     completed: boolean;
-    type: 'manual' | 'auto';
     status: 'pending' | 'completed' | 'overdue';
     createdAt: string;
 };

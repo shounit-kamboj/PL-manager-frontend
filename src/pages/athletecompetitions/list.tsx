@@ -9,6 +9,7 @@ import {CreateButton} from "@/components/refine-ui/buttons/create.tsx";
 import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
 import {EditButton} from "@/components/refine-ui/buttons/edit.tsx";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+import {differenceInDays, differenceInWeeks} from "date-fns";
 
 const SORTOPTIONS = [
     { field: 'id',                     order: 'desc' as const, label: 'Default' },
@@ -65,6 +66,26 @@ const AthleteCompetitionsList = () => {
                 ),
             },
             {
+                id: 'weeksOut',
+                size: 100,
+                header: () => <p className='column-title'>Weeks Out</p>,
+                cell: ({row}) => {
+                    const date = row.original.date;
+                    if (!date) return <span className="text-muted-foreground">-</span>;
+
+                    const days = differenceInDays(new Date(date), new Date());
+                    const weeks = days/7.0;
+                    const hasDecimal = (num: number): boolean => num % 1 !== 0;
+
+                    if (days < 0) return <span className="text-muted-foreground">Past</span>;
+                    if (hasDecimal(weeks)) return  <span className="text-foreground">{Math.floor(weeks)} - {Math.floor(weeks+1)} </span>
+
+                    return (
+                        <span className="text-foreground">{Math.floor(weeks)}</span>
+                    );
+                },
+            },
+            {
                 id: 'weighInTime',
                 accessorKey: 'weighInTime',
                 size: 100,
@@ -78,8 +99,19 @@ const AthleteCompetitionsList = () => {
             {
                 id: 'startTime',
                 accessorKey: 'startTime',
-                size: 100,
+                size: 90,
                 header: () => <p className='column-title'>Start Time</p>,
+                cell: ({getValue}) => (
+                    <span className="text-foreground">
+                        {getValue<string>() ?? '-'}
+                    </span>
+                ),
+            },
+            {
+                id: 'equipment',
+                accessorKey: 'equipment',
+                size: 100,
+                header: () => <p className='column-title'>Equipment</p>,
                 cell: ({getValue}) => (
                     <span className="text-foreground">
                         {getValue<string>() ?? '-'}
