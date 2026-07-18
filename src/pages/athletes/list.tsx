@@ -21,8 +21,6 @@ const SORTOPTIONS = [
     { field: 'trainingBlock.nextUpdateDate', order: 'desc' as const, label: 'Block Update ↓' },
     { field: 'payment.dueDate',              order: 'asc'  as const, label: 'Payment Due ↑' },
     { field: 'payment.dueDate',              order: 'desc' as const, label: 'Payment Due ↓' },
-    { field: 'nextCompetitionDetails.date',  order: 'asc'  as const, label: 'Comp Date ↑' },
-    { field: 'nextCompetitionDetails.date',  order: 'desc' as const, label: 'Comp Date ↓' },
     { field: 'dateOfBirth',  order: 'asc' as const, label: 'Date of birth ↑' },
     { field: 'dateOfBirth',  order: 'desc' as const, label: 'Date of birth ↓' }
 ];
@@ -141,17 +139,6 @@ const AthletesList = () => {
                 ),
             },
 
-            {
-                id: 'nextcompetitiondate',
-                accessorKey: 'nextCompetitionDetails.date',
-                size: 90,
-                header: () => <p className='column-title'>Next Comp Date</p>,
-                cell: ({row}) => (
-                    <span className="text-foreground">
-            {row.original.nextCompetitionDetails?.date ?? '-'}
-        </span>
-                ),
-            },
             {
                 id: 'actions',
                 size: 60,

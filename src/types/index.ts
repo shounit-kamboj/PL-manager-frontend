@@ -80,8 +80,9 @@ export type Athlete = {
     joinedAt: string;
     isActive: boolean;
 
-    nextCompetition?: Competition;
-    nextCompetitionDetails?: AthleteCompetition;
+    //not ness if i stick with chnages i made
+    // nextCompetition?: Competition;
+    // nextCompetitionDetails?: AthleteCompetition;
 
     createdAt: string;
     updatedAt: string;
