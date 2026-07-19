@@ -43,24 +43,6 @@ export const mockAthletes: Athlete[] = [
             paymentStatus: "overdue",
         },
 
-        nextCompetitionDetails: {
-            id: 1,
-            athlete: {} as Athlete,
-            athleteId: 1,
-            competitionId: 1,
-            competition: {
-                id: 1,
-                name: "CPU Nationals 2026",
-                startDate: "2026-08-02",
-                endDate: "2026-08-04",
-                location: "Toronto, ON",
-               // url: "https://www.cpu.ca",
-            },
-            date: "2026-08-02",
-            weighInTime: "07:00",
-            startTime: "09:00",
-
-        },
 
         createdAt: "2024-01-10",
         updatedAt: "2026-07-01",
@@ -153,24 +135,7 @@ export const mockAthletes: Athlete[] = [
             paymentStatus: "unpaid",
         },
 
-        nextCompetitionDetails: {
-            id: 2,
-            athlete: {} as Athlete,
-            athleteId: 3,
-            competitionId: 2,
-            competition: {
-                id: 2,
-                name: "BC Provincials 2026",
-                startDate: "2026-09-05",
-                endDate: "2026-09-06",
-                location: "Vancouver, BC",
-                url: "https://bc-powerlifting.com/calendar/",
-            },
-            date: "2026-09-05",
-            weighInTime: "08:00",
-            startTime: "10:00",
 
-        },
 
         createdAt: "2025-01-15",
         updatedAt: "2026-07-01",

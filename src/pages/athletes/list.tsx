@@ -21,8 +21,16 @@ const SORTOPTIONS = [
     { field: 'trainingBlock.nextUpdateDate', order: 'desc' as const, label: 'Block Update ↓' },
     { field: 'payment.dueDate',              order: 'asc'  as const, label: 'Payment Due ↑' },
     { field: 'payment.dueDate',              order: 'desc' as const, label: 'Payment Due ↓' },
-    { field: 'dateOfBirth',  order: 'asc' as const, label: 'Date of birth ↑' },
-    { field: 'dateOfBirth',  order: 'desc' as const, label: 'Date of birth ↓' }
+    { field: 'dateOfBirth',                  order: 'asc'  as const, label: 'Date of birth ↑' },
+    { field: 'dateOfBirth',                  order: 'desc' as const, label: 'Date of birth ↓' },
+    { field: 'meetPrSquat',                  order: 'asc'  as const, label: 'Meet Squat PR ↑' },
+    { field: 'meetPrSquat',                  order: 'desc' as const, label: 'Meet Squat PR ↓' },
+    { field: 'meetPrBench',                  order: 'asc'  as const, label: 'Meet Bench PR ↑' },
+    { field: 'meetPrBench',                  order: 'desc' as const, label: 'Meet Bench PR ↓' },
+    { field: 'meetPrDeadlift',               order: 'asc'  as const, label: 'Meet Deadlift PR ↑' },
+    { field: 'meetPrDeadlift',               order: 'desc' as const, label: 'Meet Deadlift PR ↓' },
+    { field: 'meetPrTotal',                  order: 'asc'  as const, label: 'Meet Total PR ↑' },
+    { field: 'meetPrTotal',                  order: 'desc' as const, label: 'Meet Total PR ↓' },
 ];
 
 const AthletesList = () => {
@@ -31,6 +39,8 @@ const AthletesList = () => {
     const[selectedWeightClass, setselectedWeightClass] = useState("all");
     const[selectedAgeClass, setselectedAgeClass] = useState("all");
     const[selectedPaymentStatus, setselectedPaymentStatus] = useState("all");
+    const [selectedGender, setselectedGender] = useState("all");
+
 
     const athleteWeightFilters = selectedWeightClass === 'all' ? []:
         [
@@ -48,6 +58,11 @@ const AthletesList = () => {
     const athletePaymentFilter = selectedPaymentStatus === "all" ? [] :
         [
             {field: "paymentStatus", operator: "eq" as const, value: selectedPaymentStatus},
+        ];
+
+    const athleteGenderFilter = selectedGender === 'all' ? [] :
+        [
+            {field: 'gender', operator: 'eq' as const, value: selectedGender}
         ];
 
     const [sortIndex, setSortIndex] = useState(0);
@@ -154,7 +169,7 @@ const AthletesList = () => {
             resource: 'athletes',
             pagination:{pageSize:20,mode:'server'},
             filters: {
-                permanent: [...athleteWeightFilters,...athleteAgeFilters,...searchFilters,...athletePaymentFilter]
+                permanent: [...searchFilters, ...athleteGenderFilter,...athleteWeightFilters,...athleteAgeFilters,...athletePaymentFilter]
             },
             sorters: {
                 permanent: [{ field: currentSort.field, order: currentSort.order }]
@@ -178,6 +193,18 @@ const AthletesList = () => {
                      />
                  </div>
                  <div className="flex gap-2 w-full sm:w-auto">
+                     <Select value={selectedGender} onValueChange={setselectedGender}>
+                         <SelectTrigger>
+                             <SelectValue placeholder="Filter by Gender" />
+                         </SelectTrigger>
+                         <SelectContent>
+                             <SelectItem value="all">All Genders</SelectItem>
+                             <SelectItem value="male">Male</SelectItem>
+                             <SelectItem value="female">Female</SelectItem>
+                             <SelectItem value="non-binary">Non-Binary</SelectItem>
+                             <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                         </SelectContent>
+                     </Select>
                      <Select value={selectedWeightClass}
                              onValueChange={setselectedWeightClass}>
                          <SelectTrigger>
