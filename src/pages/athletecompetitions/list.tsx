@@ -10,6 +10,7 @@ import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
 import {EditButton} from "@/components/refine-ui/buttons/edit.tsx";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {differenceInDays, differenceInWeeks} from "date-fns";
+import { getStartTime } from '@/lib/getStartTime';
 
 const SORTOPTIONS = [
     { field: 'id',                     order: 'desc' as const, label: 'Default' },
@@ -98,14 +99,13 @@ const AthleteCompetitionsList = () => {
             },
             {
                 id: 'startTime',
-                accessorKey: 'startTime',
                 size: 90,
                 header: () => <p className='column-title'>Start Time</p>,
-                cell: ({getValue}) => (
-                    <span className="text-foreground">
-                        {getValue<string>() ?? '-'}
-                    </span>
-                ),
+                cell: ({row}) => {
+                    const weighIn = row.original.weighInTime;
+                    if (!weighIn) return <span className="text-muted-foreground">-</span>;
+                    return <span className="text-foreground">{getStartTime(weighIn)}</span>;
+                },
             },
             {
                 id: 'equipment',

@@ -1,6 +1,6 @@
 export type Gender = 'male' | 'female' | 'non-binary' | 'prefer-not-to-say';
 
-export type Equip = 'Classic'| 'Equipped';
+export type Equip = 'Classic/Raw'| 'Equipped'|'both';
 export type PaymentStatus =  "paid" | "unpaid" | "overdue";
 
 import { WEIGHTCLASSES } from '@/constants';
@@ -10,7 +10,6 @@ export type WeightClass = typeof WEIGHTCLASSES[number];
 export type Competition = {
     id: number;
     name: string;
-    federation?: string;
     startDate: string;
     endDate: string;
     location?: string;
@@ -33,10 +32,11 @@ export type Payment = {
     id: number;
     coachId: number;
     athleteId: number;
-    amount: number;
+    amountCAD: number;
     dueDate: string;
     paymentStatus: PaymentStatus;
     overdue?: boolean;
+    isCurrent?: boolean;
 }
 
 export type TrainingBlock ={
@@ -46,10 +46,11 @@ export type TrainingBlock ={
     startDate: string;
     endDate: string;
     nextUpdateDate?: string;
-    daysTillUpdate: number;
-    lastUpdateDate: string;
-    url?: string;
+    daysBetweenUpdates: number;
+    lastUpdate: string;
+    link?: string;
     sendOverviewReminder: boolean;
+    isCurrent: boolean;
     
 }
 
@@ -59,10 +60,10 @@ export type Athlete = {
     gender: Gender;
     dateOfBirth: string;
     email?: string;
-    phone?: string;
+    phoneNumber?: string;
     country?: string;
     city?: string;
-    provinceOrState?: string;
+    province?: string;
     timezone?: string;
     link?: string; //for openpl/arenapl
 
@@ -70,25 +71,26 @@ export type Athlete = {
 
     weightClass: WeightClass;
     equipment?: Equip;
-    PRSquat?: number;
-    PRBench?: number;
-    PRDeadlift?: number;
-    PRTotal?: number;
+    prSquat?: number;
+    prBench?: number;
+    prDeadlift?: number;
+    prTotal?: number;
+
+    meetPrSquat?: number;
+    meetPrBench?: number;
+    meetPrDeadlift?: number;
+    meetPrTotal?: number;
 
     coachId: number;
-    coach: CoachRef;
+    coach?: CoachRef;
     joinedAt: string;
     isActive: boolean;
-
-    //not ness if i stick with chnages i made
-    // nextCompetition?: Competition;
-    // nextCompetitionDetails?: AthleteCompetition;
 
     createdAt: string;
     updatedAt: string;
 
-    trainingBlock: TrainingBlock;
-    payment: Payment;
+    trainingBlock?: TrainingBlock | null;
+    payment?: Payment | null;
 
     notes: string;
 
@@ -106,17 +108,17 @@ export type AthleteCompetition = {
     competition?: Competition;
     date: string;
     weighInTime?: string;
-    startTime?: string;
     notes?: string;
     equipment?: Equip;
+    isCurrent: boolean;
 };
 
 export type CoachTask = {
     id: number;
     coachId: number;
-    traingBlock?: TrainingBlock; // optional for manual todos
+    trainingBlockId?: number;
     title: string;
-    descrip: string;
+    description: string;
     dueDate?: string;
     completed: boolean;
     status: 'pending' | 'completed' | 'overdue';
