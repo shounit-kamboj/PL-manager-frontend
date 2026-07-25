@@ -43,6 +43,10 @@ function App() {
                 syncWithLocation: true,
                 warnWhenUnsavedChanges: true,
                 projectId: "8IYsUd-6jrhbv-paMMVA",
+                  title: {
+                      text: "PLAM", //TODO: CHANGE
+                      icon: <Trophy className="h-5 w-5" />, //TODO: CHANGE
+                  },
               }}
               resources={[
               {
