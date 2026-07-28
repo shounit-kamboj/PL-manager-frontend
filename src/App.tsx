@@ -44,7 +44,7 @@ function App() {
                 warnWhenUnsavedChanges: true,
                 projectId: "8IYsUd-6jrhbv-paMMVA",
                   title: {
-                      text: "PLAM", //TODO: CHANGE
+                      text: "Collar PL", //TODO: CHANGE
                       icon: <Trophy className="h-5 w-5" />, //TODO: CHANGE
                   },
               }}

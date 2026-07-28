@@ -121,14 +121,14 @@ const AthleteCompetitionsList = () => {
 
             {
                 id: 'website',
-                accessorKey: 'competition.url',
+                accessorKey: 'competition.link',
                 size: 60,
                 header: () => <p className='column-title'>Website</p>,
                 cell: ({row}) => {
-                    const url = row.original.competition?.url;
-                    if (!url) return <span className="text-muted-foreground">-</span>;
+                    const link = row.original.competition?.link;
+                    if (!link) return <span className="text-muted-foreground">-</span>;
                     return (
-                        <a href={url} target="_blank" rel="noreferrer" className="text-primary flex items-center gap-1">
+                        <a href={link} target="_blank" rel="noreferrer" className="text-primary flex items-center gap-1">
                             <ExternalLink className="h-4 w-4" />
                         </a>
                     );

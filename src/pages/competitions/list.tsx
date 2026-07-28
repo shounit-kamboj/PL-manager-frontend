@@ -84,14 +84,14 @@ const UpcomingCompetitionsList = () => {
             },
             {
                 id: 'website',
-                accessorKey: 'url',
+                accessorKey: 'link',
                 size: 80,
                 header: () => <p className='column-title'>Website</p>,
                 cell: ({getValue}) => {
-                    const url = getValue<string>();
-                    if (!url) return <span className="text-muted-foreground">-</span>;
+                    const link = getValue<string>();
+                    if (!link) return <span className="text-muted-foreground">-</span>;
                     return (
-                        <a href={url} target="_blank" rel="noreferrer" className="text-primary flex items-center gap-1">
+                        <a href={link} target="_blank" rel="noreferrer" className="text-primary flex items-center gap-1">
                             <ExternalLink className="h-4 w-4" />
                         </a>
                     );

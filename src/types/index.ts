@@ -13,7 +13,7 @@ export type Competition = {
     startDate: string;
     endDate: string;
     location?: string;
-    url?: string;
+    link?: string;
 };
 
 
