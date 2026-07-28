@@ -13,6 +13,7 @@ import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge.tsx";
 import {getAgeClass} from "@/lib/getAgeClass.ts";
 import {isLastYearOfAgeClass} from "@/lib/isLastYear.ts";
+import {getNextUpdateDate} from "@/lib/nextUpdateDate.ts";
 
 
 const SORTOPTIONS = [
@@ -121,14 +122,17 @@ const AthletesList = () => {
 
             {
                 id: 'trainingBlock',
-                accessorKey: 'trainingBlock.nextUpdateDate',
                 size: 90,
                 header: () => <p className='column-title'>Next Block Update</p>,
-                cell: ({row}) => (
-                    <span className="text-foreground">
-                          {row.original.trainingBlock?.nextUpdateDate}
-                    </span>
-                )
+                cell: ({row}) => {
+                    const block = row.original.trainingBlock;
+                    if (!block) return <span className="text-muted-foreground">-</span>;
+                    return (
+                        <span className="text-foreground">
+                {getNextUpdateDate(block.lastUpdate, block.daysBetweenUpdates)}
+            </span>
+                    );
+                }
             },
 
             {
