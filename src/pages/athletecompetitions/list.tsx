@@ -24,7 +24,7 @@ const AthleteCompetitionsList = () => {
     const currentSort = SORTOPTIONS[sortIndex];
 
     const searchFilters = searchQuery ? [
-        {field: 'name', operator: 'contains' as const, value: searchQuery}
+        {field: 'search', operator: 'contains' as const, value: searchQuery}
     ]:[];
 
 
@@ -33,12 +33,12 @@ const AthleteCompetitionsList = () => {
         columns: useMemo<ColumnDef<AthleteCompetition>[]>(() => [
             {
                 id: 'name',
-                accessorKey: 'athlete.name',
+                accessorKey: 'athleteName',
                 size: 100,
                 header: () => <p className='column-title'>Athlete</p>,
                 cell: ({row}) => (
                     <span className="text-foreground">
-                        {row.original.athlete?.name ?? '-'}
+                        {row.original.athleteName ?? '-'}
                     </span>
                 ),
                 filterFn: 'includesString' as const

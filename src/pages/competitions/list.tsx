@@ -21,7 +21,7 @@ const UpcomingCompetitionsList = () => {
     const currentSort = SORTOPTIONS[sortIndex];
 
     const searchFilters = searchQuery ? [
-        {field: 'name', operator: 'contains' as const, value: searchQuery}
+        {field: 'search', operator: 'contains' as const, value: searchQuery}
     ]:[];
 
     const competitionTable = useTable<Competition>({

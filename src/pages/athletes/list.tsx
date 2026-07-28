@@ -52,7 +52,7 @@ const AthletesList = () => {
             {field: 'ageClass', operator: 'eq' as const, value: selectedAgeClass}
         ];
     const searchFilters = searchQuery ? [
-        {field: 'name', operator: 'contains' as const, value: searchQuery}
+        {field: 'search', operator: 'contains' as const, value: searchQuery}
     ]:[];
 
     const athletePaymentFilter = selectedPaymentStatus === "all" ? [] :
