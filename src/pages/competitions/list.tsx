@@ -8,6 +8,7 @@ import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge.tsx";
 import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+import {format, parseISO} from "date-fns";
 
 const SORTOPTIONS = [
     { field: 'id',                     order: 'desc' as const, label: 'Default' },
@@ -43,22 +44,32 @@ const UpcomingCompetitionsList = () => {
                 accessorKey: 'startDate',
                 size: 120,
                 header: () => <p className='column-title'>Start Date</p>,
-                cell: ({getValue}) => (
-                    <span className="text-foreground">
-                        {getValue<string>()}
-                    </span>
-                ),
+                cell: ({getValue}) => {
+                    const rawDate = getValue<string>();
+                    if (!rawDate) return <span className="text-foreground">-</span>;
+                    const formattedDate = format(parseISO(rawDate), 'MMM d, yyyy');
+                    return (
+                        <span className="text-foreground">
+                            {formattedDate}
+                        </span>
+                    );
+                },
             },
             {
                 id: 'enddate',
                 accessorKey: 'endDate',
                 size: 120,
                 header: () => <p className='column-title'>End Date</p>,
-                cell: ({getValue}) => (
-                    <span className="text-foreground">
-                        {getValue<string>()}
-                    </span>
-                ),
+                cell: ({getValue}) => {
+                    const rawDate = getValue<string>();
+                    if (!rawDate) return <span className="text-foreground">-</span>;
+                    const formattedDate = format(parseISO(rawDate), 'MMM d, yyyy');
+                    return (
+                        <span className="text-foreground">
+                            {formattedDate}
+                        </span>
+                    );
+                },
             },
             {
                 id: 'location',

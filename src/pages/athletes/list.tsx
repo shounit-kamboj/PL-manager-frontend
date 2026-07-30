@@ -14,6 +14,8 @@ import {Badge} from "@/components/ui/badge.tsx";
 import {getAgeClass} from "@/lib/getAgeClass.ts";
 import {isLastYearOfAgeClass} from "@/lib/isLastYear.ts";
 import {getNextUpdateDate} from "@/lib/nextUpdateDate.ts";
+import { isOverdue } from '@/lib/isOverdue';
+import {format} from "date-fns";
 
 
 const SORTOPTIONS = [
@@ -135,27 +137,35 @@ const AthletesList = () => {
                 }
             },
 
-            {
-                id: 'dueDate',
-                accessorKey: 'payment.dueDate',
-                size: 70,
-                header: () => <p className='column-title'>Payment Due Date</p>,
-                cell: ({row}) => (
-                    <span className={row.original.payment?.overdue ? "text-destructive" : "text-foreground"}>
-            {row.original.payment?.dueDate}
+
+
+    {
+        id: 'dueDate',
+            accessorKey: 'payment.dueDate',
+        size: 70,
+        header: () => <p className='column-title'>Payment Due Date</p>,
+        cell: ({row}) => (
+        <span className={isOverdue(row.original.payment) ? "text-destructive" : "text-foreground"}>
+       {row.original.payment?.dueDate
+           ? format(new Date(row.original.payment.dueDate), 'MMM d, yyyy')
+           : '—'}
         </span>
-                ),
-            },
+    ),
+    },
             {
-                id: 'overdue',
-                accessorKey: 'payment.overdue',
+                id: 'paymentStatus',
+                accessorKey: 'payment.paymentStatus',
                 size: 60,
                 header: () => <p className='column-title'>Payment Status</p>,
-                cell: ({row}) => (
-                    <Badge variant={row.original.payment?.overdue ? "destructive" : "secondary"}>
-                        {row.original.payment?.paymentStatus}
-                    </Badge>
-                ),
+                cell: ({row}) => {
+                    const status = row.original.payment?.paymentStatus;
+                    const variant = isOverdue(row.original.payment) ? 'destructive' : status === 'unpaid' ? 'outline' : 'secondary';
+                    return (
+                        <Badge variant={variant}>
+                            {status ?? '-'}
+                        </Badge>
+                    );
+                },
             },
 
             {

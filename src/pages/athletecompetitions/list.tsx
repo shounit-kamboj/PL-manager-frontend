@@ -9,7 +9,7 @@ import {CreateButton} from "@/components/refine-ui/buttons/create.tsx";
 import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
 import {EditButton} from "@/components/refine-ui/buttons/edit.tsx";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import {differenceInDays, differenceInWeeks} from "date-fns";
+import {differenceInDays, format, parseISO} from "date-fns";
 import { getStartTime } from '@/lib/getStartTime';
 
 const SORTOPTIONS = [
@@ -60,11 +60,16 @@ const AthleteCompetitionsList = () => {
                 accessorKey: 'date',
                 size: 100,
                 header: () => <p className='column-title'>Date</p>,
-                cell: ({getValue}) => (
-                    <span className="text-foreground">
-                        {getValue<string>() ?? '-'}
-                    </span>
-                ),
+                cell: ({ getValue }) => {
+                    const rawDate = getValue<string>();
+                    if (!rawDate) return <span className="text-foreground">-</span>;
+                    const formattedDate = format(parseISO(rawDate), 'MMM d, yyyy');
+                    return (
+                        <span className="text-foreground">
+                             {formattedDate}
+                        </span>
+                    );
+                },
             },
             {
                 id: 'weeksOut',

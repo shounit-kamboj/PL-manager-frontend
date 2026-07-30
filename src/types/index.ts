@@ -35,7 +35,6 @@ export type Payment = {
     amountCAD: number;
     dueDate: string;
     paymentStatus: PaymentStatus;
-    overdue?: boolean;
     isCurrent?: boolean;
 }
 
