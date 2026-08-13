@@ -76,7 +76,7 @@ const AthletesList = () => {
             {
                 id: 'name',
                 accessorKey: 'name',
-                size:100,
+                size:90,
                 header: () => <p className='column-title'>Name</p>,
                 cell: ({getValue}) =>
                     <span className="text-foreground">
@@ -87,7 +87,7 @@ const AthletesList = () => {
             {
                 id: 'weightClass',
                 accessorKey: 'weightClass',
-                size: 50,
+                size: 70,
                 header: () => <p className='column-title'>Weight Class</p>,
                 cell: ({getValue}) => <Badge variant={"secondary"}>
                     {getValue<string>()}
@@ -110,7 +110,7 @@ const AthletesList = () => {
                         return (
                             <div className="flex items-center gap-1">
                                 <Badge variant="secondary">Last Year {getAgeClass(dob)}</Badge>
-                                </div>
+                            </div>
                         )
                     }
 
@@ -128,7 +128,7 @@ const AthletesList = () => {
                 header: () => <p className='column-title'>Next Block Update</p>,
                 cell: ({row}) => {
                     const block = row.original.trainingBlock;
-                    if (!block) return <span className="text-muted-foreground">-</span>;
+                    if (!block) return <span className="text-muted-foreground">—</span>;
                     return (
                         <span className="text-foreground">
                 {getNextUpdateDate(block.lastUpdate, block.daysBetweenUpdates)}
@@ -139,41 +139,99 @@ const AthletesList = () => {
 
 
 
-    {
-        id: 'dueDate',
-            accessorKey: 'payment.dueDate',
-        size: 70,
-        header: () => <p className='column-title'>Payment Due Date</p>,
-        cell: ({row}) => (
-        <span className={isOverdue(row.original.payment) ? "text-destructive" : "text-foreground"}>
+            {
+                id: 'dueDate',
+                accessorKey: 'payment.dueDate',
+                size: 90,
+                header: () => <p className='column-title'>Payment Due Date</p>,
+                cell: ({row}) => (
+                    <span className={isOverdue(row.original.payment) ? "text-destructive" : "text-foreground"}>
        {row.original.payment?.dueDate
            ? format(new Date(row.original.payment.dueDate), 'MMM d, yyyy')
            : '—'}
         </span>
-    ),
-    },
+                ),
+            },
             {
                 id: 'paymentStatus',
                 accessorKey: 'payment.paymentStatus',
-                size: 60,
+                size: 80,
                 header: () => <p className='column-title'>Payment Status</p>,
                 cell: ({row}) => {
                     const status = row.original.payment?.paymentStatus;
                     const variant = isOverdue(row.original.payment) ? 'destructive' : status === 'unpaid' ? 'outline' : 'secondary';
                     return (
                         <Badge variant={variant}>
-                            {status ?? '-'}
+                            {status ?? '—'}
                         </Badge>
                     );
                 },
             },
 
             {
+                id: 'meetPrSquat',
+                accessorKey: 'meetPrSquat',
+                size: 55,
+                header: () => <p className='column-title'>Squat</p>,
+                cell: ({getValue}) => {
+                    const value = getValue<string | null>();
+                    return (
+                        <span className="text-foreground">
+                            {value ? `${value} Kg` : '—'}
+                        </span>
+                    );
+                },
+            },
+            {
+                id: 'meetPrBench',
+                accessorKey: 'meetPrBench',
+                size: 55,
+                header: () => <p className='column-title'>Bench</p>,
+                cell: ({getValue}) => {
+                    const value = getValue<string | null>();
+                    return (
+                        <span className="text-foreground">
+                            {value ? `${value} Kg` : '—'}
+                        </span>
+                    );
+                },
+            },
+            {
+                id: 'meetPrDeadlift',
+                accessorKey: 'meetPrDeadlift',
+                size: 55,
+                header: () => <p className='column-title'>Deadlift</p>,
+                cell: ({getValue}) => {
+                    const value = getValue<string | null>();
+                    return (
+                        <span className="text-foreground">
+                            {value ? `${value} Kg` : '—'}
+                        </span>
+                    );
+                },
+            },
+            {
+                id: 'meetPrTotal',
+                accessorKey: 'meetPrTotal',
+                size: 55,
+                header: () => <p className='column-title'>Total</p>,
+                cell: ({getValue}) => {
+                    const value = getValue<string | null>();
+                    return (
+                        <span className="text-foreground">
+                            {value ? `${value} Kg` : '—'}
+                        </span>
+                    );
+                },
+            },
+
+            {
                 id: 'actions',
-                size: 60,
-                header: () => <p className='column-title'>Edit</p>,
+                size: 35,
+                header: () => <p className='column-title'></p>,
                 cell: ({row}) => (
-                    <EditButton recordItemId={row.original.id} />
+
+                    <EditButton recordItemId={row.original.id}   variant="link" />
                 ),
             },
 
@@ -191,108 +249,108 @@ const AthletesList = () => {
         }
     });
     return (
-     <ListView>
-        <Breadcrumb />
-         <h1 className="page-title">Athlete Roster</h1>
-         <div className="intro-row">
-             <div className="action-row">
-                 <div className="search-field">
-                     <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none"/>
-                     <input
-                     type="text"
-                     placeholder="Search by Athlete Name"
-                     className="pl-10 w-full"
-                     value={searchQuery}
-                     onChange={(e) => setSearchQuery(e.target.value)}
-                     />
-                 </div>
-                 <div className="flex gap-2 w-full sm:w-auto">
-                     <Select value={selectedGender} onValueChange={setselectedGender}>
-                         <SelectTrigger>
-                             <SelectValue placeholder="Filter by Gender" />
-                         </SelectTrigger>
-                         <SelectContent>
-                             <SelectItem value="all">All Genders</SelectItem>
-                             <SelectItem value="male">Male</SelectItem>
-                             <SelectItem value="female">Female</SelectItem>
-                             <SelectItem value="non-binary">Non-Binary</SelectItem>
-                             <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
-                         </SelectContent>
-                     </Select>
-                     <Select value={selectedWeightClass}
-                             onValueChange={setselectedWeightClass}>
-                         <SelectTrigger>
-                             <SelectValue placeholder="Filter by weightclass "/>
-                         </SelectTrigger>
-                         <SelectContent>
-                             <SelectItem value="all">
-                                 All Weight classes
-                             </SelectItem>
-                             {WEIGHTCLASSES_OPTIONS.map(weightclass => (
-                                 <SelectItem key ={weightclass.value} value={weightclass.value}>
-                                     {weightclass.label}
-                                 </SelectItem>
-                             ))}
-                         </SelectContent>
-                     </Select>
-                     <div className='flex gap-2 w-full sm:w-auto'>
+        <ListView>
+            <Breadcrumb />
+            <h1 className="page-title">Athlete Roster</h1>
+            <div className="intro-row">
+                <div className="action-row">
+                    <div className="search-field">
+                        <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none"/>
+                        <input
+                            type="text"
+                            placeholder="Search by Athlete Name"
+                            className="pl-10 w-full"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
+                    <div className="flex gap-2 w-full sm:w-auto">
+                        <Select value={selectedGender} onValueChange={setselectedGender}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Filter by Gender" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">All Genders</SelectItem>
+                                <SelectItem value="male">Male</SelectItem>
+                                <SelectItem value="female">Female</SelectItem>
+                                <SelectItem value="non-binary">Non-Binary</SelectItem>
+                                <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <Select value={selectedWeightClass}
+                                onValueChange={setselectedWeightClass}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Filter by weightclass "/>
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">
+                                    All Weight classes
+                                </SelectItem>
+                                {WEIGHTCLASSES_OPTIONS.map(weightclass => (
+                                    <SelectItem key ={weightclass.value} value={weightclass.value}>
+                                        {weightclass.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <div className='flex gap-2 w-full sm:w-auto'>
 
-                         <Select value={selectedAgeClass}
-                                 onValueChange={setselectedAgeClass}>
-                             <SelectTrigger>
-                                 <SelectValue placeholder="Filter by Age Category "/>
-                             </SelectTrigger>
-                             <SelectContent>
-                                 <SelectItem value="all">
-                                     All Age Groups
-                                 </SelectItem>
-                                 {AGECLASSES_OPTIONS.map(ageclass => (
-                                     <SelectItem key ={ageclass.value} value={ageclass.value}>
-                                         {ageclass.label}
-                                     </SelectItem>
-                                 ))}
-                             </SelectContent>
-                             </Select>
+                            <Select value={selectedAgeClass}
+                                    onValueChange={setselectedAgeClass}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Filter by Age Category "/>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">
+                                        All Age Groups
+                                    </SelectItem>
+                                    {AGECLASSES_OPTIONS.map(ageclass => (
+                                        <SelectItem key ={ageclass.value} value={ageclass.value}>
+                                            {ageclass.label}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
 
-                         <Select
-                             value={selectedPaymentStatus}
-                             onValueChange={setselectedPaymentStatus}>
-                             <SelectTrigger>
-                                 <SelectValue placeholder="Filter by Payment Status" />
-                             </SelectTrigger>
+                            <Select
+                                value={selectedPaymentStatus}
+                                onValueChange={setselectedPaymentStatus}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Filter by Payment Status" />
+                                </SelectTrigger>
 
-                             <SelectContent>
-                                 <SelectItem value="all">All Payment Status</SelectItem>
-                                 <SelectItem value="paid">Paid</SelectItem>
-                                 <SelectItem value="unpaid">Unpaid</SelectItem>
-                                 <SelectItem value="overdue">Overdue</SelectItem>
-                             </SelectContent>
-                         </Select>
-                         <Select
-                             value={String(sortIndex)}
-                             onValueChange={(val) => setSortIndex(Number(val))}
-                         >
-                             <SelectTrigger>
-                                 <ArrowUpDown className="h-4 w-4 mr-2" />
-                                 <SelectValue placeholder="Sort by" />
-                             </SelectTrigger>
-                             <SelectContent>
-                                 {SORTOPTIONS.map((option, index) => (
-                                     <SelectItem key={index} value={String(index)}>
-                                         {option.label}
-                                     </SelectItem>
-                                 ))}
-                             </SelectContent>
-                         </Select>
+                                <SelectContent>
+                                    <SelectItem value="all">All Payment Status</SelectItem>
+                                    <SelectItem value="paid">Paid</SelectItem>
+                                    <SelectItem value="unpaid">Unpaid</SelectItem>
+                                    <SelectItem value="overdue">Overdue</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Select
+                                value={String(sortIndex)}
+                                onValueChange={(val) => setSortIndex(Number(val))}
+                            >
+                                <SelectTrigger>
+                                    <ArrowUpDown className="h-4 w-4 mr-2" />
+                                    <SelectValue placeholder="Sort by" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {SORTOPTIONS.map((option, index) => (
+                                        <SelectItem key={index} value={String(index)}>
+                                            {option.label}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
 
-                     <CreateButton />
-                     </div>
-                 </div>
-             </div>
-         </div>
-         <DataTable table={athleteTable} />
+                            <CreateButton />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <DataTable table={athleteTable} />
 
-     </ListView>
+        </ListView>
     );
 };
 

@@ -98,7 +98,7 @@ const AthleteCompetitionsList = () => {
                 header: () => <p className='column-title'>Weigh In Time</p>,
                 cell: ({getValue}) => (
                     <span className="text-foreground">
-                        {getValue<string>() ?? '-'}
+                        {getValue<string>().slice(0, 5) ?? '-'}
                     </span>
                 ),
             },
@@ -141,10 +141,11 @@ const AthleteCompetitionsList = () => {
             },
             {
                 id: 'actions',
-                size: 80,
-                header: () => <p className='column-title'>Edit</p>,
+                size: 35,
+                header: () => <p className='column-title'></p>,
                 cell: ({row}) => (
-                    <EditButton recordItemId={row.original.id} />
+
+                    <EditButton recordItemId={row.original.id}   variant="link" />
                 ),
             },
         ], []),

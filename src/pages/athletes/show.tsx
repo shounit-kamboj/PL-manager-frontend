@@ -1,23 +1,11 @@
 import React from 'react';
-import {Breadcrumb} from "@/components/refine-ui/layout/breadcrumb.tsx";
-import {useShow} from "@refinedev/core";
-import {AthleteCompetition} from "@/types";
 
-const AthleteCompetitionsShow = () => {
-    const {query} = useShow<AthleteCompetition>({
-        resource: 'athlete-competitions',
-    });
-
-    const athleteComp = query.data?.data;
-
+const AthletesShow = () => {
     return (
-        <div className="class-view">
-            <Breadcrumb />
-            <h1 className="page-title">
-                {athleteComp?.athlete?.name ?? 'Athlete'} — {athleteComp?.competition?.name ?? 'Competition'}
-            </h1>
+        <div>
+            AthletesShow
         </div>
     );
 };
 
-export default AthleteCompetitionsShow;
+export default AthletesShow;
