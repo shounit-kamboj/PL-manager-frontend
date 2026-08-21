@@ -13,7 +13,7 @@ import { useNotificationProvider } from "./components/refine-ui/notification/use
 import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
 import { dataProvider } from "./providers/data";
 import Dashboard from "@/pages/dashboard.tsx";
-import {Home, Users,Trophy,Medal} from "lucide-react";
+import {Home, Users, Trophy, Medal, CreditCard, FileSpreadsheet} from "lucide-react";
 import {Layout} from "@/components/refine-ui/layout/layout.tsx";
 import AthletesList from "@/pages/athletes/list.tsx";
 import AthletesCreate from "@/pages/athletes/create.tsx";
@@ -23,6 +23,12 @@ import UpComingMeetsList from "@/pages/competitions/list.tsx";
 import AthleteCompetitionsList from "@/pages/athletecompetitions/list.tsx";
 import AthleteCompetitionsCreate from "@/pages/athletecompetitions/create.tsx";
 import AthleteCompetitionsEdit from "@/pages/athletecompetitions/edit.tsx";
+import PaymentsCreate from "@/pages/payments/create.tsx";
+import PaymentsList from "@/pages/payments/list.tsx";
+import PaymentsEdit from "@/pages/payments/edit.tsx";
+import TrainingBlockList from "@/pages/trainingblocks/list.tsx";
+import TrainingBlockCreate from "@/pages/trainingblocks/create.tsx";
+import TrainingBlockEdit from "@/pages/trainingblocks/edit.tsx";
 
 
 
@@ -44,8 +50,8 @@ function App() {
                 warnWhenUnsavedChanges: true,
                 projectId: "8IYsUd-6jrhbv-paMMVA",
                   title: {
-                      text: "Collar PL", //TODO: CHANGE
-                      icon: <Trophy className="h-5 w-5" />, //TODO: CHANGE
+                      text: "Collar PL",
+                      icon: <Trophy className="h-5 w-5" />,
                   },
               }}
               resources={[
@@ -85,8 +91,29 @@ function App() {
                           label: 'All Competitions',
                           icon: <Trophy/>
                       }
+                  },
+                  {
+                      name: 'payments',
+                      list: '/payments',
+                      create: '/payments/create',
+                      edit: '/payments/:id/edit',
+                      show: '/payments/show/:id',
+                      meta: {
+                          label: 'Athlete Payments',
+                          icon: <CreditCard/>
+                      }
+                  },
+                  {
+                      name: 'trainingBlock',
+                      list: '/training-blocks',
+                      create: '/training-blocks/create',
+                      edit: '/training-blocks/:id/edit',
+                      show: '/training-blocks/show/:id',
+                      meta: {
+                          label: 'Training Blocks',
+                          icon: <FileSpreadsheet/>
+                      }
                   }
-
               ]}
             >
               <Routes>
@@ -109,6 +136,16 @@ function App() {
                     </Route>
                     <Route path="competitions">
                         <Route index element={<UpComingMeetsList />} />
+                    </Route>
+                    <Route path="payments">
+                        <Route index element={<PaymentsList />} />
+                        <Route path="create" element={<PaymentsCreate />} />
+                        <Route path=":id/edit" element={<PaymentsEdit />} />
+                    </Route>
+                    <Route path="training-blocks">
+                        <Route index element={<TrainingBlockList />} />
+                        <Route path="create" element={<TrainingBlockCreate />} />
+                        <Route path=":id/edit" element={<TrainingBlockEdit />} />
                     </Route>
                 </Route>
               </Routes>
