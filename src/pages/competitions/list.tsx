@@ -9,6 +9,7 @@ import {Badge} from "@/components/ui/badge.tsx";
 import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {format, parseISO} from "date-fns";
+import {FEDS_OPTIONS} from "@/constants";
 
 const SORTOPTIONS = [
     { field: 'id',                     order: 'desc' as const, label: 'Default' },
@@ -20,10 +21,18 @@ const UpcomingCompetitionsList = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [sortIndex, setSortIndex] = useState(0);
     const currentSort = SORTOPTIONS[sortIndex];
+    const[selectedFed, setselectedFed] = useState("all");
+
 
     const searchFilters = searchQuery ? [
         {field: 'search', operator: 'contains' as const, value: searchQuery}
     ]:[];
+
+
+    const fedFilters = selectedFed === 'all' ? []:
+        [
+            {field: 'federation', operator: 'eq' as const, value: setselectedFed}
+        ];
 
     const competitionTable = useTable<Competition>({
         columns: useMemo<ColumnDef<Competition>[]>(() => [
@@ -113,7 +122,7 @@ const UpcomingCompetitionsList = () => {
             resource: 'competitions',
             pagination: {pageSize: 20, mode: 'server'},
             filters: {
-                permanent: [...searchFilters]
+                permanent: [...searchFilters, ...fedFilters]
             },
             sorters: {
                 permanent: [{ field: currentSort.field, order: currentSort.order }]
@@ -137,6 +146,22 @@ const UpcomingCompetitionsList = () => {
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
+                    <Select value={selectedFed}
+                            onValueChange={setselectedFed}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Filter by Fed"/>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">
+                                All Feds
+                            </SelectItem>
+                            {FEDS_OPTIONS.map(fdrtns => (
+                                <SelectItem key ={fdrtns.value} value={fdrtns.value}>
+                                    {fdrtns.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                     <Select
                         value={String(sortIndex)}
                         onValueChange={(val) => setSortIndex(Number(val))}

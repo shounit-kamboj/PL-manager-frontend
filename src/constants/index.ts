@@ -15,6 +15,15 @@ export const AGECLASSES_OPTIONS = AGECLASSES.map((ageclss) => ({
     label: ageclss,
 }))
 
+export const FEDS = ['IPF','NAPF', 'COMMONWEALTHPF','CANPL','BCPA','APU', 'MPA', 'NBPL',
+    'NLPA', 'NSPL', 'OPA', 'PEIPLA', 'FQD', 'SPA'
+] as const;
+
+export const FEDS_OPTIONS = FEDS.map((fdrtns) => ({
+    value: fdrtns,
+    label: fdrtns,
+}))
+
 export const TIMEZONES = [
     // Canada
     { value: 'America/Vancouver',       label: 'PT — Pacific Time (Vancouver, BC)' },

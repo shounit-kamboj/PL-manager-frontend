@@ -11,6 +11,8 @@ import {EditButton} from "@/components/refine-ui/buttons/edit.tsx";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {differenceInDays, format, parseISO} from "date-fns";
 import { getStartTime } from '@/lib/getStartTime';
+import {Badge} from "@/components/ui/badge.tsx";
+import {FEDS_OPTIONS} from "@/constants";
 
 const SORTOPTIONS = [
     { field: 'id',                     order: 'desc' as const, label: 'Default' },
@@ -22,6 +24,12 @@ const AthleteCompetitionsList = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [sortIndex, setSortIndex] = useState(0);
     const currentSort = SORTOPTIONS[sortIndex];
+    const[selectedFed, setselectedFed] = useState("all");
+
+    const fedFilters = selectedFed === 'all' ? []:
+        [
+            {field: 'federation', operator: 'eq' as const, value: setselectedFed}
+        ];
 
     const searchFilters = searchQuery ? [
         {field: 'search', operator: 'contains' as const, value: searchQuery}
@@ -54,6 +62,17 @@ const AthleteCompetitionsList = () => {
                     </span>
                 ),
                 filterFn: 'includesString' as const
+            },
+            {
+                id: 'federation',
+                accessorKey: 'federation',
+                size: 60,
+                header: () => <p className='column-title'>Fed</p>,
+                cell: ({getValue}) => (
+                    <Badge variant="secondary">
+                        {getValue<string>() ?? '-'}
+                    </Badge>
+                ),
             },
             {
                 id: 'date',
@@ -141,7 +160,7 @@ const AthleteCompetitionsList = () => {
             },
             {
                 id: 'actions',
-                size: 35,
+                size: 45,
                 header: () => <p className='column-title'></p>,
                 cell: ({row}) => (
 
@@ -153,7 +172,7 @@ const AthleteCompetitionsList = () => {
             resource: 'athlete-competitions',
             pagination: {pageSize: 20, mode: 'server'},
             filters: {
-                permanent: [...searchFilters]
+                permanent: [...searchFilters, ...fedFilters]
             },
             sorters: {
                 permanent: [{ field: currentSort.field, order: currentSort.order }]
@@ -177,6 +196,22 @@ const AthleteCompetitionsList = () => {
                             onChange={(e) => setSearchQuery(e.target.value)} //on chnage  it sets searchq to new val
                         />
                     </div>
+                    <Select value={selectedFed}
+                            onValueChange={setselectedFed}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Filter by Fed"/>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">
+                                All Feds
+                            </SelectItem>
+                            {FEDS_OPTIONS.map(fdrtns => (
+                                <SelectItem key ={fdrtns.value} value={fdrtns.value}>
+                                    {fdrtns.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                     <Select
                         value={String(sortIndex)}
                         onValueChange={(val) => setSortIndex(Number(val))}
