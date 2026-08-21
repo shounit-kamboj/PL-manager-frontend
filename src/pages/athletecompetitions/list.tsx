@@ -28,7 +28,7 @@ const AthleteCompetitionsList = () => {
 
     const fedFilters = selectedFed === 'all' ? []:
         [
-            {field: 'federation', operator: 'eq' as const, value: setselectedFed}
+            {field: 'federation', operator: 'eq' as const, value: selectedFed}
         ];
 
     const searchFilters = searchQuery ? [
@@ -65,7 +65,7 @@ const AthleteCompetitionsList = () => {
             },
             {
                 id: 'federation',
-                accessorKey: 'federation',
+                accessorKey: 'competition.federation',
                 size: 60,
                 header: () => <p className='column-title'>Fed</p>,
                 cell: ({getValue}) => (

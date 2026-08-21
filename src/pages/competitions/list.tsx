@@ -31,7 +31,7 @@ const UpcomingCompetitionsList = () => {
 
     const fedFilters = selectedFed === 'all' ? []:
         [
-            {field: 'federation', operator: 'eq' as const, value: setselectedFed}
+            {field: 'federation', operator: 'eq' as const, value: selectedFed}
         ];
 
     const competitionTable = useTable<Competition>({
