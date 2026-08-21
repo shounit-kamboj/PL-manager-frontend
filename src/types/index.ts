@@ -70,6 +70,8 @@ export type Athlete = {
     timezone?: string;
     link?: string; //for openpl/arenapl
 
+    paymentPrice?: number;
+
 
 
     weightClass: WeightClass;
