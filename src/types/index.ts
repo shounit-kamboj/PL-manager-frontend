@@ -7,6 +7,9 @@ import { WEIGHTCLASSES } from '@/constants';
 
 export type WeightClass = typeof WEIGHTCLASSES[number];
 
+import {FEDS} from "@/constants";
+export type FED =  typeof FEDS[keyof typeof FEDS];
+
 export type Competition = {
     id: number;
     name: string;
@@ -14,6 +17,7 @@ export type Competition = {
     endDate: string;
     location?: string;
     link?: string;
+    federation: FED;
 };
 
 
