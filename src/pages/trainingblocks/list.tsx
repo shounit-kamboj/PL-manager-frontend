@@ -101,7 +101,7 @@ const TrainingBlockList = () => {
                 header: () => <p className='column-title'>Next Update</p>,
                 cell: ({row}) => {
                     const block = row.original;
-                    if (!block.lastUpdate || !block.daysBetweenUpdates) return <span className="text-muted-foreground">—</span>;
+                    if (!block.lastUpdate || !block.daysBetweenUpdates || block.isCurrent === false) return <span className="text-muted-foreground">—</span>;
                     return (
                         <span className="text-foreground">
                             {getNextUpdateDate(block.lastUpdate, block.daysBetweenUpdates)}

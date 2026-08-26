@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {ListView} from "@/components/refine-ui/views/list-view.tsx"
 import {Breadcrumb} from "@/components/refine-ui/layout/breadcrumb.tsx"
-import {ArrowUpDown, Search} from "lucide-react";
+import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {AGECLASSES_OPTIONS, WEIGHTCLASSES_OPTIONS} from "@/constants";
 import {CreateButton} from "@/components/refine-ui/buttons/create.tsx";
@@ -13,17 +13,11 @@ import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge.tsx";
 import {getAgeClass} from "@/lib/getAgeClass.ts";
 import {isLastYearOfAgeClass} from "@/lib/isLastYear.ts";
-import {getNextUpdateDate} from "@/lib/nextUpdateDate.ts";
-import { isOverdue } from '@/lib/isOverdue';
-import {format} from "date-fns";
+
 
 
 const SORTOPTIONS = [
     { field: 'id',                           order: 'desc' as const, label: 'Default' },
-    { field: 'trainingBlock.nextUpdateDate', order: 'asc'  as const, label: 'Block Update ↑' },
-    { field: 'trainingBlock.nextUpdateDate', order: 'desc' as const, label: 'Block Update ↓' },
-    { field: 'payment.dueDate',              order: 'asc'  as const, label: 'Payment Due ↑' },
-    { field: 'payment.dueDate',              order: 'desc' as const, label: 'Payment Due ↓' },
     { field: 'dateOfBirth',                  order: 'asc'  as const, label: 'Date of birth ↑' },
     { field: 'dateOfBirth',                  order: 'desc' as const, label: 'Date of birth ↓' },
     { field: 'meetPrSquat',                  order: 'asc'  as const, label: 'Meet Squat PR ↑' },
@@ -41,7 +35,6 @@ const AthletesList = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const[selectedWeightClass, setselectedWeightClass] = useState("all");
     const[selectedAgeClass, setselectedAgeClass] = useState("all");
-    const[selectedPaymentStatus, setselectedPaymentStatus] = useState("all");
     const [selectedGender, setselectedGender] = useState("all");
 
 
@@ -58,10 +51,6 @@ const AthletesList = () => {
         {field: 'search', operator: 'contains' as const, value: searchQuery}
     ]:[];
 
-    const athletePaymentFilter = selectedPaymentStatus === "all" ? [] :
-        [
-            {field: "paymentStatus", operator: "eq" as const, value: selectedPaymentStatus},
-        ];
 
     const athleteGenderFilter = selectedGender === 'all' ? [] :
         [
@@ -122,51 +111,6 @@ const AthletesList = () => {
                 },
             },
 
-            {
-                id: 'trainingBlock',
-                size: 90,
-                header: () => <p className='column-title'>Next Block Update</p>,
-                cell: ({row}) => {
-                    const block = row.original.trainingBlock;
-                    if (!block) return <span className="text-muted-foreground">—</span>;
-                    return (
-                        <span className="text-foreground">
-                {getNextUpdateDate(block.lastUpdate, block.daysBetweenUpdates)}
-            </span>
-                    );
-                }
-            },
-
-
-
-            {
-                id: 'dueDate',
-                accessorKey: 'payment.dueDate',
-                size: 90,
-                header: () => <p className='column-title'>Payment Due Date</p>,
-                cell: ({row}) => (
-                    <span className={isOverdue(row.original.payment) ? "text-destructive" : "text-foreground"}>
-       {row.original.payment?.dueDate
-           ? format(new Date(row.original.payment.dueDate), 'MMM d, yyyy')
-           : '—'}
-        </span>
-                ),
-            },
-            {
-                id: 'paymentStatus',
-                accessorKey: 'payment.paymentStatus',
-                size: 80,
-                header: () => <p className='column-title'>Payment Status</p>,
-                cell: ({row}) => {
-                    const status = row.original.payment?.paymentStatus;
-                    const variant = isOverdue(row.original.payment) ? 'destructive' : status === 'unpaid' ? 'outline' : 'secondary';
-                    return (
-                        <Badge variant={variant}>
-                            {status ?? '—'}
-                        </Badge>
-                    );
-                },
-            },
 
             {
                 id: 'meetPrSquat',
@@ -224,10 +168,25 @@ const AthletesList = () => {
                     );
                 },
             },
+            {
+                id: 'website',
+                accessorKey: 'competition.link',
+                size: 60,
+                header: () => <p className='column-title'>Website</p>,
+                cell: ({row}) => {
+                    const link = row.original.link;
+                    if (!link) return <span className="text-muted-foreground">-</span>;
+                    return (
+                        <a href={link} target="_blank" rel="noreferrer" className="text-primary flex items-center gap-1">
+                            <ExternalLink className="h-4 w-4" />
+                        </a>
+                    );
+                },
+            },
 
             {
                 id: 'actions',
-                size: 35,
+                size: 55,
                 header: () => <p className='column-title'></p>,
                 cell: ({row}) => (
 
@@ -241,7 +200,7 @@ const AthletesList = () => {
             resource: 'athletes',
             pagination:{pageSize:20,mode:'server'},
             filters: {
-                permanent: [...searchFilters, ...athleteGenderFilter,...athleteWeightFilters,...athleteAgeFilters,...athletePaymentFilter]
+                permanent: [...searchFilters, ...athleteGenderFilter,...athleteWeightFilters,...athleteAgeFilters]
             },
             sorters: {
                 permanent: [{ field: currentSort.field, order: currentSort.order }]
@@ -309,21 +268,6 @@ const AthletesList = () => {
                                             {ageclass.label}
                                         </SelectItem>
                                     ))}
-                                </SelectContent>
-                            </Select>
-
-                            <Select
-                                value={selectedPaymentStatus}
-                                onValueChange={setselectedPaymentStatus}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Filter by Payment Status" />
-                                </SelectTrigger>
-
-                                <SelectContent>
-                                    <SelectItem value="all">All Payment Status</SelectItem>
-                                    <SelectItem value="paid">Paid</SelectItem>
-                                    <SelectItem value="unpaid">Unpaid</SelectItem>
-                                    <SelectItem value="overdue">Overdue</SelectItem>
                                 </SelectContent>
                             </Select>
                             <Select
