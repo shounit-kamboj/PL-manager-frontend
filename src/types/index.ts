@@ -1,7 +1,7 @@
 export type Gender = 'male' | 'female' | 'non-binary' | 'prefer-not-to-say';
 
 export type Equip = 'Classic/Raw'| 'Equipped'|'both';
-export type PaymentStatus =  "paid" | "unpaid" | "overdue";
+export type PaymentStatus = "paid" | "unpaid" | "overdue" | "paid late";
 
 import { WEIGHTCLASSES } from '@/constants';
 
@@ -36,7 +36,7 @@ export type Payment = {
     id: number;
     coachId: number;
     athleteId: number;
-    amountCAD: number;
+    //amountCAD: number;
     dueDate: string;
     paymentStatus: PaymentStatus;
     isCurrent?: boolean;
@@ -71,6 +71,7 @@ export type Athlete = {
     link?: string; //for openpl/arenapl
 
     paymentPrice?: number;
+    paymentCycleLengthWeeks?: number;
 
 
 
