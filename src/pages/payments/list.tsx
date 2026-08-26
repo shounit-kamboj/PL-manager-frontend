@@ -64,7 +64,7 @@ const PaymentsList = () => {
                     const value = getValue<string | null>();
                     return (
                         <span className="text-foreground">
-                            {value ? `$${value}` : '—'}
+                            {value ? `$ ${value}` : '—'}
                         </span>
                     );
                 },
@@ -105,7 +105,7 @@ const PaymentsList = () => {
                 id: 'isCurrent',
                 accessorKey: 'isCurrent',
                 size: 60,
-                header: () => <p className='column-title'>Cycle</p>,
+                header: () => <p className='column-title'>Payment Cycle</p>,
                 cell: ({getValue}) => (
                     <Badge variant="outline">
                         {getValue<boolean>() ? 'Current' : 'Past'}

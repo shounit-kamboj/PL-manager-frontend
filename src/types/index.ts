@@ -54,6 +54,7 @@ export type TrainingBlock ={
     link?: string;
     sendOverviewReminder: boolean;
     isCurrent: boolean;
+    athleteName: string;
     
 }
 
