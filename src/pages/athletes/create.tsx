@@ -78,14 +78,14 @@ const AthletesCreate = () => {
             <h1>Create New Athlete</h1>
 
             <div className='intro-row'>
-                <p>Please provide the required information to add a new athlete to your roster</p>
+                <h2>Please provide information to add a new athlete to your roster</h2>
                 <Button onClick={back}>Go Back</Button>
             </div>
 
             <Separator/>
 
 
-            <div className='my-4 flex items-center'>
+            <div className='my-4 flex items-center justify-center'>
                 <Card className='class-form-card'>
                     <CardHeader className="relative z-10">
                         <CardTitle className="text-2xl pb-0 font-bold">Athlete Form</CardTitle>
