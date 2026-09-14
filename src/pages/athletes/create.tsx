@@ -1,4 +1,3 @@
-import React from 'react';
 import {CreateView} from "@/components/refine-ui/views/create-view.tsx";
 import {Breadcrumb} from "@/components/refine-ui/layout/breadcrumb.tsx";
 import {useBack} from "@refinedev/core";
@@ -9,7 +8,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {athleteSchema} from "@/lib/schema.ts";
 import * as z from "zod";
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Textarea} from "@/components/ui/textarea";
@@ -30,12 +29,8 @@ const EQUIPMENT_OPTIONS = [
 
 const AthletesCreate = () => {
     const back = useBack();
-    const form = useForm({
+    const form = useForm<z.infer<typeof athleteSchema>>({
         resolver: zodResolver(athleteSchema),
-        refineCoreProps:{
-          resource: 'athletes',
-          action: 'create'
-        },
         defaultValues:{
             name: "",
             email: "",
@@ -75,8 +70,6 @@ const AthletesCreate = () => {
     return (
         <CreateView className="class-view">
             <Breadcrumb/>
-            <h1>Create New Athlete</h1>
-
             <div className='intro-row'>
                 <h2>Please provide information to add a new athlete to your roster</h2>
                 <Button onClick={back}>Go Back</Button>
