@@ -305,7 +305,7 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Payment Price ($)</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                                                    <Input type="number" step="0.01" placeholder="0.00" min="0" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -318,7 +318,7 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Payment Cycle (Weeks)</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" placeholder="4" {...field} />
+                                                    <Input type="number" placeholder="4" min="0" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -336,7 +336,7 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Squat</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" step="0.5" placeholder="0" {...field} />
+                                                    <Input type="number" step="0.5" placeholder="0" min="0"{...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -349,7 +349,7 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Bench</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" step="0.5" placeholder="0" {...field} />
+                                                    <Input type="number" step="0.5" placeholder="0" min="0"{...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -362,7 +362,7 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Deadlift</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" step="0.5" placeholder="0" {...field} />
+                                                    <Input type="number" step="0.5" placeholder="0" min="0" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -375,7 +375,7 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Total</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" step="0.5" placeholder="0" {...field} />
+                                                    <Input type="number" step="0.5" placeholder="0" min="0"{...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -393,7 +393,7 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Squat</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" step="0.5" placeholder="0" {...field} />
+                                                    <Input type="number" step="0.5" placeholder="0" min="0"{...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -406,7 +406,7 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Bench</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" step="0.5" placeholder="0" {...field} />
+                                                    <Input type="number" step="0.5" placeholder="0" min="0"{...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -419,7 +419,7 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Deadlift</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" step="0.5" placeholder="0" {...field} />
+                                                    <Input type="number" step="0.5" placeholder="0" min="0" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -432,7 +432,7 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Total</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" step="0.5" placeholder="0" {...field} />
+                                                    <Input type="number" step="0.5" placeholder="0" min="0"{...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>

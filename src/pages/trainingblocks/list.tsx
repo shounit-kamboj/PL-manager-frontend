@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {ListView} from "@/components/refine-ui/views/list-view.tsx"
 import {Breadcrumb} from "@/components/refine-ui/layout/breadcrumb.tsx"
-import {ArrowUpDown, Search} from "lucide-react";
+import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {CreateButton} from "@/components/refine-ui/buttons/create.tsx";
 import {EditButton} from "@/components/refine-ui/buttons/edit.tsx";
@@ -106,6 +106,21 @@ const TrainingBlockList = () => {
                         <span className="text-foreground">
                             {getNextUpdateDate(block.lastUpdate, block.daysBetweenUpdates)}
                         </span>
+                    );
+                },
+            },
+            {
+                id: 'website',
+                accessorKey: 'trainingBlock.link',
+                size: 60,
+                header: () => <p className='column-title'>Program</p>,
+                cell: ({row}) => {
+                    const link = row.original.link;
+                    if (!link) return <span className="text-muted-foreground">-</span>;
+                    return (
+                        <a href={link} target="_blank" rel="noreferrer" className="text-primary flex items-center gap-1">
+                            <ExternalLink className="h-4 w-4" />
+                        </a>
                     );
                 },
             },
