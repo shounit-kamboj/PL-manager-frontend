@@ -4,9 +4,10 @@ import {useBack} from "@refinedev/core";
 import {Button} from "@/components/ui/button.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {athleteSchema} from "@/lib/schema.ts";
+import { useForm } from "@refinedev/react-hook-form";
+import type { BaseRecord, HttpError } from "@refinedev/core";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { athleteSchema } from "@/lib/schema.ts";
 import * as z from "zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
@@ -28,45 +29,45 @@ const EQUIPMENT_OPTIONS = [
 ];
 
 const AthletesCreate = () => {
-    const back = useBack();
-    const form = useForm<z.infer<typeof athleteSchema>>({
-        resolver: zodResolver(athleteSchema),
-        defaultValues:{
-            name: "",
-            email: "",
-            gender: undefined,
-            weightClass: undefined,
-            dateOfBirth: "",
-            phoneNumber: "",
-            country: "",
-            city: "",
-            province: "",
-            timezone: "",
-            equipment: undefined,
-            paymentPrice: undefined,
-            paymentCycleLengthWeeks: undefined,
-            prSquat: undefined,
-            prBench: undefined,
-            prDeadlift: undefined,
-            prTotal: undefined,
-            meetPrSquat: undefined,
-            meetPrBench: undefined,
-            meetPrDeadlift: undefined,
-            meetPrTotal: undefined,
-            notes: "",
-            link: "",
-            joinedAt: new Date().toISOString().split('T')[0],
-        },
-    })
+        const back = useBack();
+        const form = useForm<BaseRecord, HttpError, z.infer<typeof athleteSchema>>({
+            resolver: zodResolver(athleteSchema),
+            refineCoreProps: {
+                resource: 'athletes',
+                action: 'create',
+            },
+            defaultValues: {
+                name: "",
+                email: "",
+                gender: undefined,
+                weightClass: undefined,
+                dateOfBirth: "",
+                phoneNumber: "",
+                country: "",
+                city: "",
+                province: "",
+                timezone: "",
+                equipment: undefined,
+                paymentPrice: undefined,
+                paymentCycleLengthWeeks: undefined,
+                prSquat: undefined,
+                prBench: undefined,
+                prDeadlift: undefined,
+                prTotal: undefined,
+                meetPrSquat: undefined,
+                meetPrBench: undefined,
+                meetPrDeadlift: undefined,
+                meetPrTotal: undefined,
+                notes: "",
+                link: "",
+                joinedAt: new Date().toISOString().split("T")[0],
+            },
+        });
 
-    const  onSubmit = (values: z.infer<typeof athleteSchema>) => {
-        try{
-            console.log(values);
-        }
-        catch(e){
-            console.log(e);
-        }
-    }
+        const onSubmit = async (values: z.infer<typeof athleteSchema>) => {
+            await form.refineCore.onFinish(values);
+        };
+
     return (
         <CreateView className="class-view">
             <Breadcrumb/>
@@ -447,7 +448,7 @@ const AthletesCreate = () => {
                                         name="link"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Training Progam Link (sheets, excel etc)</FormLabel>
+                                                <FormLabel>Athlete page Link (openipf, arenapl, etc)</FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="https://..." {...field} />
                                                 </FormControl>
@@ -464,7 +465,7 @@ const AthletesCreate = () => {
                                                 <FormControl>
                                                     <Textarea 
                                                         placeholder="Any additional information about the athlete..." 
-                                                        className="min-h-[100px]"
+                                                        className="min-h-25"
                                                         {...field} 
                                                     />
                                                 </FormControl>
