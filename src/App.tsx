@@ -1,10 +1,13 @@
 import {Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
+import { RequireAuth } from "@/components/require-auth";
+import SignIn from "@/pages/signin";
+import SignUp from "@/pages/signup";
 
 import routerProvider, {
-  DocumentTitleHandler,
-  UnsavedChangesNotifier,
+    DocumentTitleHandler,
+    UnsavedChangesNotifier,
 } from "@refinedev/react-router";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router";
 import "./App.css";
@@ -36,130 +39,135 @@ import TrainingBlockEdit from "@/pages/trainingblocks/edit.tsx";
 
 
 function App() {
-  return (
-    <BrowserRouter>
-      <RefineKbarProvider>
-        <ThemeProvider>
-          <DevtoolsProvider>
-            <Refine
-              dataProvider={dataProvider}
-              notificationProvider={useNotificationProvider()}
-              routerProvider={routerProvider}
-              options={{
-                syncWithLocation: true,
-                warnWhenUnsavedChanges: true,
-                projectId: "8IYsUd-6jrhbv-paMMVA",
-                  title: {
-                      text: "Collar PL",
-                      icon: <Trophy className="h-5 w-5" />,
-                  },
-              }}
-              resources={[
-              {
-                  name: 'dashboard',
-                  list: '/',
-                  meta: {label: 'Home', icon: <Home />}
-              },
-                  {
-                      name: 'athletes',
-                      list: '/athletes',
-                      create: '/athletes/create',
-                      edit: '/athletes/:id/edit',
-                      show: '/athletes/show/:id',
-                      meta: {
-                          label: 'Athletes',
-                          icon: <Users />
-                      }
-                  },
-                  {
-                      name: 'athleteCompetitions',
-                      list: '/athlete-competitions',
-                      create: '/athlete-competitions/create',
-                      edit: '/athlete-competitions/:id/edit',
-                      show: '/athlete-competitions/show/:id',
-                      meta: {
-                          label: 'My Athlete Competitions',
-                          icon: <Medal/>
-                      }
-                  },
+    return (
+        <BrowserRouter>
+            <RefineKbarProvider>
+                <ThemeProvider>
+                    <DevtoolsProvider>
+                        <Refine
+                            dataProvider={dataProvider}
+                            notificationProvider={useNotificationProvider()}
+                            routerProvider={routerProvider}
+                            options={{
+                                syncWithLocation: true,
+                                warnWhenUnsavedChanges: true,
+                                projectId: "8IYsUd-6jrhbv-paMMVA",
+                                title: {
+                                    text: "Collar PL",
+                                    icon: <Trophy className="h-5 w-5" />,
+                                },
+                            }}
+                            resources={[
+                                {
+                                    name: 'dashboard',
+                                    list: '/',
+                                    meta: {label: 'Home', icon: <Home />}
+                                },
+                                {
+                                    name: 'athletes',
+                                    list: '/athletes',
+                                    create: '/athletes/create',
+                                    edit: '/athletes/:id/edit',
+                                    show: '/athletes/show/:id',
+                                    meta: {
+                                        label: 'Athletes',
+                                        icon: <Users />
+                                    }
+                                },
+                                {
+                                    name: 'athleteCompetitions',
+                                    list: '/athlete-competitions',
+                                    create: '/athlete-competitions/create',
+                                    edit: '/athlete-competitions/:id/edit',
+                                    show: '/athlete-competitions/show/:id',
+                                    meta: {
+                                        label: 'My Athlete Competitions',
+                                        icon: <Medal/>
+                                    }
+                                },
 
-                  {
-                      name: 'competitions',
-                      list: '/competitions',
-                      show: '/competitions/show/:id',
-                      meta: {
-                          label: 'All Competitions',
-                          icon: <Trophy/>
-                      }
-                  },
-                  {
-                      name: 'payments',
-                      list: '/payments',
-                      create: '/payments/create',
-                      edit: '/payments/:id/edit',
-                      show: '/payments/show/:id',
-                      meta: {
-                          label: 'Athlete Payments',
-                          icon: <CreditCard/>
-                      }
-                  },
-                  {
-                      name: 'trainingBlock',
-                      list: '/training-blocks',
-                      create: '/training-blocks/create',
-                      edit: '/training-blocks/:id/edit',
-                      show: '/training-blocks/show/:id',
-                      meta: {
-                          label: 'Training Blocks',
-                          icon: <FileSpreadsheet/>
-                      }
-                  }
-              ]}
-            >
-              <Routes>
-                <Route element={
-                    <Layout>
-                        <Outlet />
-                    </Layout>
-                }>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="athletes">
-                        <Route index element={<AthletesList />} />
-                        <Route path="create" element={<AthletesCreate />} />
-                        <Route path=":id/edit" element={<AthletesEdit />} />
-                        <Route path="show/:id" element={<AthletesShow />} />
-                    </Route>
-                    <Route path="athlete-competitions">
-                        <Route index element={<AthleteCompetitionsList />} />
-                        <Route path="create" element={<AthleteCompetitionsCreate />} />
-                        <Route path=":id/edit" element={<AthleteCompetitionsEdit />} />
-                    </Route>
-                    <Route path="competitions">
-                        <Route index element={<UpComingMeetsList />} />
-                    </Route>
-                    <Route path="payments">
-                        <Route index element={<PaymentsList />} />
-                        <Route path="create" element={<PaymentsCreate />} />
-                        <Route path=":id/edit" element={<PaymentsEdit />} />
-                    </Route>
-                    <Route path="training-blocks">
-                        <Route index element={<TrainingBlockList />} />
-                        <Route path="create" element={<TrainingBlockCreate />} />
-                        <Route path=":id/edit" element={<TrainingBlockEdit />} />
-                    </Route>
-                </Route>
-              </Routes>
-              <Toaster />
-              <RefineKbar />
-              <UnsavedChangesNotifier />
-              <DocumentTitleHandler />
-            </Refine>
-            <DevtoolsPanel />
-          </DevtoolsProvider>
-        </ThemeProvider>
-      </RefineKbarProvider>
-    </BrowserRouter>
-  );
+                                {
+                                    name: 'competitions',
+                                    list: '/competitions',
+                                    show: '/competitions/show/:id',
+                                    meta: {
+                                        label: 'All Competitions',
+                                        icon: <Trophy/>
+                                    }
+                                },
+                                {
+                                    name: 'payments',
+                                    list: '/payments',
+                                    create: '/payments/create',
+                                    edit: '/payments/:id/edit',
+                                    show: '/payments/show/:id',
+                                    meta: {
+                                        label: 'Athlete Payments',
+                                        icon: <CreditCard/>
+                                    }
+                                },
+                                {
+                                    name: 'trainingBlock',
+                                    list: '/training-blocks',
+                                    create: '/training-blocks/create',
+                                    edit: '/training-blocks/:id/edit',
+                                    show: '/training-blocks/show/:id',
+                                    meta: {
+                                        label: 'Training Blocks',
+                                        icon: <FileSpreadsheet/>
+                                    }
+                                }
+                            ]}
+                        >
+                            <Routes>
+                                <Route path="/sign-in" element={<SignIn />} />
+                                <Route path="/sign-up" element={<SignUp />} />
+
+                                <Route element={
+                                    <RequireAuth>
+                                        <Layout>
+                                            <Outlet />
+                                        </Layout>
+                                    </RequireAuth>
+                                }>
+                                    <Route path="/" element={<Dashboard />} />
+                                    <Route path="athletes">
+                                        <Route index element={<AthletesList />} />
+                                        <Route path="create" element={<AthletesCreate />} />
+                                        <Route path=":id/edit" element={<AthletesEdit />} />
+                                        <Route path="show/:id" element={<AthletesShow />} />
+                                    </Route>
+                                    <Route path="athlete-competitions">
+                                        <Route index element={<AthleteCompetitionsList />} />
+                                        <Route path="create" element={<AthleteCompetitionsCreate />} />
+                                        <Route path=":id/edit" element={<AthleteCompetitionsEdit />} />
+                                    </Route>
+                                    <Route path="competitions">
+                                        <Route index element={<UpComingMeetsList />} />
+                                    </Route>
+                                    <Route path="payments">
+                                        <Route index element={<PaymentsList />} />
+                                        <Route path="create" element={<PaymentsCreate />} />
+                                        <Route path=":id/edit" element={<PaymentsEdit />} />
+                                    </Route>
+                                    <Route path="training-blocks">
+                                        <Route index element={<TrainingBlockList />} />
+                                        <Route path="create" element={<TrainingBlockCreate />} />
+                                        <Route path=":id/edit" element={<TrainingBlockEdit />} />
+                                    </Route>
+                                </Route>
+                            </Routes>
+                            <Toaster />
+                            <RefineKbar />
+                            <UnsavedChangesNotifier />
+                            <DocumentTitleHandler />
+                        </Refine>
+                        <DevtoolsPanel />
+                    </DevtoolsProvider>
+                </ThemeProvider>
+            </RefineKbarProvider>
+        </BrowserRouter>
+    );
 }
 
 export default App;
