@@ -31,13 +31,6 @@ const SignIn = () => {
         <div className="flex items-center justify-center min-h-svh px-4">
             <Card className="w-full max-w-sm">
                 <CardHeader>
-                    <Button
-                        variant="ghost"
-                        className="w-fit px-2 -ml-2 mb-2"
-                        onClick={() => navigate(-1)}
-                    >
-                        ← Back
-                    </Button>
                     <CardTitle>Sign in to CollarPL</CardTitle>
                 </CardHeader>
                 <CardContent>
