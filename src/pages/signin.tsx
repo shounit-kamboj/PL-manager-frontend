@@ -1,17 +1,15 @@
-// src/pages/sign-in.tsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { signIn } from '@/lib/auth-client.js';
+import { Link, Navigate } from 'react-router';
+import { signIn, useSession } from '@/lib/auth-client.js';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Link } from "react-router";
 
 const SignIn = () => {
-    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const { data: session } = useSession();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,9 +21,10 @@ const SignIn = () => {
             setError(error.message ?? 'Invalid email or password');
             return;
         }
-
-        navigate('/');
     };
+
+    if (session) return <Navigate to="/" replace />;
+
 
     return (
         <div className="flex items-center justify-center min-h-svh px-4">
@@ -52,6 +51,9 @@ const SignIn = () => {
                         {error && (
                             <p className="text-sm text-destructive">{error}</p>
                         )}
+                        <Link to="/forgot-password" className="text-sm text-muted-foreground hover:underline">
+                            Forgot password?
+                        </Link>
 
                         <Button type="submit" className="w-full">
                             Sign In
@@ -72,6 +74,11 @@ const SignIn = () => {
                                 </Link>
                             </Button>
                         </div>
+                        <br />
+                        <p className="text-xs text-muted-foreground text-center">
+                            By creating an account you agree to our{' '}
+                            <Link to="/privacy" className="underline">Privacy Policy</Link>.
+                        </p>
                     </form>
                 </CardContent>
             </Card>

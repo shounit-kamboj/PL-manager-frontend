@@ -32,9 +32,35 @@ import PaymentsEdit from "@/pages/payments/edit.tsx";
 import TrainingBlockList from "@/pages/trainingblocks/list.tsx";
 import TrainingBlockCreate from "@/pages/trainingblocks/create.tsx";
 import TrainingBlockEdit from "@/pages/trainingblocks/edit.tsx";
+import ForgotPassword from "@/pages/forgotPassword";
+import ResetPassword from "@/pages/resetPassword";
+import Privacy from "@/pages/privacy";
 
 
+const APP_NAME = "Collar PL";
 
+type TitleArgs = {
+    resource?: { meta?: { label?: string } };
+    action?: string;
+    pathname?: string;
+};
+
+const titleHandler = ({ resource, action, pathname }: TitleArgs) => {
+    // auth pages aren't in `resources`, so match them by URL
+    if (pathname === "/sign-in") return `Sign in | ${APP_NAME}`;
+    if (pathname === "/sign-up") return `Sign up | ${APP_NAME}`;
+    if (pathname === "/forgot-password") return `Forgot password | ${APP_NAME}`;
+    if (pathname === "/reset-password") return `Reset password | ${APP_NAME}`;
+    if (pathname === "/privacy") return `Privacy | ${APP_NAME}`;
+
+    const label = resource?.meta?.label;
+    if (!label) return APP_NAME;
+
+    if (action === "create") return `${label} · New | ${APP_NAME}`;
+    if (action === "edit") return `${label} · Edit | ${APP_NAME}`;
+    if (action === "show") return `${label} · Details | ${APP_NAME}`;
+    return `${label} | ${APP_NAME}`;
+};
 
 
 
@@ -122,6 +148,9 @@ function App() {
                             <Routes>
                                 <Route path="/sign-in" element={<SignIn />} />
                                 <Route path="/sign-up" element={<SignUp />} />
+                                <Route path="/forgot-password" element={<ForgotPassword />} />
+                                <Route path="/reset-password" element={<ResetPassword />} />
+                                <Route path="/privacy" element={<Privacy />} />
 
                                 <Route element={
                                     <RequireAuth>
@@ -160,7 +189,7 @@ function App() {
                             <Toaster />
                             <RefineKbar />
                             <UnsavedChangesNotifier />
-                            <DocumentTitleHandler />
+                            <DocumentTitleHandler handler={titleHandler} />
                         </Refine>
                         <DevtoolsPanel />
                     </DevtoolsProvider>

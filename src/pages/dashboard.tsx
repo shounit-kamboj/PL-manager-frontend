@@ -1,7 +1,45 @@
-
 import React from "react";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb.tsx";
+import { useEffect, useState } from 'react';
 
+
+function TypedText({text, speed = 35, cursorPulses = 3,}: {
+    text: string;
+    speed?: number;
+    cursorPulses?: number;
+}) {
+    const [count, setCount] = useState(0);
+    const [showCursor, setShowCursor] = useState(true);
+    const done = count >= text.length;
+
+    useEffect(() => {
+        setCount(0);
+        setShowCursor(true);
+        const id = setInterval(() => {
+            setCount((c) => {
+                if (c >= text.length) {
+                    clearInterval(id);
+                    return c;
+                }
+                return c + 1;
+            });
+        }, speed);
+        return () => clearInterval(id);
+    }, [text, speed]);
+
+    useEffect(() => {
+        if (!done) return;
+        const id = setTimeout(() => setShowCursor(false), cursorPulses * 1500);
+        return () => clearTimeout(id);
+    }, [done, cursorPulses]);
+
+    return (
+        <>
+            {text.slice(0, count)}
+            {showCursor && <span className="animate-pulse">|</span>}
+        </>
+    );
+}
 const Dashboard = () => {
     const coachName = "Coach";
 
@@ -39,18 +77,16 @@ const Dashboard = () => {
             <main className="mx-auto max-w-7xl px-6 py-8">
                 {/* Header */}
                 <div className="mb-8">
-                    <p className="mb-2 text-sm text-muted-foreground">
-                        Dashboard
-                    </p>
+
 
                     <div className="flex items-end justify-between gap-4">
                         <div>
                             <h1 className="text-3xl font-semibold tracking-tight">
-                                Welcome back, {coachName}
+                                <TypedText text={`Welcome back, ${coachName}`} />
                             </h1>
 
                             <p className="mt-2 text-muted-foreground">
-                                Here's what's happening with your athletes.
+                                <TypedText text={`Here's what's happening with your athletes.`} />
                             </p>
                         </div>
 
