@@ -11,7 +11,7 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
+//todo:add a confirm password + be able to view password + minimun password req shown
     const handleSubmit = async (e: React.FormEvent) => {
             e.preventDefault();
             setError('');

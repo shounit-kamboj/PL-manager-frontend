@@ -143,19 +143,15 @@ export type AuthResponse = {
 
 export type ApiListResponse<T = unknown> = {
     data?: T[];
-    pagination?: {
-        page: number;
-        limit: number;
-        total: number;
-        totalPages: number;
-    };
+    page?: number;
+    limit?: number;
+    total?: number | string;
+    totalPages?: number;
 };
-
 
 export type ApiErrorResponse = {
     message: string;
 };
-
 // ============================================
 // FUTURE — CREATE/UPDATE PAYLOAD TYPES
 // Uncomment and adjust once building create/edit forms

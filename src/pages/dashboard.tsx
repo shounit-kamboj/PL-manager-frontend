@@ -1,6 +1,7 @@
 import React from "react";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb.tsx";
 import { useEffect, useState } from 'react';
+import { useSession } from '@/lib/auth-client';
 
 
 function TypedText({text, speed = 35, cursorPulses = 3,}: {
@@ -41,7 +42,8 @@ function TypedText({text, speed = 35, cursorPulses = 3,}: {
     );
 }
 const Dashboard = () => {
-    const coachName = "Coach";
+    const { data: session } = useSession();
+    const firstName = session?.user?.name?.split(' ')[0];
 
     const [athleteCount, setAthleteCount] = React.useState<number | null>(null);
 
@@ -82,7 +84,7 @@ const Dashboard = () => {
                     <div className="flex items-end justify-between gap-4">
                         <div>
                             <h1 className="text-3xl font-semibold tracking-tight">
-                                <TypedText text={`Welcome back, ${coachName}`} />
+                                <TypedText text={`Welcome back, ${firstName}`} />
                             </h1>
 
                             <p className="mt-2 text-muted-foreground">

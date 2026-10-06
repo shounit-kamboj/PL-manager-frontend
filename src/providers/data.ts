@@ -1,53 +1,25 @@
-// import {BaseRecord, DataProvider, GetListParams, GetListResponse} from "@refinedev/core";
-// import {mockData} from "@/constants/mock-data";
-//
-// export const dataProvider: DataProvider = {
-//   getList: async <TData extends BaseRecord = BaseRecord>({resource}: GetListParams):
-//       Promise<GetListResponse<TData>> => {
-//     const data = mockData[resource] ?? [];
-//     return {data: data as TData[], total: data.length};
-//   },
-//
-//   getOne: async () => {
-//     throw new Error('getOne is not available in mock data provider');
-//   },
-//
-//   create: async () => {
-//     throw new Error('create is not available in mock data provider');
-//   },
-//
-//   update: async () => {
-//     throw new Error('update is not available in mock data provider');
-//   },
-//
-//   deleteOne: async () => {
-//     throw new Error('deleteOne is not available in mock data provider');
-//   },
-//
-//   getApiUrl: () => '',
-// };
 import { createDataProvider, CreateDataProviderOptions } from "@refinedev/rest";
 import { BACKEND_BASE_URL } from "@/constants";
 import { ApiListResponse } from "@/types";
-import {CreateResponse, HttpError} from "@refinedev/core";
+import { CreateResponse, HttpError } from "@refinedev/core";
 
-const buildHttpError = async (response:Response): Promise<HttpError> =>{
-  let message = 'req failed'
+const buildHttpError = async (response: Response): Promise<HttpError> => {
+  let message = 'req failed';
 
-  try{
-    const payload = (await response.json()) as {message?: string}
+  try {
+    const payload = (await response.json()) as { message?: string };
 
-    if(payload?.message) message = payload.message;
+    if (payload?.message) message = payload.message;
   }
-  catch{
+  catch {
     //ign
   }
 
   return {
     message,
     statusCode: response.status,
-  }
-}
+  };
+};
 
 const options: CreateDataProviderOptions = {
   getList: {
@@ -77,33 +49,34 @@ const options: CreateDataProviderOptions = {
       return params;
     },
 
-
     mapResponse: async (response) => {
-      if(!response.ok) throw await buildHttpError(response);
+      if (!response.ok) throw await buildHttpError(response);
       const payload: ApiListResponse = await response.json();
       return payload.data ?? [];
     },
 
     getTotalCount: async (response) => {
-      if(!response.ok) throw await buildHttpError(response);
+      if (!response.ok) throw await buildHttpError(response);
       const payload: ApiListResponse = await response.json();
-      return payload.pagination?.total ?? payload.data?.length ?? 0;
+      return Number(payload.total ?? payload.data?.length ?? 0);
     },
   },
 
-  create:{
-    getEndpoint: ({resource}) => resource,
+  create: {
+    getEndpoint: ({ resource }) => resource,
 
-    buildBodyParams: async ({variables}) => variables,
+    buildBodyParams: async ({ variables }) => variables,
 
-    mapResponse: async(response) => {
+    mapResponse: async (response) => {
+      if (!response.ok) throw await buildHttpError(response);
       const json: CreateResponse = await response.json();
       return json.data ?? [];
-    }
-  }
+    },
+  },
 };
 
-
-const { dataProvider } = createDataProvider(BACKEND_BASE_URL, options);
+const { dataProvider } = createDataProvider(BACKEND_BASE_URL, options, {
+  credentials: "include", // send the login cookie with every API request
+});
 
 export { dataProvider };
