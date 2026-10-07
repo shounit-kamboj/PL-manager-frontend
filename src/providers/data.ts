@@ -1,7 +1,7 @@
 import { createDataProvider, CreateDataProviderOptions } from "@refinedev/rest";
 import { BACKEND_BASE_URL } from "@/constants";
 import { ApiListResponse } from "@/types";
-import { CreateResponse, HttpError } from "@refinedev/core";
+import { BaseRecord, CreateResponse, HttpError } from "@refinedev/core";
 
 const buildHttpError = async (response: Response): Promise<HttpError> => {
   let message = 'req failed';
@@ -72,6 +72,16 @@ const options: CreateDataProviderOptions = {
       const json: CreateResponse = await response.json();
       return json.data ?? [];
     },
+  },
+
+  getOne: {
+      getEndpoint: ({ resource, id }) => `${resource}/${id}`,
+
+      mapResponse: async (response) => {
+          if (!response.ok) throw await buildHttpError(response);
+          const json = (await response.json()) as { data: BaseRecord };
+          return json.data;
+          },
   },
 };
 

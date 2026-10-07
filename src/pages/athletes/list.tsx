@@ -13,6 +13,7 @@ import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge.tsx";
 import {getAgeClass} from "@/lib/getAgeClass.ts";
 import {isLastYearOfAgeClass} from "@/lib/isLastYear.ts";
+import { Link } from "react-router";
 
 
 
@@ -65,12 +66,16 @@ const AthletesList = () => {
             {
                 id: 'name',
                 accessorKey: 'name',
-                size:90,
+                size: 90,
                 header: () => <p className='column-title'>Name</p>,
-                cell: ({getValue}) =>
-                    <span className="text-foreground">
-                        {getValue<string>()}
-                    </span>,
+                cell: ({row}) => (
+                    <Link
+                        to={`/athletes/show/${row.original.id}`}
+                        className="text-foreground font-medium underline-offset-4 hover:underline"
+                    >
+                        {row.original.name}
+                    </Link>
+                ),
                 filterFn: 'includesString' as const
             },
             {

@@ -101,7 +101,7 @@ function App() {
                                     }
                                 },
                                 {
-                                    name: 'athleteCompetitions',
+                                    name: 'athlete-competitions',
                                     list: '/athlete-competitions',
                                     create: '/athlete-competitions/create',
                                     edit: '/athlete-competitions/:id/edit',
@@ -133,7 +133,7 @@ function App() {
                                     }
                                 },
                                 {
-                                    name: 'trainingBlock',
+                                    name: 'training-blocks',
                                     list: '/training-blocks',
                                     create: '/training-blocks/create',
                                     edit: '/training-blocks/:id/edit',

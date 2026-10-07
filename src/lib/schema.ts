@@ -24,15 +24,15 @@ export const athleteSchema = z.object({
     paymentPrice: z.coerce.number().positive().optional(),
     paymentCycleLengthWeeks: z.coerce.number().int().positive().optional(),
 
-    prSquat: z.coerce.number().positive().optional(),
-    prBench: z.coerce.number().positive().optional(),
-    prDeadlift: z.coerce.number().positive().optional(),
-    prTotal: z.coerce.number().positive().optional(),
+    prSquat: z.coerce.number().nonnegative().optional(),
+    prBench: z.coerce.number().nonnegative().optional(),
+    prDeadlift: z.coerce.number().nonnegative().optional(),
+    prTotal: z.coerce.number().nonnegative().optional(),
 
-    meetPrSquat: z.coerce.number().positive().optional(),
-    meetPrBench: z.coerce.number().positive().optional(),
-    meetPrDeadlift: z.coerce.number().positive().optional(),
-    meetPrTotal: z.coerce.number().positive().optional(),
+    meetPrSquat: z.coerce.number().nonnegative().optional(),
+    meetPrBench: z.coerce.number().nonnegative().optional(),
+    meetPrDeadlift:z.coerce.number().nonnegative().optional(),
+    meetPrTotal: z.coerce.number().nonnegative().optional(),
 
     notes: z.string().max(1000).optional(),
     link: z.string().url({ message: 'Must be a valid URL.' }).optional().or(z.literal('')),
