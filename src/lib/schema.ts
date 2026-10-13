@@ -34,6 +34,8 @@ export const athleteSchema = z.object({
     meetPrDeadlift:z.coerce.number().nonnegative().optional(),
     meetPrTotal: z.coerce.number().nonnegative().optional(),
 
+    isActive: z.boolean().optional(),
+
     notes: z.string().max(1000).optional(),
     link: z.string().url({ message: 'Must be a valid URL.' }).optional().or(z.literal('')),
 

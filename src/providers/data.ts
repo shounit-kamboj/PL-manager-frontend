@@ -83,6 +83,20 @@ const options: CreateDataProviderOptions = {
           return json.data;
           },
   },
+
+  update: {
+    getEndpoint: ({ resource, id }) => `${resource}/${id}`,
+
+    getRequestMethod: () => "put",
+
+    buildBodyParams: async ({ variables }) => variables,
+
+    mapResponse: async (response) => {
+      if (!response.ok) throw await buildHttpError(response);
+      const json = (await response.json()) as { data: BaseRecord };
+      return json.data;
+    },
+  },
 };
 
 const { dataProvider } = createDataProvider(BACKEND_BASE_URL, options, {
