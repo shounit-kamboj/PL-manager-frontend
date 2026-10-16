@@ -6,10 +6,12 @@ import {useTable} from "@refinedev/react-table";
 import {Competition} from "@/types";
 import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge.tsx";
-import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
+import {Button} from "@/components/ui/button.tsx";
+import {ArrowUpDown, ExternalLink, Pencil, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {format, parseISO} from "date-fns";
 import {FEDS_OPTIONS} from "@/constants";
+import {CompetitionDialog} from "@/components/competition-dialog.tsx";
 
 const SORTOPTIONS = [
     { field: 'id',                     order: 'desc' as const, label: 'Default' },
@@ -22,6 +24,10 @@ const UpcomingCompetitionsList = () => {
     const [sortIndex, setSortIndex] = useState(0);
     const currentSort = SORTOPTIONS[sortIndex];
     const[selectedFed, setselectedFed] = useState("all");
+
+    // create / edit dialog (editing === null means create)
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [editing, setEditing] = useState<Competition | null>(null);
 
 
     const searchFilters = searchQuery ? [
@@ -117,6 +123,28 @@ const UpcomingCompetitionsList = () => {
                     );
                 },
             },
+            {
+                id: 'actions',
+                size: 80,
+                header: () => <p className='column-title'></p>,
+                cell: ({row}) =>
+                    // only the coach's own custom competitions can be edited
+                    row.original.isOwn ? (
+                        <Button
+                            type="button"
+                            variant="link"
+                            onClick={() => {
+                                setEditing(row.original);
+                                setDialogOpen(true);
+                            }}
+                        >
+                            <div className="flex items-center gap-2 font-semibold">
+                                <Pencil className="h-4 w-4" />
+                                <span>Edit</span>
+                            </div>
+                        </Button>
+                    ) : null,
+            },
         ], []),
         refineCoreProps: {
             resource: 'competitions',
@@ -178,10 +206,25 @@ const UpcomingCompetitionsList = () => {
                             ))}
                         </SelectContent>
                     </Select>
+                    <Button
+                        type="button"
+                        onClick={() => {
+                            setEditing(null);
+                            setDialogOpen(true);
+                        }}
+                    >
+                        Add competition
+                    </Button>
 
                 </div>
             </div>
             <DataTable table={competitionTable} />
+
+            <CompetitionDialog
+                open={dialogOpen}
+                onOpenChange={setDialogOpen}
+                competition={editing}
+            />
         </ListView>
     );
 };

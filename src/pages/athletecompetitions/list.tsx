@@ -115,11 +115,10 @@ const AthleteCompetitionsList = () => {
                 accessorKey: 'weighInTime',
                 size: 100,
                 header: () => <p className='column-title'>Weigh In Time</p>,
-                cell: ({getValue}) => (
-                    <span className="text-foreground">
-                        {getValue<string>().slice(0, 5) ?? '-'}
-                    </span>
-                ),
+                cell: ({ getValue }) => {
+                    const v = getValue<string | null>();
+                    return v ? v.slice(0, 10) : "—";
+                },
             },
             {
                 id: 'startTime',

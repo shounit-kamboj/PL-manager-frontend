@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { EditView } from "@/components/refine-ui/views/edit-view.tsx";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb.tsx";
-import { useBack } from "@refinedev/core";
+import { useBack, useDelete, useGo } from "@refinedev/core";
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
@@ -71,7 +71,6 @@ const toFormValues = (a: BaseRecord) => ({
 });
 
 const AthletesEdit = () => {
-    const back = useBack();
     const form = useForm<BaseRecord, HttpError, AthleteFormValues>({
         resolver: zodResolver(athleteSchema),
         refineCoreProps: {
@@ -79,6 +78,24 @@ const AthletesEdit = () => {
             action: "edit", // Refine reads the id from the URL
         },
     });
+
+    const back = useBack();
+    const go = useGo();
+    const { mutate: deleteAthlete, mutation } = useDelete();
+    const deleting = mutation.isPending;
+    const athleteId = form.refineCore.id;
+
+    const onDelete = () => {
+        if (!athleteId) return;
+        const ok = window.confirm(
+            "Delete this athlete? They will be removed from your roster, and their payments, training block and meets will be hidden."
+        );
+        if (!ok) return;
+        deleteAthlete(
+            { resource: "athletes", id: athleteId },
+            { onSuccess: () => go({ to: { resource: "athletes", action: "list" } }) },
+        );
+    };
 
     // Load the saved athlete into the form once it arrives.
     // Deferred with setTimeout so it runs after Refine's own reset (which uses the raw record with nulls).
@@ -99,7 +116,12 @@ const AthletesEdit = () => {
             <Breadcrumb />
             <div className="intro-row">
                 <h2>Edit athlete</h2>
-                <Button onClick={back}>Go Back</Button>
+                    <div className="flex gap-2">
+                        <Button type="button" variant="destructive" onClick={onDelete} disabled={deleting}>
+                            Delete athlete
+                        </Button>
+                        <Button onClick={back}>Go Back</Button>
+                    </div>
             </div>
 
             <Separator />
@@ -107,7 +129,7 @@ const AthletesEdit = () => {
             <div className="my-4 flex items-center justify-center">
                 <Card className="class-form-card">
                     <CardHeader className="relative z-10">
-                        <CardTitle className="text-2xl pb-0 font-bold">Athlete Form</CardTitle>
+                        <CardTitle className="text-2xl pb-0 font-bold">Edit Athlete</CardTitle>
                     </CardHeader>
 
                     <Separator />

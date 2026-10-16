@@ -18,6 +18,7 @@ export type Competition = {
     location?: string;
     link?: string;
     federation: FED;
+    isOwn?: boolean;
 };
 
 

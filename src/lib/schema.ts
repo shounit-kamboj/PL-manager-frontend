@@ -66,7 +66,6 @@ export const athletesAndCompetitionsSchema = z.object({
     date: z.string().optional(),
     weighInTime: z.string().optional(),
     equipment: z.enum(['Classic/Raw', 'Equipped', 'both']).optional(),
-    isCurrent: z.boolean().default(true),
 });
 
 export const trainingBlockSchema = z.object({
@@ -88,4 +87,9 @@ export const coachTaskSchema = z.object({
     dueDate: z.string().optional(),
     completed: z.boolean().default(false),
     status: z.enum(['pending', 'completed', 'overdue']).default('pending'),
+});
+export const athletesAndCompetitionsEditSchema = athletesAndCompetitionsSchema.pick({
+    date: true,
+    weighInTime: true,
+    equipment: true,
 });
