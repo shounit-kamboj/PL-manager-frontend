@@ -3,6 +3,22 @@ import { BACKEND_BASE_URL } from "@/constants";
 import { ApiListResponse } from "@/types";
 import { BaseRecord, CreateResponse, HttpError } from "@refinedev/core";
 
+const DATE_ONLY_UTC = /^(\d{4}-\d{2}-\d{2})T00:00:00(\.000)?Z$/;
+
+export const normalizeDates = <T,>(value: T): T => {
+  if (typeof value === "string") {
+    const m = DATE_ONLY_UTC.exec(value);
+    return (m ? m[1] : value) as T;
+  }
+  if (Array.isArray(value)) return value.map(normalizeDates) as T;
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([k, v]) => [k, normalizeDates(v)]),
+    ) as T;
+  }
+  return value;
+};
+
 const buildHttpError = async (response: Response): Promise<HttpError> => {
   let message = 'req failed';
 
@@ -51,7 +67,7 @@ const options: CreateDataProviderOptions = {
 
     mapResponse: async (response) => {
       if (!response.ok) throw await buildHttpError(response);
-      const payload: ApiListResponse = await response.json();
+      const payload = normalizeDates((await response.json()) as ApiListResponse);
       return payload.data ?? [];
     },
 
@@ -69,7 +85,7 @@ const options: CreateDataProviderOptions = {
 
     mapResponse: async (response) => {
       if (!response.ok) throw await buildHttpError(response);
-      const json: CreateResponse = await response.json();
+      const json = normalizeDates((await response.json()) as CreateResponse);
       return json.data ?? [];
     },
   },
@@ -79,7 +95,7 @@ const options: CreateDataProviderOptions = {
 
       mapResponse: async (response) => {
           if (!response.ok) throw await buildHttpError(response);
-          const json = (await response.json()) as { data: BaseRecord };
+          const json = normalizeDates((await response.json()) as { data: BaseRecord });
           return json.data;
           },
   },
@@ -93,7 +109,7 @@ const options: CreateDataProviderOptions = {
 
     mapResponse: async (response) => {
       if (!response.ok) throw await buildHttpError(response);
-      const json = (await response.json()) as { data: BaseRecord };
+      const json = normalizeDates((await response.json()) as { data: BaseRecord });
       return json.data;
     },
   },
@@ -102,7 +118,7 @@ const options: CreateDataProviderOptions = {
     getEndpoint: ({ resource, id }) => `${resource}/${id}`,
     mapResponse: async (response) => {
       if (!response.ok) throw await buildHttpError(response);
-      const json = (await response.json()) as { data: BaseRecord };
+      const json = normalizeDates((await response.json()) as { data: BaseRecord });
       return json.data;
     },
   }

@@ -10,7 +10,7 @@ import {useTable} from "@refinedev/react-table";
 import {TrainingBlock} from "@/types";
 import {ColumnDef} from "@tanstack/react-table";
 import {getNextUpdateDate} from "@/lib/nextUpdateDate.ts";
-import {format} from "date-fns";
+import {formatDay} from "@/lib/dates.ts";
 
 const SORTOPTIONS = [
     { field: 'id',           order: 'desc' as const, label: 'Default' },
@@ -62,7 +62,7 @@ const TrainingBlockList = () => {
                     const value = getValue<string>();
                     return (
                         <span className="text-foreground">
-                            {value ? format(new Date(value), 'MMM d, yyyy') : '—'}
+                            {value ? formatDay(value, 'MMM d, yyyy') : '—'}
                         </span>
                     );
                 },
@@ -76,7 +76,7 @@ const TrainingBlockList = () => {
                     const value = getValue<string>();
                     return (
                         <span className="text-foreground">
-                            {value ? format(new Date(value), 'MMM d, yyyy') : '—'}
+                            {value ? formatDay(value, 'MMM d, yyyy') : '—'}
                         </span>
                     );
                 },
@@ -90,7 +90,7 @@ const TrainingBlockList = () => {
                     const value = getValue<string>();
                     return (
                         <span className="text-foreground">
-                            {value ? format(new Date(value), 'MMM d, yyyy') : '—'}
+                            {value ? formatDay(value, 'MMM d, yyyy') : '—'}
                         </span>
                     );
                 },

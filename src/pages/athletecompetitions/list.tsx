@@ -9,10 +9,11 @@ import {CreateButton} from "@/components/refine-ui/buttons/create.tsx";
 import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
 import {EditButton} from "@/components/refine-ui/buttons/edit.tsx";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import {differenceInDays, format, parseISO} from "date-fns";
+import {differenceInDays, startOfToday} from "date-fns";
 import { getStartTime } from '@/lib/getStartTime';
 import {Badge} from "@/components/ui/badge.tsx";
 import {FEDS_OPTIONS} from "@/constants";
+import {formatDay, localTodayYmd, parseDay} from "@/lib/dates.ts";
 
 const SORTOPTIONS = [
     { field: 'id',                     order: 'desc' as const, label: 'Default' },
@@ -25,6 +26,7 @@ const AthleteCompetitionsList = () => {
     const [sortIndex, setSortIndex] = useState(0);
     const currentSort = SORTOPTIONS[sortIndex];
     const[selectedFed, setselectedFed] = useState("all");
+    const todayLocal = localTodayYmd();
 
     const fedFilters = selectedFed === 'all' ? []:
         [
@@ -82,7 +84,7 @@ const AthleteCompetitionsList = () => {
                 cell: ({ getValue }) => {
                     const rawDate = getValue<string>();
                     if (!rawDate) return <span className="text-foreground">-</span>;
-                    const formattedDate = format(parseISO(rawDate), 'MMM d, yyyy');
+                    const formattedDate = formatDay(rawDate, 'MMM d, yyyy');
                     return (
                         <span className="text-foreground">
                              {formattedDate}
@@ -97,8 +99,10 @@ const AthleteCompetitionsList = () => {
                 cell: ({row}) => {
                     const date = row.original.date;
                     if (!date) return <span className="text-muted-foreground">-</span>;
+                    const parsedDate = parseDay(date);
+                    if (!parsedDate) return <span className="text-muted-foreground">-</span>;
 
-                    const days = differenceInDays(new Date(date), new Date());
+                    const days = differenceInDays(parsedDate, startOfToday());
                     const weeks = days/7.0;
                     const hasDecimal = (num: number): boolean => num % 1 !== 0;
 
@@ -171,7 +175,11 @@ const AthleteCompetitionsList = () => {
             resource: 'athlete-competitions',
             pagination: {pageSize: 20, mode: 'server'},
             filters: {
-                permanent: [...searchFilters, ...fedFilters]
+                permanent: [
+                    ...searchFilters,
+                    ...fedFilters,
+                    { field: 'today', operator: 'eq' as const, value: todayLocal },
+                ]
             },
             sorters: {
                 permanent: [{ field: currentSort.field, order: currentSort.order }]

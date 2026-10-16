@@ -13,6 +13,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { FEDS_OPTIONS } from "@/constants";
+import { localTodayYmd } from "@/lib/dates.ts";
 
 const EMPTY = { name: "", startDate: "", endDate: "", city: "", province: "", country: "", federation: "", link: "" };
 type CompForm = typeof EMPTY;
@@ -61,7 +62,7 @@ export const CompetitionDialog = ({ open, onOpenChange, competition, onSaved }: 
         );
     }, [open]);
 
-    const todayLocal = new Date().toLocaleDateString("en-CA"); // yyyy-mm-dd in the coach's timezone
+    const todayLocal = localTodayYmd();
     const endMin = values.startDate && values.startDate > todayLocal ? values.startDate : todayLocal;
 
     const setField = (key: keyof CompForm) => (e: React.ChangeEvent<HTMLInputElement>) =>

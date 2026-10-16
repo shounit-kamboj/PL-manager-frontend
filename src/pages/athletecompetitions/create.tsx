@@ -14,6 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CompetitionDialog } from "@/components/competition-dialog.tsx";
+import { localTodayYmd } from "@/lib/dates.ts";
 
 type MeetEntryFormValues = z.infer<typeof athletesAndCompetitionsSchema>;
 
@@ -47,6 +48,7 @@ const AthleteCompetitionsCreate = () => {
             `${c.name ?? `Competition #${c.id}`}${c.startDate ? ` (${String(c.startDate).slice(0, 10)})` : ""}`,
         optionValue: (c: BaseRecord) => String(c.id),
         pagination: { pageSize: 100 },
+        filters: [{ field: "today", operator: "eq", value: localTodayYmd() }],
     });
 
     // the date picker is limited to the selected competition's dates

@@ -11,7 +11,7 @@ import {Payment} from "@/types";
 import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge.tsx";
 import { isOverdue } from '@/lib/isOverdue';
-import {format} from "date-fns";
+import {formatDay} from "@/lib/dates.ts";
 
 const SORTOPTIONS = [
     { field: 'id',       order: 'desc' as const, label: 'Default' },
@@ -77,7 +77,7 @@ const PaymentsList = () => {
                 cell: ({row}) => (
                     <span className={isOverdue(row.original) ? "text-destructive" : "text-foreground"}>
                         {row.original.dueDate
-                            ? format(new Date(row.original.dueDate), 'MMM d, yyyy')
+                            ? formatDay(row.original.dueDate, 'MMM d, yyyy')
                             : '—'}
                     </span>
                 ),

@@ -9,7 +9,7 @@ import {Badge} from "@/components/ui/badge.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {ArrowUpDown, ExternalLink, Pencil, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import {format, parseISO} from "date-fns";
+import {formatDay, localTodayYmd} from "@/lib/dates.ts";
 import {FEDS_OPTIONS} from "@/constants";
 import {CompetitionDialog} from "@/components/competition-dialog.tsx";
 
@@ -24,6 +24,7 @@ const UpcomingCompetitionsList = () => {
     const [sortIndex, setSortIndex] = useState(0);
     const currentSort = SORTOPTIONS[sortIndex];
     const[selectedFed, setselectedFed] = useState("all");
+    const todayLocal = localTodayYmd();
 
     // create / edit dialog (editing === null means create)
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -62,7 +63,7 @@ const UpcomingCompetitionsList = () => {
                 cell: ({getValue}) => {
                     const rawDate = getValue<string>();
                     if (!rawDate) return <span className="text-foreground">-</span>;
-                    const formattedDate = format(parseISO(rawDate), 'MMM d, yyyy');
+                    const formattedDate = formatDay(rawDate, 'MMM d, yyyy');
                     return (
                         <span className="text-foreground">
                             {formattedDate}
@@ -78,7 +79,7 @@ const UpcomingCompetitionsList = () => {
                 cell: ({getValue}) => {
                     const rawDate = getValue<string>();
                     if (!rawDate) return <span className="text-foreground">-</span>;
-                    const formattedDate = format(parseISO(rawDate), 'MMM d, yyyy');
+                    const formattedDate = formatDay(rawDate, 'MMM d, yyyy');
                     return (
                         <span className="text-foreground">
                             {formattedDate}
@@ -150,7 +151,11 @@ const UpcomingCompetitionsList = () => {
             resource: 'competitions',
             pagination: {pageSize: 20, mode: 'server'},
             filters: {
-                permanent: [...searchFilters, ...fedFilters]
+                permanent: [
+                    ...searchFilters,
+                    ...fedFilters,
+                    { field: 'today', operator: 'eq' as const, value: todayLocal },
+                ]
             },
             sorters: {
                 permanent: [{ field: currentSort.field, order: currentSort.order }]
