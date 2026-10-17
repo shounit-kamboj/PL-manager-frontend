@@ -15,7 +15,9 @@ export type Competition = {
     name: string;
     startDate: string;
     endDate: string;
-    location?: string;
+    city?: string;
+    province?: string;
+    country?: string;
     link?: string;
     federation: FED;
     isOwn?: boolean;

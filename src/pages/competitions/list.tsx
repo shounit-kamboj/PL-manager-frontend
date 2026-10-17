@@ -7,7 +7,7 @@ import {Competition} from "@/types";
 import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {ArrowUpDown, ExternalLink, Pencil, Search} from "lucide-react";
+import {ArrowUpDown, ExternalLink, Pencil, Plus, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {formatDay, localTodayYmd} from "@/lib/dates.ts";
 import {FEDS_OPTIONS} from "@/constants";
@@ -89,13 +89,13 @@ const UpcomingCompetitionsList = () => {
             },
             {
                 id: 'location',
-                accessorKey: 'location',
+                accessorFn: (row) => [row.city, row.province, row.country].filter(Boolean).join(', '),
                 size: 150,
                 header: () => <p className='column-title'>Location</p>,
                 cell: ({getValue}) => (
                     <span className="text-foreground">
-                        {getValue<string>() ?? '-'}
-                    </span>
+            {getValue<string>() || '-'}
+        </span>
                 ),
             },
             {
@@ -218,7 +218,8 @@ const UpcomingCompetitionsList = () => {
                             setDialogOpen(true);
                         }}
                     >
-                        Add competition
+                        <Plus className="w-4 h-4" />
+                        <span>{"Create"}</span>
                     </Button>
 
                 </div>

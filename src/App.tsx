@@ -10,6 +10,7 @@ import routerProvider, {
     UnsavedChangesNotifier,
 } from "@refinedev/react-router";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import "./App.css";
 import { Toaster } from "./components/refine-ui/notification/toaster";
 import { useNotificationProvider } from "./components/refine-ui/notification/use-notification-provider";
@@ -35,6 +36,7 @@ import TrainingBlockEdit from "@/pages/trainingblocks/edit.tsx";
 import ForgotPassword from "@/pages/forgotPassword";
 import ResetPassword from "@/pages/resetPassword";
 import Privacy from "@/pages/privacy";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 
 const APP_NAME = "Collar PL";
@@ -63,6 +65,83 @@ const titleHandler = ({ resource, action, pathname }: TitleArgs) => {
 };
 
 
+
+const CreateOverlay = ({ children }: { children: React.ReactNode }) => {
+    const navigate = useNavigate();
+
+    return (
+        <Dialog open onOpenChange={(open) => !open && navigate(-1)}>
+            <DialogContent className="sm:max-w-l max-h-[90vh] overflow-y-auto p-0">
+                {children}
+            </DialogContent>
+        </Dialog>
+    );
+};
+
+const AppRoutes = () => {
+    const location = useLocation();
+    const state = location.state as { backgroundLocation?: Location } | null;
+    const backgroundLocation = state?.backgroundLocation;
+
+    return (
+        <>
+            <Routes location={backgroundLocation ?? location}>
+                <Route path="/sign-in" element={<SignIn />} />
+                <Route path="/sign-up" element={<SignUp />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/privacy" element={<Privacy />} />
+
+                <Route element={
+                    <RequireAuth>
+                        <Layout>
+                            <Outlet />
+                        </Layout>
+                    </RequireAuth>
+                }>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="athletes">
+                        <Route index element={<AthletesList />} />
+                        <Route path="create" element={<AthletesCreate />} />
+                        <Route path=":id/edit" element={<AthletesEdit />} />
+                        <Route path="show/:id" element={<AthletesShow />} />
+                    </Route>
+                    <Route path="athlete-competitions">
+                        <Route index element={<AthleteCompetitionsList />} />
+                        <Route path="create" element={<AthleteCompetitionsCreate />} />
+                        <Route path=":id/edit" element={<AthleteCompetitionsEdit />} />
+                    </Route>
+                    <Route path="competitions">
+                        <Route index element={<UpComingMeetsList />} />
+                    </Route>
+                    <Route path="payments">
+                        <Route index element={<PaymentsList />} />
+                        <Route path="create" element={<PaymentsCreate />} />
+                        <Route path=":id/edit" element={<PaymentsEdit />} />
+                    </Route>
+                    <Route path="training-blocks">
+                        <Route index element={<TrainingBlockList />} />
+                        <Route path="create" element={<TrainingBlockCreate />} />
+                        <Route path=":id/edit" element={<TrainingBlockEdit />} />
+                    </Route>
+                </Route>
+            </Routes>
+
+            {backgroundLocation && (
+                <Routes>
+                    <Route path="athletes/create" element={<CreateOverlay><AthletesCreate /></CreateOverlay>} />
+                    <Route path="athletes/:id/edit" element={<CreateOverlay><AthletesEdit /></CreateOverlay>} />
+                    <Route path="athlete-competitions/create" element={<CreateOverlay><AthleteCompetitionsCreate /></CreateOverlay>} />
+                    <Route path="athlete-competitions/:id/edit" element={<CreateOverlay><AthleteCompetitionsEdit /></CreateOverlay>} />
+                    <Route path="payments/create" element={<CreateOverlay><PaymentsCreate /></CreateOverlay>} />
+                    <Route path="payments/:id/edit" element={<CreateOverlay><PaymentsEdit /></CreateOverlay>} />
+                    <Route path="training-blocks/create" element={<CreateOverlay><TrainingBlockCreate /></CreateOverlay>} />
+                    <Route path="training-blocks/:id/edit" element={<CreateOverlay><TrainingBlockEdit /></CreateOverlay>} />
+                </Routes>
+            )}
+        </>
+    );
+};
 
 function App() {
     return (
@@ -145,47 +224,7 @@ function App() {
                                 }
                             ]}
                         >
-                            <Routes>
-                                <Route path="/sign-in" element={<SignIn />} />
-                                <Route path="/sign-up" element={<SignUp />} />
-                                <Route path="/forgot-password" element={<ForgotPassword />} />
-                                <Route path="/reset-password" element={<ResetPassword />} />
-                                <Route path="/privacy" element={<Privacy />} />
-
-                                <Route element={
-                                    <RequireAuth>
-                                        <Layout>
-                                            <Outlet />
-                                        </Layout>
-                                    </RequireAuth>
-                                }>
-                                    <Route path="/" element={<Dashboard />} />
-                                    <Route path="athletes">
-                                        <Route index element={<AthletesList />} />
-                                        <Route path="create" element={<AthletesCreate />} />
-                                        <Route path=":id/edit" element={<AthletesEdit />} />
-                                        <Route path="show/:id" element={<AthletesShow />} />
-                                    </Route>
-                                    <Route path="athlete-competitions">
-                                        <Route index element={<AthleteCompetitionsList />} />
-                                        <Route path="create" element={<AthleteCompetitionsCreate />} />
-                                        <Route path=":id/edit" element={<AthleteCompetitionsEdit />} />
-                                    </Route>
-                                    <Route path="competitions">
-                                        <Route index element={<UpComingMeetsList />} />
-                                    </Route>
-                                    <Route path="payments">
-                                        <Route index element={<PaymentsList />} />
-                                        <Route path="create" element={<PaymentsCreate />} />
-                                        <Route path=":id/edit" element={<PaymentsEdit />} />
-                                    </Route>
-                                    <Route path="training-blocks">
-                                        <Route index element={<TrainingBlockList />} />
-                                        <Route path="create" element={<TrainingBlockCreate />} />
-                                        <Route path=":id/edit" element={<TrainingBlockEdit />} />
-                                    </Route>
-                                </Route>
-                            </Routes>
+                            <AppRoutes />
                             <Toaster />
                             <RefineKbar />
                             <UnsavedChangesNotifier />

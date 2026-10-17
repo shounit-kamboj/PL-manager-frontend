@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { type BaseKey, useEditButton } from "@refinedev/core";
 import { Pencil } from "lucide-react";
 import React from "react";
+import { useLocation } from "react-router";
 
 type EditButtonProps = {
   /**
@@ -38,6 +39,7 @@ export const EditButton = React.forwardRef<
     { resource, recordItemId, accessControl, meta, children, onClick, ...rest },
     ref
   ) => {
+    const location = useLocation();
     const { hidden, disabled, LinkComponent, to, label } = useEditButton({
       resource,
       id: recordItemId,
@@ -54,6 +56,7 @@ export const EditButton = React.forwardRef<
       <Button {...rest} ref={ref} disabled={isDisabled} asChild>
         <LinkComponent
           to={to}
+          state={{ backgroundLocation: location }}
           replace={false}
           onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
             if (isDisabled) {

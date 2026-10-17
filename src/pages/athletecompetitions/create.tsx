@@ -72,26 +72,17 @@ const AthleteCompetitionsCreate = () => {
 
     return (
         <CreateView className="class-view">
-            <Breadcrumb />
-            <div className="intro-row">
-                <h2>Add meet entry</h2>
-                <Button onClick={back}>Go Back</Button>
-            </div>
-
-            <Separator />
-
-            <div className="my-4 flex items-center justify-center">
-                <Card className="class-form-card">
+            <div className="flex items-center justify-center">
+                <Card className="class-form-card max-w-none">
                     <CardHeader className="relative z-10">
                         <CardTitle className="text-2xl pb-0 font-bold">Meet Entry Form</CardTitle>
                     </CardHeader>
 
-                    <Separator />
 
-                    <CardContent className="mt-7">
+                    <CardContent className="mt-2">
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                                <div className="grid grid-cols-1 gap-6">
                                     <FormField
                                         control={form.control}
                                         name="athleteId"
@@ -103,7 +94,7 @@ const AthleteCompetitionsCreate = () => {
                                                     value={field.value ? String(field.value) : ""}
                                                 >
                                                     <FormControl>
-                                                        <SelectTrigger>
+                                                        <SelectTrigger className="w-full">
                                                             <SelectValue placeholder="Select Athlete" />
                                                         </SelectTrigger>
                                                     </FormControl>
@@ -142,7 +133,7 @@ const AthleteCompetitionsCreate = () => {
                                                     value={field.value ? String(field.value) : ""}
                                                 >
                                                     <FormControl>
-                                                        <SelectTrigger>
+                                                        <SelectTrigger className="w-full">
                                                             <SelectValue placeholder="Select Competition" />
                                                         </SelectTrigger>
                                                     </FormControl>
@@ -159,7 +150,7 @@ const AthleteCompetitionsCreate = () => {
                                         )}
                                     />
                                 </div>
-                                <div>
+                                <div className="-mt-3">
                                     <Button
                                         type="button"
                                         variant="link"
@@ -170,9 +161,8 @@ const AthleteCompetitionsCreate = () => {
                                     </Button>
                                 </div>
 
-                                <Separator />
-                                <h3 className="text-lg font-semibold">Meet Details</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <h3 className="text-lg font-semibold pt-2">Meet Details</h3>
+                                <div className="grid grid-cols-2 gap-x-6 gap-y-5">
                                     <FormField
                                         control={form.control}
                                         name="date"
@@ -209,11 +199,11 @@ const AthleteCompetitionsCreate = () => {
                                         control={form.control}
                                         name="equipment"
                                         render={({ field }) => (
-                                            <FormItem>
+                                            <FormItem className="col-span-2">
                                                 <FormLabel>Equipment</FormLabel>
                                                 <Select onValueChange={field.onChange} value={field.value}>
                                                     <FormControl>
-                                                        <SelectTrigger>
+                                                        <SelectTrigger className="w-full">
                                                             <SelectValue placeholder="Select Equipment" />
                                                         </SelectTrigger>
                                                     </FormControl>

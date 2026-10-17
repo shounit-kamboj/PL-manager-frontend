@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { type BaseKey, useCreateButton } from "@refinedev/core";
 import { Plus } from "lucide-react";
 import React from "react";
+import { useLocation } from "react-router";
 
 type CreateButtonProps = {
   /**
@@ -29,6 +30,7 @@ export const CreateButton = React.forwardRef<
   React.ComponentRef<typeof Button>,
   CreateButtonProps
 >(({ resource, accessControl, meta, children, onClick, ...rest }, ref) => {
+  const location = useLocation();
   const { hidden, disabled, LinkComponent, to, label } = useCreateButton({
     resource,
     accessControl,
@@ -44,6 +46,7 @@ export const CreateButton = React.forwardRef<
     <Button {...rest} ref={ref} disabled={isDisabled} asChild>
       <LinkComponent
         to={to}
+        state={{ backgroundLocation: location }}
         replace={false}
         onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
           if (isDisabled) {

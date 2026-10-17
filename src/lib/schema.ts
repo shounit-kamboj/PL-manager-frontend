@@ -21,18 +21,49 @@ export const athleteSchema = z.object({
 
     equipment: z.enum(['Classic/Raw', 'Equipped','both']).optional(),
 
-    paymentPrice: z.coerce.number().positive().optional(),
-    paymentCycleLengthWeeks: z.coerce.number().int().positive().optional(),
+    paymentPrice: z.coerce
+        .number({ invalid_type_error: 'Please enter a valid payment amount.' })
+        .positive({ message: 'Payment amount must be greater than 0.' })
+        .optional(),
+    paymentCycleLengthWeeks: z.coerce
+        .number({ invalid_type_error: 'Please enter the payment cycle length in weeks.' })
+        .int({ message: 'Payment cycle length must be a whole number of weeks.' })
+        .positive({ message: 'Payment cycle length must be greater than 0.' })
+        .optional(),
 
-    prSquat: z.coerce.number().nonnegative().optional(),
-    prBench: z.coerce.number().nonnegative().optional(),
-    prDeadlift: z.coerce.number().nonnegative().optional(),
-    prTotal: z.coerce.number().nonnegative().optional(),
+    prSquat: z.coerce
+        .number({ invalid_type_error: 'Please enter a valid squat PR.' })
+        .nonnegative({ message: 'Squat PR must be 0 or more.' })
+        .optional(),
+    prBench: z.coerce
+        .number({ invalid_type_error: 'Please enter a valid bench PR.' })
+        .nonnegative({ message: 'Bench PR must be 0 or more.' })
+        .optional(),
+    prDeadlift: z.coerce
+        .number({ invalid_type_error: 'Please enter a valid deadlift PR.' })
+        .nonnegative({ message: 'Deadlift PR must be 0 or more.' })
+        .optional(),
+    prTotal: z.coerce
+        .number({ invalid_type_error: 'Please enter a valid total PR.' })
+        .nonnegative({ message: 'Total PR must be 0 or more.' })
+        .optional(),
 
-    meetPrSquat: z.coerce.number().nonnegative().optional(),
-    meetPrBench: z.coerce.number().nonnegative().optional(),
-    meetPrDeadlift:z.coerce.number().nonnegative().optional(),
-    meetPrTotal: z.coerce.number().nonnegative().optional(),
+    meetPrSquat: z.coerce
+        .number({ invalid_type_error: 'Please enter a valid meet squat PR.' })
+        .nonnegative({ message: 'Meet squat PR must be 0 or more.' })
+        .optional(),
+    meetPrBench: z.coerce
+        .number({ invalid_type_error: 'Please enter a valid meet bench PR.' })
+        .nonnegative({ message: 'Meet bench PR must be 0 or more.' })
+        .optional(),
+    meetPrDeadlift: z.coerce
+        .number({ invalid_type_error: 'Please enter a valid meet deadlift PR.' })
+        .nonnegative({ message: 'Meet deadlift PR must be 0 or more.' })
+        .optional(),
+    meetPrTotal: z.coerce
+        .number({ invalid_type_error: 'Please enter a valid meet total PR.' })
+        .nonnegative({ message: 'Meet total PR must be 0 or more.' })
+        .optional(),
 
     isActive: z.boolean().optional(),
 
@@ -43,7 +74,10 @@ export const athleteSchema = z.object({
 });
 
 export const paymentSchema = z.object({
-    athleteId: z.coerce.number().int().positive(),
+    athleteId: z.coerce
+        .number({ invalid_type_error: 'Please select an athlete.' })
+        .int({ message: 'Please select a valid athlete.' })
+        .positive({ message: 'Please select an athlete.' }),
     dueDate: z.string().min(1, { message: 'Due date is required.' }),
     paymentStatus: z.enum(['paid', 'unpaid', 'overdue', 'paid_late']).default('unpaid'),
     isCurrent: z.boolean().default(true),
@@ -61,27 +95,47 @@ export const competitionSchema = z.object({
 });
 
 export const athletesAndCompetitionsSchema = z.object({
-    athleteId: z.coerce.number().int().positive(),
-    compId: z.coerce.number().int().positive(),
+    athleteId: z.coerce
+        .number({ invalid_type_error: 'Please select an athlete.' })
+        .int({ message: 'Please select a valid athlete.' })
+        .positive({ message: 'Please select an athlete.' }),
+    compId: z.coerce
+        .number({ invalid_type_error: 'Please select a competition.' })
+        .int({ message: 'Please select a valid competition.' })
+        .positive({ message: 'Please select a competition.' }),
     date: z.string().optional(),
     weighInTime: z.string().optional(),
     equipment: z.enum(['Classic/Raw', 'Equipped', 'both']).optional(),
 });
 
 export const trainingBlockSchema = z.object({
-    athleteId: z.coerce.number().int().positive(),
+    athleteId: z.coerce
+        .number({ invalid_type_error: 'Please select an athlete.' })
+        .int({ message: 'Please select a valid athlete.' })
+        .positive({ message: 'Please select an athlete.' }),
     startDate: z.string().min(1, { message: 'Start date is required.' }),
     endDate: z.string().min(1, { message: 'End date is required.' }),
     lastUpdate: z.string().min(1, { message: 'Last update date is required.' }),
-    daysBetweenUpdates: z.coerce.number().int().positive(),
+    daysBetweenUpdates: z.coerce
+        .number({ invalid_type_error: 'Please enter days between updates.' })
+        .int({ message: 'Days between updates must be a whole number.' })
+        .positive({ message: 'Days between updates must be greater than 0.' }),
     sendPostBlockOverviewReminder: z.boolean().default(false),
     link: z.string().url({ message: 'Must be a valid URL.' }).optional().or(z.literal('')),
     isCurrent: z.boolean().default(true),
 });
 
 export const coachTaskSchema = z.object({
-    athleteId: z.coerce.number().int().positive().optional(),
-    trainingBlockId: z.coerce.number().int().positive().optional(),
+    athleteId: z.coerce
+        .number({ invalid_type_error: 'Please select a valid athlete.' })
+        .int({ message: 'Please select a valid athlete.' })
+        .positive({ message: 'Please select a valid athlete.' })
+        .optional(),
+    trainingBlockId: z.coerce
+        .number({ invalid_type_error: 'Please select a valid training block.' })
+        .int({ message: 'Please select a valid training block.' })
+        .positive({ message: 'Please select a valid training block.' })
+        .optional(),
     title: z.string().min(2, { message: 'Title must be at least 2 characters.' }),
     description: z.string().min(2, { message: 'Description must be at least 2 characters.' }),
     dueDate: z.string().optional(),

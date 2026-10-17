@@ -120,7 +120,7 @@ export const CompetitionDialog = ({ open, onOpenChange, competition, onSaved }: 
     // Deliberately no <form> element: Enter in a field can't submit a form behind the dialog.
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{isEdit ? "Edit custom competition" : "Add custom competition"}</DialogTitle>
                     <DialogDescription>Only you will see this competition.</DialogDescription>

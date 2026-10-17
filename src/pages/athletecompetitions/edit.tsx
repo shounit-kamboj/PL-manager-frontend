@@ -84,19 +84,6 @@ const AthleteCompetitionsEdit = () => {
 
     return (
         <EditView className="class-view">
-            <Breadcrumb />
-            <div className="intro-row">
-                <h2>Edit meet entry</h2>
-                <div className="flex gap-2">
-                    <Button type="button" variant="destructive" onClick={onDelete} disabled={deleting}>
-                        Delete entry
-                    </Button>
-                    <Button onClick={back}>Go Back</Button>
-                </div>
-            </div>
-
-            <Separator />
-
             <div className="my-4 flex items-center justify-center">
                 <Card className="class-form-card">
                     <CardHeader className="relative z-10">
@@ -105,7 +92,7 @@ const AthleteCompetitionsEdit = () => {
 
                     <Separator />
 
-                    <CardContent className="mt-7">
+                    <CardContent className="mt-2">
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                                 {/* athlete and competition can't be changed: delete the entry and make a new one */}
@@ -124,8 +111,8 @@ const AthleteCompetitionsEdit = () => {
                                 </p>
 
                                 <Separator />
-                                <h3 className="text-lg font-semibold">Meet Details</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <h3 className="text-lg font-semibold pt-2">Meet Details</h3>
+                                <div className="grid grid-cols-2 gap-x-6 gap-y-5">
                                     <FormField
                                         control={form.control}
                                         name="date"
@@ -162,11 +149,11 @@ const AthleteCompetitionsEdit = () => {
                                         control={form.control}
                                         name="equipment"
                                         render={({ field }) => (
-                                            <FormItem>
+                                            <FormItem className="col-span-2">
                                                 <FormLabel>Equipment</FormLabel>
                                                 <Select onValueChange={field.onChange} value={field.value}>
                                                     <FormControl>
-                                                        <SelectTrigger>
+                                                        <SelectTrigger className="w-full">
                                                             <SelectValue placeholder="Select Equipment" />
                                                         </SelectTrigger>
                                                     </FormControl>
@@ -185,6 +172,9 @@ const AthleteCompetitionsEdit = () => {
                                 <div className="flex justify-end gap-4">
                                     <Button type="button" variant="outline" onClick={back}>Cancel</Button>
                                     <Button type="submit">Save changes</Button>
+                                    <Button type="button" variant="destructive" onClick={onDelete} disabled={deleting}>
+                                        Delete entry
+                                    </Button>
                                 </div>
                             </form>
                         </Form>

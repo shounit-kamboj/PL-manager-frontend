@@ -1,5 +1,4 @@
 import {CreateView} from "@/components/refine-ui/views/create-view.tsx";
-import {Breadcrumb} from "@/components/refine-ui/layout/breadcrumb.tsx";
 import {useBack} from "@refinedev/core";
 import {Button} from "@/components/ui/button.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
@@ -70,13 +69,7 @@ const AthletesCreate = () => {
 
     return (
         <CreateView className="class-view">
-            <Breadcrumb/>
-            <div className='intro-row'>
-                <h2>Please provide information to add a new athlete to your roster</h2>
-                <Button onClick={back}>Go Back</Button>
-            </div>
 
-            <Separator/>
 
 
             <div className='my-4 flex items-center justify-center'>
@@ -96,7 +89,7 @@ const AthletesCreate = () => {
                                         control={form.control}
                                         name="name"
                                         render={({ field }) => (
-                                            <FormItem>
+                                            <FormItem className="md:col-span-2 lg:col-span-3">
                                                 <FormLabel>Name <span className="text-orange-500">*</span></FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Athlete Name" {...field} />
@@ -109,7 +102,7 @@ const AthletesCreate = () => {
                                         control={form.control}
                                         name="email"
                                         render={({ field }) => (
-                                            <FormItem>
+                                            <FormItem  className="md:col-span-2 lg:col-span-3">
                                                 <FormLabel>Email</FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="email@example.com" {...field} />
@@ -223,28 +216,7 @@ const AthletesCreate = () => {
                                             </FormItem>
                                         )}
                                     />
-                                    <FormField
-                                        control={form.control}
-                                        name="timezone"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Timezone</FormLabel>
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <FormControl>
-                                                        <SelectTrigger>
-                                                            <SelectValue placeholder="Select Timezone" />
-                                                        </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent>
-                                                        {TIMEZONE_OPTIONS.map((opt) => (
-                                                            <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
+
                                 </div>
 
                                 <Separator />

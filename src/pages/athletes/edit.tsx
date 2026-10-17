@@ -75,7 +75,7 @@ const AthletesEdit = () => {
         resolver: zodResolver(athleteSchema),
         refineCoreProps: {
             resource: "athletes",
-            action: "edit", // Refine reads the id from the URL
+            action: "edit",
         },
     });
 
@@ -113,19 +113,6 @@ const AthletesEdit = () => {
 
     return (
         <EditView className="class-view">
-            <Breadcrumb />
-            <div className="intro-row">
-                <h2>Edit athlete</h2>
-                    <div className="flex gap-2">
-                        <Button type="button" variant="destructive" onClick={onDelete} disabled={deleting}>
-                            Delete athlete
-                        </Button>
-                        <Button onClick={back}>Go Back</Button>
-                    </div>
-            </div>
-
-            <Separator />
-
             <div className="my-4 flex items-center justify-center">
                 <Card className="class-form-card">
                     <CardHeader className="relative z-10">
@@ -143,7 +130,7 @@ const AthletesEdit = () => {
                                         control={form.control}
                                         name="name"
                                         render={({ field }) => (
-                                            <FormItem>
+                                            <FormItem className="md:col-span-2 lg:col-span-3">
                                                 <FormLabel>Name <span className="text-orange-500">*</span></FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Athlete Name" {...field} />
@@ -156,7 +143,7 @@ const AthletesEdit = () => {
                                         control={form.control}
                                         name="email"
                                         render={({ field }) => (
-                                            <FormItem>
+                                            <FormItem className="md:col-span-2 lg:col-span-3">
                                                 <FormLabel>Email</FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="email@example.com" {...field} />
@@ -291,28 +278,6 @@ const AthletesEdit = () => {
                                                 <FormControl>
                                                     <Input placeholder="City" {...field} />
                                                 </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="timezone"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Timezone</FormLabel>
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <FormControl>
-                                                        <SelectTrigger>
-                                                            <SelectValue placeholder="Select Timezone" />
-                                                        </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent>
-                                                        {TIMEZONE_OPTIONS.map((opt) => (
-                                                            <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -548,6 +513,9 @@ const AthletesEdit = () => {
                                 </div>
 
                                 <div className="flex justify-end gap-4">
+                                    <Button type="button" variant="destructive" onClick={onDelete} disabled={deleting}>
+                                        Delete athlete
+                                    </Button>
                                     <Button type="button" variant="outline" onClick={back}>Cancel</Button>
                                     <Button type="submit">Save changes</Button>
                                 </div>
