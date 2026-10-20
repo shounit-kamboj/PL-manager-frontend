@@ -82,6 +82,12 @@ export const paymentSchema = z.object({
     paymentStatus: z.enum(['paid', 'unpaid', 'overdue', 'paid_late']).default('unpaid'),
     isCurrent: z.boolean().default(true),
 });
+export const paymentEditSchema = z.object({
+    dueDate: z.string().min(1, { message: "Due date is required" }),
+    paymentStatus: z.enum(["paid", "unpaid", "overdue", "paid_late"], {
+        message: "Select a payment status",
+    }),
+});
 
 export const competitionSchema = z.object({
     name: z.string().min(2, { message: 'Competition name must be at least 2 characters.' }).optional(),
