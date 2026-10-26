@@ -54,6 +54,16 @@ const TrainingBlockList = () => {
                 filterFn: 'includesString' as const
             },
             {
+                id: 'name',
+                accessorKey: 'name',
+                size: 100,
+                header: () => <p className='column-title'>Block Name</p>,
+                cell: ({getValue}) =>
+                    <span className="text-foreground">
+                        {getValue<string>() || '—'}
+                    </span>,
+            },
+            {
                 id: 'startDate',
                 accessorKey: 'startDate',
                 size: 90,

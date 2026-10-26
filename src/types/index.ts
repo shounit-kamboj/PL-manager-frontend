@@ -58,6 +58,7 @@ export type TrainingBlock ={
     sendOverviewReminder: boolean;
     isCurrent: boolean;
     athleteName: string;
+    name: string;
     
 }
 
