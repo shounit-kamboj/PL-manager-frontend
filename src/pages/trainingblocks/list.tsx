@@ -136,7 +136,7 @@ const TrainingBlockList = () => {
             },
             {
                 id: 'actions',
-                size: 45,
+                size: 30,
                 header: () => <p className='column-title'></p>,
                 cell: ({row}) => (
                     <EditButton recordItemId={row.original.id} variant="link" />

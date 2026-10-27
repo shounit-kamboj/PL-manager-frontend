@@ -1,6 +1,9 @@
 // src/lib/getNextUpdateDate.ts
 import { addDays, format } from 'date-fns';
+import { parseDay } from '@/lib/dates';
 
 export function getNextUpdateDate(lastUpdate: string, daysBetweenUpdates: number): string {
-    return format(addDays(new Date(lastUpdate), daysBetweenUpdates), 'MMM d, yyyy');
+    const lastUpd = parseDay(lastUpdate);
+    if(lastUpd == null) return "-";
+    return format(addDays(lastUpd, daysBetweenUpdates), 'MMM d, yyyy');
 }

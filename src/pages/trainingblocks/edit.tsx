@@ -5,7 +5,7 @@ import type { BaseRecord, HttpError } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {trainingBlockEditSchema, trainingBlockSchema} from "@/lib/schema.ts";
+import {trainingBlockEditSchema} from "@/lib/schema.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
