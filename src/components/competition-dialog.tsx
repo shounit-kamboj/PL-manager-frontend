@@ -12,8 +12,9 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { DatePicker } from "@/components/ui/date-picker";
 import { FEDS_OPTIONS } from "@/constants";
-import { localTodayYmd } from "@/lib/dates.ts";
+import { localTodayYmd, toYmd } from "@/lib/dates.ts";
 
 const EMPTY = { name: "", startDate: "", endDate: "", city: "", province: "", country: "", federation: "", link: "" };
 type CompForm = typeof EMPTY;
@@ -67,6 +68,9 @@ export const CompetitionDialog = ({ open, onOpenChange, competition, onSaved }: 
 
     const setField = (key: keyof CompForm) => (e: React.ChangeEvent<HTMLInputElement>) =>
         setValues((prev) => ({ ...prev, [key]: e.target.value }));
+
+    const setDate = (key: "startDate" | "endDate") => (v: string) =>
+        setValues((prev) => ({ ...prev, [key]: v }));
 
     const onSubmit = () => {
         const name = values.name.trim();
@@ -134,11 +138,15 @@ export const CompetitionDialog = ({ open, onOpenChange, competition, onSaved }: 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <label className="text-sm font-medium">Start date <span className="text-orange-500">*</span></label>
-                            <Input type="date" value={values.startDate} onChange={setField("startDate")} />
+                            <DatePicker value={values.startDate} onChange={setDate("startDate")} />
                         </div>
                         <div className="space-y-2">
                             <label className="text-sm font-medium">End date <span className="text-orange-500">*</span></label>
-                            <Input type="date" min={endMin} value={values.endDate} onChange={setField("endDate")} />
+                            <DatePicker
+                                value={values.endDate}
+                                onChange={setDate("endDate")}
+                                disabled={(d) => toYmd(d) < endMin}
+                            />
                         </div>
                     </div>
                     <div className="grid grid-cols-3 gap-4">

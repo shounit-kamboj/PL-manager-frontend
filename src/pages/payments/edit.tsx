@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.t
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DatePicker } from "@/components/ui/date-picker";
 
 type PaymentEditValues = z.infer<typeof paymentEditSchema>;
 
@@ -103,9 +104,7 @@ const PaymentsEdit = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Due Date <span className="text-orange-500">*</span></FormLabel>
-                                                <FormControl>
-                                                    <Input type="date" {...field} value={field.value ?? ""} />
-                                                </FormControl>
+                                                <DatePicker value={field.value} onChange={field.onChange} />
                                                 <FormMessage />
                                             </FormItem>
                                         )}

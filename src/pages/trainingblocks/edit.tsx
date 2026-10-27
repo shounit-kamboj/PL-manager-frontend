@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import { format } from "date-fns";
 
 
@@ -79,7 +80,7 @@ const TrainingBlockEdit = () => {
             <div className="my-4 flex items-center justify-center">
                 <Card className="class-form-card">
                     <CardHeader className="relative z-10">
-                        <CardTitle className="text-2xl pb-0 font-bold">Block Form</CardTitle>
+                        <CardTitle className="text-2xl pb-0 font-bold">Edit Block</CardTitle>
                     </CardHeader>
 
                     <Separator />
@@ -126,9 +127,7 @@ const TrainingBlockEdit = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Start Date <span className="text-orange-500">*</span></FormLabel>
-                                                <FormControl>
-                                                    <Input type="date" {...field} value={field.value ?? ""} />
-                                                </FormControl>
+                                                <DatePicker value={field.value} onChange={field.onChange} />
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -140,9 +139,7 @@ const TrainingBlockEdit = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>End Date <span className="text-orange-500">*</span></FormLabel>
-                                                <FormControl>
-                                                    <Input type="date" {...field} value={field.value ?? ""} />
-                                                </FormControl>
+                                                <DatePicker value={field.value} onChange={field.onChange} />
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -154,9 +151,7 @@ const TrainingBlockEdit = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Last Update Date <span className="text-orange-500">*</span></FormLabel>
-                                                <FormControl>
-                                                    <Input type="date" {...field} value={field.value ?? ""} />
-                                                </FormControl>
+                                                <DatePicker value={field.value} onChange={field.onChange} />
                                                 <FormMessage />
                                             </FormItem>
                                         )}

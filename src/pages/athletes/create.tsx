@@ -12,7 +12,9 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@
 import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Textarea} from "@/components/ui/textarea";
+import {DatePicker} from "@/components/ui/date-picker";
 import {WEIGHTCLASSES_OPTIONS, TIMEZONE_OPTIONS} from "@/constants";
+import { localTodayYmd } from "@/lib/dates.ts";
 
 const GENDER_OPTIONS = [
     { label: "Male", value: "male" },
@@ -28,44 +30,44 @@ const EQUIPMENT_OPTIONS = [
 ];
 
 const AthletesCreate = () => {
-        const back = useBack();
-        const form = useForm<BaseRecord, HttpError, z.infer<typeof athleteSchema>>({
-            resolver: zodResolver(athleteSchema),
-            refineCoreProps: {
-                resource: 'athletes',
-                action: 'create',
-            },
-            defaultValues: {
-                name: "",
-                email: "",
-                gender: undefined,
-                weightClass: undefined,
-                dateOfBirth: "",
-                phoneNumber: "",
-                country: "",
-                city: "",
-                province: "",
-                timezone: "",
-                equipment: undefined,
-                paymentPrice: undefined,
-                paymentCycleLengthWeeks: undefined,
-                prSquat: undefined,
-                prBench: undefined,
-                prDeadlift: undefined,
-                prTotal: undefined,
-                meetPrSquat: undefined,
-                meetPrBench: undefined,
-                meetPrDeadlift: undefined,
-                meetPrTotal: undefined,
-                notes: "",
-                link: "",
-                joinedAt: new Date().toISOString().split("T")[0],
-            },
-        });
+    const back = useBack();
+    const form = useForm<BaseRecord, HttpError, z.infer<typeof athleteSchema>>({
+        resolver: zodResolver(athleteSchema),
+        refineCoreProps: {
+            resource: 'athletes',
+            action: 'create',
+        },
+        defaultValues: {
+            name: "",
+            email: "",
+            gender: undefined,
+            weightClass: undefined,
+            dateOfBirth: "",
+            phoneNumber: "",
+            country: "",
+            city: "",
+            province: "",
+            timezone: "",
+            equipment: undefined,
+            paymentPrice: undefined,
+            paymentCycleLengthWeeks: undefined,
+            prSquat: undefined,
+            prBench: undefined,
+            prDeadlift: undefined,
+            prTotal: undefined,
+            meetPrSquat: undefined,
+            meetPrBench: undefined,
+            meetPrDeadlift: undefined,
+            meetPrTotal: undefined,
+            notes: "",
+            link: "",
+            joinedAt: localTodayYmd(),
+        },
+    });
 
-        const onSubmit = async (values: z.infer<typeof athleteSchema>) => {
-            await form.refineCore.onFinish(values);
-        };
+    const onSubmit = async (values: z.infer<typeof athleteSchema>) => {
+        await form.refineCore.onFinish(values);
+    };
 
     return (
         <CreateView className="class-view">
@@ -152,9 +154,12 @@ const AthletesCreate = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Date of Birth <span className="text-orange-500">*</span></FormLabel>
-                                                <FormControl>
-                                                    <Input type="date" {...field} />
-                                                </FormControl>
+                                                <DatePicker
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    yearRange={{ from: 1920, to: new Date().getFullYear() }}
+                                                    disabled={(d) => d > new Date()}
+                                                />
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -165,9 +170,7 @@ const AthletesCreate = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Joined At <span className="text-orange-500">*</span></FormLabel>
-                                                <FormControl>
-                                                    <Input type="date" {...field} />
-                                                </FormControl>
+                                                <DatePicker value={field.value} onChange={field.onChange} />
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -435,10 +438,10 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Notes</FormLabel>
                                                 <FormControl>
-                                                    <Textarea 
-                                                        placeholder="Any additional information about the athlete..." 
+                                                    <Textarea
+                                                        placeholder="Any additional information about the athlete..."
                                                         className="min-h-25"
-                                                        {...field} 
+                                                        {...field}
                                                     />
                                                 </FormControl>
                                                 <FormMessage />

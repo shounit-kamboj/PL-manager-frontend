@@ -14,6 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { DatePicker } from "@/components/ui/date-picker";
 import { WEIGHTCLASSES_OPTIONS, TIMEZONE_OPTIONS } from "@/constants";
 
 type AthleteFormValues = z.infer<typeof athleteSchema>;
@@ -193,9 +194,12 @@ const AthletesEdit = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Date of Birth <span className="text-orange-500">*</span></FormLabel>
-                                                <FormControl>
-                                                    <Input type="date" {...field} />
-                                                </FormControl>
+                                                <DatePicker
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    yearRange={{ from: 1920, to: new Date().getFullYear() }}
+                                                    disabled={(d) => d > new Date()}
+                                                />
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -206,9 +210,7 @@ const AthletesEdit = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Joined At <span className="text-orange-500">*</span></FormLabel>
-                                                <FormControl>
-                                                    <Input type="date" {...field} />
-                                                </FormControl>
+                                                <DatePicker value={field.value} onChange={field.onChange} />
                                                 <FormMessage />
                                             </FormItem>
                                         )}

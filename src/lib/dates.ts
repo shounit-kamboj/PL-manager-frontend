@@ -1,5 +1,7 @@
 import { format, parseISO } from "date-fns";
 
+export const toYmd = (d: Date): string => format(d, "yyyy-MM-dd");
+
 // The API sends calendar days as "2026-10-16T00:00:00.000Z" (midnight UTC). Reading that with new Date() or
 // parseISO() shifts it into the viewer's timezone. Keep only the yyyy-mm-dd part and treat it as a local calendar day.
 export const parseDay = (value: string | Date | null | undefined): Date | null => {
@@ -14,3 +16,4 @@ export const formatDay = (value: string | Date | null | undefined, pattern = "MM
 };
 
 export const localTodayYmd = (): string => format(new Date(), "yyyy-MM-dd");
+

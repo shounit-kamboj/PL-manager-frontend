@@ -8,8 +8,8 @@ import { paymentSchema } from "@/lib/schema.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DatePicker } from "@/components/ui/date-picker";
 
 type PaymentFormValues = z.input<typeof paymentSchema>;
 
@@ -85,9 +85,7 @@ const PaymentsCreate = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Due Date <span className="text-orange-500">*</span></FormLabel>
-                                                <FormControl>
-                                                    <Input type="date" {...field} value={field.value ?? ""} />
-                                                </FormControl>
+                                                <DatePicker value={field.value} onChange={field.onChange} />
                                                 <FormMessage />
                                             </FormItem>
                                         )}

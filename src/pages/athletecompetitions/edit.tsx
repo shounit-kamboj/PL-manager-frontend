@@ -13,6 +13,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.t
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DatePicker } from "@/components/ui/date-picker";
+import { toYmd } from "@/lib/dates.ts";
 
 type MeetEntryEditValues = z.infer<typeof athletesAndCompetitionsEditSchema>;
 
@@ -119,15 +121,14 @@ const AthleteCompetitionsEdit = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Date</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        type="date"
-                                                        min={minDate}
-                                                        max={maxDate}
-                                                        {...field}
-                                                        value={field.value ?? ""}
-                                                    />
-                                                </FormControl>
+                                                <DatePicker
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    disabled={(d) => {
+                                                        const ymd = toYmd(d);
+                                                        return (!!minDate && ymd < minDate) || (!!maxDate && ymd > maxDate);
+                                                    }}
+                                                />
                                                 <FormMessage />
                                             </FormItem>
                                         )}
