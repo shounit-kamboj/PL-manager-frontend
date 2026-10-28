@@ -94,6 +94,14 @@ const PaymentsList = () => {
                         : status === 'unpaid'
                             ? 'outline'
                             : 'secondary';
+                    if(status === "paid_late"){
+                        return(
+                            <Badge variant={variant}>
+                                Paid late
+                            </Badge>
+                        )
+
+                    }
                     return (
                         <Badge variant={variant}>
                             {status ?? '—'}
@@ -169,7 +177,7 @@ const PaymentsList = () => {
                                 <SelectItem value="paid">Paid</SelectItem>
                                 <SelectItem value="unpaid">Unpaid</SelectItem>
                                 <SelectItem value="overdue">Overdue</SelectItem>
-                                <SelectItem value="paid late">Paid Late</SelectItem>
+                                <SelectItem value="paid_late">Paid Late</SelectItem>
                             </SelectContent>
                         </Select>
 

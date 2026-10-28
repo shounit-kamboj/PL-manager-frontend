@@ -13,6 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
+import { localTodayYmd } from "@/lib/dates.ts";
 
 type PaymentEditValues = z.infer<typeof paymentEditSchema>;
 
@@ -71,7 +72,10 @@ const PaymentsEdit = () => {
     };
 
     const onSubmit = async (values: PaymentEditValues) => {
-        await form.refineCore.onFinish(values);
+        await form.refineCore.onFinish({
+            ...values,
+            today: localTodayYmd(),
+        } as PaymentEditValues);
     };
 
     return (

@@ -1,7 +1,9 @@
+import Dashboard from "@/pages/dashboard.tsx";
+
 export type Gender = 'male' | 'female' | 'non-binary' | 'prefer-not-to-say';
 
 export type Equip = 'Classic/Raw'| 'Equipped'|'both';
-export type PaymentStatus = "paid" | "unpaid" | "overdue" | "paid late";
+export type PaymentStatus = "paid" | "unpaid" | "overdue" | "paid_late";
 
 import { WEIGHTCLASSES } from '@/constants';
 
@@ -39,7 +41,7 @@ export type Payment = {
     id: number;
     coachId: number;
     athleteId: number;
-    //amountCAD: number;
+    paidAt?: string | null
     dueDate: string;
     paymentStatus: PaymentStatus;
     isCurrent?: boolean;
@@ -59,7 +61,7 @@ export type TrainingBlock ={
     isCurrent: boolean;
     athleteName: string;
     name: string;
-    
+
 }
 
 export type Athlete = {
@@ -124,6 +126,7 @@ export type AthleteCompetition = {
     isCurrent: boolean;
 };
 
+//todo: will be added when todo list is added
 export type CoachTask = {
     id: number;
     coachId: number;
@@ -156,34 +159,25 @@ export type ApiListResponse<T = unknown> = {
 export type ApiErrorResponse = {
     message: string;
 };
-// ============================================
-// FUTURE — CREATE/UPDATE PAYLOAD TYPES
-// Uncomment and adjust once building create/edit forms
-// ============================================
 
-// export type CreateAthletePayload = Omit<Athlete, 'id' | 'createdAt' | 'updatedAt' | 'coach' | 'trainingBlock' | 'payment'>;
-
-// export type UpdateAthletePayload = Partial<CreateAthletePayload>;
-
-// export type CreatePaymentPayload = Omit<Payment, 'id' | 'createdAt' | 'updatedAt'>;
-
-// export type CreateTrainingBlockPayload = Omit<TrainingBlock, 'id' | 'createdAt' | 'updatedAt' | 'nextUpdateDate'>;
-
-// export type CreateAthleteCompetitionPayload = Omit<AthleteCompetition, 'id' | 'athleteName' | 'competition'>;
-
-// export type CreateCoachTaskPayload = Omit<CoachTask, 'id' | 'createdAt' | 'completed' | 'status'>;
+/////////////////
+///Dashboard////
+///////////////
 
 
-// ============================================
-// FUTURE — BETTER AUTH TYPES
-// Uncomment once Better Auth is wired up; replaces AuthResponse/CoachRef auth usage
-// ============================================
+export type DashboardParams = {
+    meetDays: number;      // "meets in the next X days"
+    blockDays: number;     // "blocks due in the next Y days"
+};
 
-// export type Session = {
-//     user: {
-//         id: string;       // text, not number — Better Auth's user.id
-//         name: string;
-//         email: string;
-//     };
-//     expiresAt: string;
-// };
+export type DashboardData = {
+    numAthletes: number;
+    avgAthleteRetentionMonths: number
+    mrr: number;
+    numMyAthletesCompetitions: number;
+    nextAthleteMeet: string;
+    numOverduePayments: number;
+    moneyMadeMonth: number;
+    numBlockToUpdate: number
+}
+
