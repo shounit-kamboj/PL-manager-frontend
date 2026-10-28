@@ -166,18 +166,18 @@ export type ApiErrorResponse = {
 
 
 export type DashboardParams = {
-    meetDays: number;      // "meets in the next X days"
-    blockDays: number;     // "blocks due in the next Y days"
+    meetDays: number;      // "meets in the next X days", meetdays = x
+    blockDays: number;     // "blocks due in the next Y days", blockdays = y
 };
 
 export type DashboardData = {
-    numAthletes: number;
-    avgAthleteRetentionMonths: number
-    mrr: number;
-    numMyAthletesCompetitions: number;
-    nextAthleteMeet: string;
-    numOverduePayments: number;
-    moneyMadeMonth: number;
-    numBlockToUpdate: number
+    numAthletes: number; // simple count
+    avgAthleteRetentionMonths: number; // calculated from sum(athlete's joined - deleted or current date)/n
+    mrr: number; // sum(payment price)/cyclelen/7 * days this month or /cyclelen x 52/12
+    numMyAthletesCompetitions: number; //count is current
+    nextAthleteMeet: string; //myathcomp,sorteddesc(?) by date limit 1
+    numOverduePayments: number; //count where status = overdue
+    moneyMadeMonth: number; //payment price where paidat month == this month
+    numBlockToUpdate: number; //count of blocks where last update + update days < today + blockdays
 }
 

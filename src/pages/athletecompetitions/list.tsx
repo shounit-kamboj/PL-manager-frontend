@@ -14,6 +14,7 @@ import { getStartTime } from '@/lib/getStartTime';
 import {Badge} from "@/components/ui/badge.tsx";
 import {FEDS_OPTIONS} from "@/constants";
 import {formatDay, localTodayYmd, parseDay} from "@/lib/dates.ts";
+import {normalTime} from "@/lib/normalTime.ts";
 
 const SORTOPTIONS = [
     { field: 'id',                     order: 'desc' as const, label: 'Default' },
@@ -121,7 +122,12 @@ const AthleteCompetitionsList = () => {
                 header: () => <p className='column-title'>Weigh In Time</p>,
                 cell: ({ getValue }) => {
                     const v = getValue<string | null>();
-                    return v ? v.slice(0, 10) : "—";
+                    if(v == undefined) return "-";
+
+                    const [hours, minutes] = v.split(':').map(Number);
+                    const date = new Date();
+                    date.setHours(hours, minutes);
+                    return v? normalTime(date.toTimeString().slice(0, 5)): "-";
                 },
             },
             {
@@ -131,7 +137,7 @@ const AthleteCompetitionsList = () => {
                 cell: ({row}) => {
                     const weighIn = row.original.weighInTime;
                     if (!weighIn) return <span className="text-muted-foreground">-</span>;
-                    return <span className="text-foreground">{getStartTime(weighIn)}</span>;
+                    return <span className="text-foreground">{normalTime(getStartTime(weighIn))}</span>;
                 },
             },
             {
