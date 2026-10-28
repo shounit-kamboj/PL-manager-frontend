@@ -358,7 +358,7 @@ const AthletesEdit = () => {
                                             <FormItem>
                                                 <FormLabel>Payment Cycle (Weeks)</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" placeholder="4" min="0" {...field} value={field.value ?? ""} />
+                                                    <Input type="number" placeholder="0" min="0" {...field} value={field.value ?? ""} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>

@@ -294,7 +294,7 @@ const AthletesCreate = () => {
                                             <FormItem>
                                                 <FormLabel>Payment Cycle (Weeks)</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" placeholder="4" min="0" {...field} />
+                                                    <Input type="number" placeholder="0" min="0" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
