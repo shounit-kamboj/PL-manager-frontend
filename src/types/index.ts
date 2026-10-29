@@ -172,7 +172,7 @@ export type DashboardParams = {
 export type DashboardData = {
     //from ath table //done
     activeAthletes: number; // simple count //done
-    athleteRetentionYears: number; // calculated from sum(athlete's joined - deleted or current date)/n //done
+    athleteRetentionTime: number; // calculated from sum(athlete's joined - deleted or current date)/n //done
     mrr: number; // sum(payment price)/cyclelen/7 * days this month or /cyclelen x 52/12 //done
 
     //from my ath comp table //done
