@@ -181,7 +181,7 @@ export type DashboardData = {
     nextAthleteMeetName: string | null;
 
 
-    //from payments table
+    //from payments table //done
     numOverduePayments: number; //count where status = overdue
     moneyMadeMonth: number; //payment price where paidat month == this month
 
