@@ -8,8 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 const SignUp = () => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
+    const [confirmEmail, setConfirmEmail] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState('');
 //todo:add a confirm password + be able to view password + minimun password req shown
     const handleSubmit = async (e: React.FormEvent) => {
@@ -58,6 +60,16 @@ const SignUp = () => {
                             required
                         />
                         <Input
+                            type="email"
+                            placeholder="Confirm email"
+                            value={confirmEmail}
+                            onChange={(e) => setConfirmEmail(e.target.value)}
+                            required
+                        />
+                        {confirmEmail && confirmEmail !== email && (
+                            <p className="text-sm text-destructive">Emails don't match.</p>
+                        )}
+                        <Input
                             type="password"
                             placeholder="Password"
                             value={password}
@@ -66,6 +78,16 @@ const SignUp = () => {
                         />
                         {error && (
                             <p className="text-sm text-destructive">{error}</p>
+                        )}
+                        <Input
+                            type="password"
+                            placeholder="Confirm password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                        />
+                        {confirmPassword && confirmPassword !== password && (
+                            <p className="text-sm text-destructive">Passwords don't match.</p>
                         )}
                         <Button type="submit" className="w-full">
                             Sign Up
