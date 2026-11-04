@@ -24,6 +24,32 @@ export const FEDS_OPTIONS = FEDS.map((fdrtns) => ({
     label: fdrtns,
 }))
 
+export const BLOCK_DAY = ['1','2','3','4','5','6','7'] as const;
+
+export const BLOCK_DAY_OPTIONS = BLOCK_DAY.map((day) => ({
+    value: day,
+    label: day,
+}))
+
+export const MEET_DAY = ['7','14','21','28'] as const;
+
+const weekLabel = (days: string) => {
+    const weeks = Number(days) / 7;
+    return `${weeks} week${weeks === 1 ? "" : "s"}`;
+};
+
+export const MEET_DAY_OPTIONS = MEET_DAY.map((day) => ({
+    value: day,
+    label: weekLabel(day),
+}))
+
+export const RETENTION_UNIT = ['days', 'weeks', 'months', 'years'] as const;
+
+export const RETENTION_UNIT_OPTIONS = RETENTION_UNIT.map((unit) => ({
+    value: unit,                                              // what the backend gets: "years"
+    label: unit.charAt(0).toUpperCase() + unit.slice(1),      // what the coach sees: "Years"
+}));
+
 export const TIMEZONES = [
     // Canada
     { value: 'America/Vancouver',       label: 'PT — Pacific Time (Vancouver, BC)' },

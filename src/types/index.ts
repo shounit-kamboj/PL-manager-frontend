@@ -1,5 +1,3 @@
-import Dashboard from "@/pages/dashboard.tsx";
-
 export type Gender = 'male' | 'female' | 'non-binary' | 'prefer-not-to-say';
 
 export type Equip = 'Classic/Raw'| 'Equipped'|'both';
@@ -164,28 +162,30 @@ export type ApiErrorResponse = {
 ///Dashboard////
 ///////////////
 
+export type RetentionUnit = "days" | "weeks" | "months" | "years";
+
 export type DashboardParams = {
     meetDays: number;      // "meets in the next X days", meetdays = x
     blockDays: number;     // "blocks due in the next Y days", blockdays = y
+    retentionUnit: RetentionUnit;
 };
 
-export type DashboardData = {
-    //from ath table //done
-    activeAthletes: number; // simple count //done
-    athleteRetentionTime: number; // calculated from sum(athlete's joined - deleted or current date)/n //done
-    mrr: number; // sum(payment price)/cyclelen/7 * days this month or /cyclelen x 52/12 //done
+export type DashboardStats = {
+    //from ath table
+    activeAthletes: number; // simple count
+    athleteRetentionTime: number; // average of (deleted or current date - joined), in retentionUnit
+    retentionUnit: RetentionUnit; // echoed back by the backend
+    mrr: number; // sum(price / cycle weeks * 52 / 12) over active athletes
 
-    //from my ath comp table //done
-    numMyAthletesCompetitions: number; //count is current
-    nextAthleteMeetDate: string | null; //myathcomp,sorteddesc(?) by date limit 1
+    //from my ath comp table
+    numMyAthletesCompetitions: number; // current entries in the next meetDays days
+    nextAthleteMeetDate: string | null; // earliest current entry from today on
     nextAthleteMeetName: string | null;
 
-
-    //from payments table //done
-    numOverduePayments: number; //count where status = overdue
-    moneyMadeMonth: number; //payment price where paidat month == this month
+    //from payments table
+    numOverduePayments: number; // current payments with status overdue
+    moneyMadeMonth: number; // athlete price for payments paid this month
 
     //training block table
-    numBlockToUpdate: number; //count of blocks where last update + update days < today + blockdays
+    numBlockToUpdate: number; // current blocks where last update + update days <= today + blockDays
 }
-
