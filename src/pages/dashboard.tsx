@@ -1,10 +1,10 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb.tsx";
-import { useEffect, useState } from 'react';
-import { useSession } from '@/lib/auth-client';
+import { useSession } from "@/lib/auth-client";
+import { formatDay, localTodayYmd } from "@/lib/dates";
 
 
-function TypedText({text, speed = 35, cursorPulses = 3,}: {
+function TypedText({ text, speed = 35, cursorPulses = 3 }: {
     text: string;
     speed?: number;
     cursorPulses?: number;
@@ -41,36 +41,32 @@ function TypedText({text, speed = 35, cursorPulses = 3,}: {
         </>
     );
 }
+
+function partOfDay(hour: number) {
+    if (hour < 5) return "Good evening";      // late night
+    if (hour < 12) return "Good morning";
+    if (hour < 17) return "Good afternoon";
+    return "Good evening";
+}
+
+function useGreeting() {
+    const [hour, setHour] = useState(new Date().getHours());
+
+    // re-check every 15 minutes and stop the timer when the page goes away
+    useEffect(() => {
+        const id = setInterval(() => setHour(new Date().getHours()), 15 * 60_000);
+        return () => clearInterval(id);
+    }, []);
+
+    return partOfDay(hour);
+}
+
 const Dashboard = () => {
     const { data: session } = useSession();
-    const firstName = session?.user?.name?.split(' ')[0];
+    const firstName = session?.user?.name?.split(" ")[0];
+    const greeting = useGreeting();
 
-    const [athleteCount, setAthleteCount] = React.useState<number | null>(null);
 
-    React.useEffect(() => {
-        const fetchAthleteCount = async () => {
-            try {
-                //todo: change when deploy
-
-                //todo:go over all athletes and count++ if active only
-                const response = await fetch(
-                    "http://localhost:8000/api/athletes?limit=1"
-                );
-
-                if (!response.ok) {
-                    throw new Error("Failed to fetch athletes");
-                }
-
-                const result = await response.json();
-
-                setAthleteCount(result.total);
-            } catch (error) {
-                console.error("Failed to fetch athlete count:", error);
-            }
-        };
-
-        fetchAthleteCount();
-    }, []);
 
     return (
         <div className="min-h-screen bg-background">
@@ -79,12 +75,10 @@ const Dashboard = () => {
             <main className="mx-auto max-w-7xl px-6 py-8">
                 {/* Header */}
                 <div className="mb-8">
-
-
                     <div className="flex items-end justify-between gap-4">
                         <div>
                             <h1 className="text-3xl font-semibold tracking-tight">
-                                <TypedText text={`Welcome back, ${firstName}`} />
+                                <TypedText text={`${greeting}, ${firstName}`} />
                             </h1>
 
                             <p className="mt-2 text-muted-foreground">
@@ -93,12 +87,7 @@ const Dashboard = () => {
                         </div>
 
                         <div className="hidden text-sm text-muted-foreground sm:block">
-                            {new Intl.DateTimeFormat("en-CA", {
-                                weekday: "long",
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                            }).format(new Date())}
+                            {formatDay(localTodayYmd(), "EEEE, MMMM d, yyyy")}
                         </div>
                     </div>
                 </div>
@@ -106,73 +95,27 @@ const Dashboard = () => {
                 {/* Overview */}
                 <section className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     <div className="rounded-xl border bg-card p-5">
-                        <p className="text-sm text-muted-foreground">
-                            Athletes
-                        </p>
-
-                        <p className="mt-2 text-3xl font-semibold">
-                            {athleteCount ?? "—"}
-                        </p>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            On roster (inc. on hiatus)
-                        </p>
+                        <p className="text-sm text-muted-foreground">Athletes</p>
+                        <p className="mt-2 text-3xl font-semibold">—</p>
+                        <p className="mt-1 text-sm text-muted-foreground">On roster (inc. on hiatus)</p>
                     </div>
 
                     <div className="rounded-xl border bg-card p-5">
-                        <p className="text-sm text-muted-foreground">
-                            Competitions
-                        </p>
-
-                        <p className="mt-2 text-3xl font-semibold">
-                            —
-                        </p>
-
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            Upcoming competitions
-                        </p>
+                        <p className="text-sm text-muted-foreground">Competitions</p>
+                        <p className="mt-2 text-3xl font-semibold">—</p>
+                        <p className="mt-1 text-sm text-muted-foreground">Upcoming competitions</p>
                     </div>
 
                     <div className="rounded-xl border bg-card p-5">
-                        <p className="text-sm text-muted-foreground">
-                            Payments
-                        </p>
-
-                        <p className="mt-2 text-3xl font-semibold">
-                            —
-                        </p>
-
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            overdue
-                        </p>
+                        <p className="text-sm text-muted-foreground">Payments</p>
+                        <p className="mt-2 text-3xl font-semibold">—</p>
+                        <p className="mt-1 text-sm text-muted-foreground">overdue</p>
                     </div>
 
                     <div className="rounded-xl border bg-card p-5">
-                        <p className="text-sm text-muted-foreground">
-                            Training blocks
-                        </p>
-
-                        <p className="mt-2 text-3xl font-semibold">
-                            —
-                        </p>
-
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            Need to be updated in the next 3 days
-                        </p>
-                    </div>
-                </section>
-
-
-                {/* Footer / Product intro */}
-                <section className="mt-6 rounded-xl border bg-card p-6">
-                    <div className="flex flex-col gap-1">
-                        <h2 className="font-semibold">
-                            CollarPL
-                        </h2>
-
-                        <p className="max-w-2xl text-sm text-muted-foreground">
-                            Manage your athletes, competitions, payments, and
-                            training blocks from one place.
-                        </p>
+                        <p className="text-sm text-muted-foreground">Training blocks</p>
+                        <p className="mt-2 text-3xl font-semibold">—</p>
+                        <p className="mt-1 text-sm text-muted-foreground">Need to be updated in the next 3 days</p>
                     </div>
                 </section>
             </main>
@@ -181,4 +124,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
