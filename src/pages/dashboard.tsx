@@ -19,7 +19,7 @@ import {
     DropdownMenuRadioItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {Link} from "react-router";
+
 
 // starting windows: each must be one of its dropdown's values
 const DEFAULT_MEET_DAYS = 28; // 4 weeks
@@ -85,10 +85,11 @@ function useGreeting() {
 const money = (n: number) => `$${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 // a dropdown that sits inside a sentence: "in the next [4 weeks ▾]"
-function InlinePicker({ value, options, onChange }: {
+function InlinePicker({ value, options, onChange, className }: {
     value: string;
     options: { value: string; label: string }[];
     onChange: (value: string) => void;
+    className?: string;
 }) {
     const current = options.find((o) => o.value === value)?.label ?? value;
 
@@ -97,7 +98,10 @@ function InlinePicker({ value, options, onChange }: {
             <DropdownMenuTrigger asChild>
                 <button
                     type="button"
-                    className="inline-flex items-center gap-0.5 font-medium text-foreground underline decoration-dotted underline-offset-4 hover:text-primary"
+                    className={cn(
+                        "inline-flex items-center gap-0.5 font-medium text-foreground underline decoration-dotted underline-offset-4 hover:text-primary",
+                        className,
+                    )}
                 >
                     {current}
                     <ChevronDown className="h-3 w-3" />
@@ -210,7 +214,7 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <hr className="my-6 border-border" />
-                <br/>
+
                 <br/>
 
                 {error && (
@@ -223,13 +227,13 @@ const Dashboard = () => {
                     <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         <Stat>
                             <StatValue>{data ? data.activeAthletes : "—"}</StatValue>
-                            <StatLabel>Active athletes</StatLabel>
+                            <StatLabel>Active Athletes</StatLabel>
                         </Stat>
 
 
                         <Stat>
                             <StatValue>{data ? money(data.mrr) : "—"}</StatValue>
-                            <StatLabel>Monthly recurring revenue</StatLabel>
+                            <StatLabel>Monthly Recurring Revenue</StatLabel>
                         </Stat>
 
                         <Stat>
@@ -243,6 +247,7 @@ const Dashboard = () => {
                         </Stat>
                     </section>
                     <br/>
+
 
                     <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         <Stat>
@@ -261,16 +266,16 @@ const Dashboard = () => {
                             <StatValue size="lg">
                                 {data ? data.nextAthleteMeetName ?? "None scheduled" : "—"}
                             </StatValue>
-                            <StatLabel>Next meet</StatLabel>
                             {data?.nextAthleteMeetDate && (
                                 <StatHint>{formatDay(data.nextAthleteMeetDate)}</StatHint>
                             )}
+                            <StatLabel>Next meet for your athletes</StatLabel>
                         </Stat>
 
                         <Stat>
                             <StatValue>{data ? data.numBlockToUpdate : "—"}</StatValue>
                             <StatLabel>
-                                Blocks needing an update in the next{" "}
+                                Blocks need an update in the next{" "}
                                 <InlinePicker
                                     value={String(blockDays)}
                                     options={BLOCK_DAY_OPTIONS}
@@ -284,14 +289,17 @@ const Dashboard = () => {
 
                         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         <Stat>
-                            <StatValue>{data ? data.athleteRetentionTime : "—"}</StatValue>
-                            <StatLabel>
-                                Average time with you, in{" "}
+                            <StatValue>{data ? data.athleteRetentionTime : "—"}
                                 <InlinePicker
+                                    className="text-xl font-normal text-muted-foreground"
                                     value={retentionUnit}
                                     options={RETENTION_UNIT_OPTIONS}
                                     onChange={(v) => setRetentionUnit(v as RetentionUnit)}
                                 />
+
+                            </StatValue>
+                            <StatLabel>
+                                Average Retention Rate
                             </StatLabel>
                         </Stat>
                         <Stat className="flex flex-col justify-center sm:col-span-2 lg:col-span-2">
@@ -299,6 +307,7 @@ const Dashboard = () => {
                             <StatLabel>Your opinion matters highly to us. If you have any feedback please message us
                                 <a href="https://www.instagram.com/collar.pl/" target="_blank" rel="noreferrer" className="font-medium underline underline-offset-4 hover:text-primary"> here.</a>                            </StatLabel>
                         </Stat>
+
 
                     </section>
 
