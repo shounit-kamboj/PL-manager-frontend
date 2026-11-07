@@ -32,7 +32,7 @@ const SignUp = () => {
         };
 
     return (
-        <div className="flex items-center justify-center min-h-svh px-4">
+        <div className="flex items-center justify-center min-h-svh px-4 bg-[url('@/components/collar-pl-weights-horizontal.png')] bg-cover bg-center bg-no-repeat">
             <Card className="w-full max-w-sm">
                 <CardHeader>
                     <Button

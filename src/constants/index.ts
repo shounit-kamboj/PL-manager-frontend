@@ -16,7 +16,7 @@ export const AGECLASSES_OPTIONS = AGECLASSES.map((ageclss) => ({
 }))
 
 export const FEDS = ['IPF','NAPF', 'COMMONWEALTHPF','CANPL','BCPA','APU', 'MPA', 'NBPL',
-    'NLPA', 'NSPL', 'OPA', 'PEIPLA', 'FQD', 'SPA'
+    'NLPA', 'NSPL', 'OPA', 'PEIPLA', 'FQD', 'SPA', 'USAPL', 'PA'
 ] as const;
 
 export const FEDS_OPTIONS = FEDS.map((fdrtns) => ({
