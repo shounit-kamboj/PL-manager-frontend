@@ -37,7 +37,7 @@ const ResetPassword = () => {
     return (
         <div className="flex items-center justify-center min-h-svh px-4 bg-[url('@/components/collar-pl-weights-horizontal.png')] bg-cover bg-center bg-no-repeat">
             <Card className="w-full max-w-sm">
-                <CardHeader>
+                <CardHeader className="text-ring">
                     <CardTitle>Choose a new password</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -53,6 +53,7 @@ const ResetPassword = () => {
                                 placeholder="New password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                className="text-ring placeholder:text-muted-foreground"
                                 required
                             />
                             <Input
@@ -60,6 +61,7 @@ const ResetPassword = () => {
                                 placeholder="Confirm new password"
                                 value={confirm}
                                 onChange={(e) => setConfirm(e.target.value)}
+                                className="text-ring placeholder:text-muted-foreground"
                                 required
                             />
                             {error && <p className="text-sm text-destructive">{error}</p>}

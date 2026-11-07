@@ -30,7 +30,7 @@ const ForgotPassword = () => {
     return (
         <div className="flex items-center justify-center min-h-svh px-4 bg-[url('@/components/collar-pl-weights-horizontal.png')] bg-cover bg-center bg-no-repeat">
             <Card className="w-full max-w-sm">
-                <CardHeader>
+                <CardHeader className="text-ring">
                     <CardTitle>Reset your password</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -45,6 +45,7 @@ const ForgotPassword = () => {
                                 placeholder="Email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                className="text-ring placeholder:text-muted-foreground"
                                 required
                             />
                             {error && <p className="text-sm text-destructive">{error}</p>}

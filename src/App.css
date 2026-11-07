@@ -57,6 +57,7 @@
   --tracking-normal: 0em;
   --spacing: 0.25rem;
   --stat-shadow: oklch(0.4017 0 0);
+  --card: oklch(0.8200 0 0);
 }
 
 .dark {

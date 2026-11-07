@@ -33,8 +33,8 @@ const SignIn = () => {
 
        <div className="flex items-center justify-center min-h-svh px-4 bg-[url('@/components/collar-pl-weights-horizontal.png')] bg-cover bg-center bg-no-repeat">
             <Card className="w-full max-w-sm">
-                <CardHeader>
-                    <CardTitle>Sign in to CollarPL</CardTitle>
+                <CardHeader className="text-ring">
+                    <CardTitle >Sign in to CollarPL</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
@@ -43,6 +43,7 @@ const SignIn = () => {
                             placeholder="Email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            className="text-ring placeholder:text-muted-foreground"
                             required
                         />
                         <Input
@@ -50,6 +51,7 @@ const SignIn = () => {
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            className="text-ring placeholder:text-muted-foreground"
                             required
                         />
                         {error && (

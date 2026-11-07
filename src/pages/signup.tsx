@@ -34,7 +34,7 @@ const SignUp = () => {
     return (
         <div className="flex items-center justify-center min-h-svh px-4 bg-[url('@/components/collar-pl-weights-horizontal.png')] bg-cover bg-center bg-no-repeat">
             <Card className="w-full max-w-sm">
-                <CardHeader>
+                <CardHeader className="text-ring">
                     <Button
                         variant="ghost"
                         className="w-fit px-2 -ml-2 mb-2"
@@ -50,6 +50,7 @@ const SignUp = () => {
                             placeholder="Name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            className="text-ring placeholder:text-muted-foreground"
                             required
                         />
                         <Input
@@ -57,6 +58,7 @@ const SignUp = () => {
                             placeholder="Email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            className="text-ring placeholder:text-muted-foreground"
                             required
                         />
                         <Input
@@ -64,6 +66,7 @@ const SignUp = () => {
                             placeholder="Confirm email"
                             value={confirmEmail}
                             onChange={(e) => setConfirmEmail(e.target.value)}
+                            className="text-ring placeholder:text-muted-foreground"
                             required
                         />
                         {confirmEmail && confirmEmail !== email && (
@@ -74,6 +77,7 @@ const SignUp = () => {
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            className="text-ring placeholder:text-muted-foreground"
                             required
                         />
                         {error && (
@@ -84,6 +88,7 @@ const SignUp = () => {
                             placeholder="Confirm password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="text-ring placeholder:text-muted-foreground"
                             required
                         />
                         {confirmPassword && confirmPassword !== password && (
