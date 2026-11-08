@@ -66,9 +66,6 @@ const SignIn = () => {
                         </Button>
 
                         <div className="border-t pt-4 text-center">
-                            <p className="text-sm text-muted-foreground">
-                                Don't have an account?
-                            </p>
                             <Button
                                 type="button"
                                 variant="outline"
@@ -76,7 +73,7 @@ const SignIn = () => {
                                 asChild
                             >
                                 <Link to="/sign-up">
-                                    Create an account
+                                    Create new account
                                 </Link>
                             </Button>
                         </div>
