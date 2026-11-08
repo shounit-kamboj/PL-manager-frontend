@@ -9,18 +9,18 @@ const Section = ({ title, children }: { title: string; children: ReactNode }) =>
 );
 
 const Privacy = () => (
-    <div className="mx-auto max-w-2xl space-y-6 px-4 py-12 text-sm leading-relaxed">
+    <div className="mx-auto max-w-2xl space-y-6 px-4 py-12 text-sm leading-relaxed ">
         <Link to="/sign-in" className="text-muted-foreground hover:underline">← Back</Link>
 
         <div>
             <h1 className="text-2xl font-bold">Privacy Policy</h1>
-            <p className="text-muted-foreground">Last updated: October 4, 2026</p>
+            <p className="text-muted-foreground">Last updated: November 7, 2026</p>
         </div>
 
         <Section title="What Collar PL is">
             <p>
                 Collar PL is a tool for powerlifting coaches to manage their athletes, payments,
-                training blocks, and meet entries. It is built for coaches, not for athletes or children.
+                training blocks, and meet entries. It is built for coaches.
             </p>
         </Section>
 

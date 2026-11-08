@@ -7,11 +7,12 @@ import * as z from "zod";
 import { trainingBlockSchema } from "@/lib/schema.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
 import { format } from "date-fns";
+import { Switch } from "@/components/ui/switch";
 
 
 type ResourceFormValues = z.input<typeof trainingBlockSchema>;
@@ -27,6 +28,7 @@ const TrainingBlockCreate = () => {
         },
         defaultValues: {
             isCurrent: true,
+            createNextAutomatically: false,
         },
     });
 
@@ -169,6 +171,27 @@ const TrainingBlockCreate = () => {
                                                            value={field.value ?? ""} />
                                                 </FormControl>
                                                 <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="createNextAutomatically"
+                                        render={({ field }) => (
+                                            <FormItem className="md:col-span-2 flex flex-row items-center justify-between rounded-lg border p-4">
+                                                <div className="space-y-0.5">
+                                                    <FormLabel>Create next block automatically?</FormLabel>
+                                                    <FormDescription>
+                                                        When this block is done
+                                                        the next one is added for you with a generic name
+                                                    </FormDescription>
+                                                </div>
+                                                <FormControl>
+                                                    <Switch
+                                                        checked={field.value ?? false}
+                                                        onCheckedChange={field.onChange}
+                                                    />
+                                                </FormControl>
                                             </FormItem>
                                         )}
                                     />

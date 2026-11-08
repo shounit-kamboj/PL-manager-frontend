@@ -81,12 +81,14 @@ export const paymentSchema = z.object({
     dueDate: z.string().min(1, { message: 'Due date is required.' }),
     paymentStatus: z.enum(['paid', 'unpaid', 'overdue', 'paid_late']).default('unpaid'),
     isCurrent: z.boolean().default(true),
+    createNextAutomatically: z.boolean().default(false),
 });
 export const paymentEditSchema = z.object({
     dueDate: z.string().min(1, { message: "Due date is required" }),
     paymentStatus: z.enum(["paid", "unpaid", "overdue", "paid_late"], {
         message: "Select a payment status",
     }),
+    createNextAutomatically: z.boolean(),
 });
 
 export const competitionSchema = z.object({
@@ -130,6 +132,7 @@ export const trainingBlockSchema = z.object({
     link: z.string().url({ message: 'Must be a valid URL.' }).optional().or(z.literal('')),
     name: z.string().trim().min(1, { message: "Block name is required" }).max(100, { message: "Block name must be 100 characters or less" }),
     isCurrent: z.boolean().default(true),
+    createNextAutomatically: z.boolean().default(false),
 });
 
 export const trainingBlockEditSchema = trainingBlockSchema.pick({
@@ -139,6 +142,7 @@ export const trainingBlockEditSchema = trainingBlockSchema.pick({
     lastUpdate: true,
     daysBetweenUpdates: true,
     link: true,
+    createNextAutomatically: true,
 });
 
 export const coachTaskSchema = z.object({

@@ -43,6 +43,7 @@ export type Payment = {
     dueDate: string;
     paymentStatus: PaymentStatus;
     isCurrent?: boolean;
+    createNextAutomatically: boolean
 }
 
 export type TrainingBlock ={
@@ -59,6 +60,7 @@ export type TrainingBlock ={
     isCurrent: boolean;
     athleteName: string;
     name: string;
+    createNextAutomatically: boolean
 
 }
 

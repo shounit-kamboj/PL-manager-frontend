@@ -28,6 +28,7 @@ const TrainingBlockList = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCurrentStatus, setselectedCurrentStatus] = useState<'current' | 'past'>("current");
+    const [selectedAutoRenew, setSelectedAutoRenew] = useState("all");
 
     const searchFilters = searchQuery ? [
         {field: 'search', operator: 'contains' as const, value: searchQuery}
@@ -36,6 +37,12 @@ const TrainingBlockList = () => {
     const currentStatusFilter = [
         {field: 'isCurrent', operator: 'eq' as const, value: selectedCurrentStatus === 'current'},
     ];
+    const autoRenewFilter = selectedAutoRenew === "all" ? [] :
+        [
+            {field: 'createNextAutomatically', operator: 'eq' as const, value: selectedAutoRenew === 'on'},
+        ];
+
+
 
     const [sortIndex, setSortIndex] = useState(0);
     const currentSort = SORTOPTIONS[sortIndex];
@@ -148,7 +155,7 @@ const TrainingBlockList = () => {
             resource: 'training-blocks',
             pagination:{pageSize:20,mode:'server'},
             filters: {
-                permanent: [...searchFilters, ...currentStatusFilter]
+                permanent: [...searchFilters, ...currentStatusFilter, ...autoRenewFilter]
             },
             sorters: {
                 permanent: [{ field: currentSort.field, order: currentSort.order }]
@@ -179,6 +186,18 @@ const TrainingBlockList = () => {
                             <SelectContent>
                                 <SelectItem value="current">Current</SelectItem>
                                 <SelectItem value="past">Past</SelectItem>
+                            </SelectContent>
+                        </Select>
+
+
+                        <Select value={selectedAutoRenew} onValueChange={setSelectedAutoRenew}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Auto-renew" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">Auto create next status</SelectItem>
+                                <SelectItem value="on">Auto create next: On</SelectItem>
+                                <SelectItem value="off">Auto create next: Off</SelectItem>
                             </SelectContent>
                         </Select>
 

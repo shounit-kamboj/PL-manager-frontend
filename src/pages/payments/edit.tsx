@@ -9,11 +9,12 @@ import { paymentEditSchema } from "@/lib/schema.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
 import { localTodayYmd } from "@/lib/dates.ts";
+import { Switch } from "@/components/ui/switch";
 
 type PaymentEditValues = z.infer<typeof paymentEditSchema>;
 
@@ -31,6 +32,7 @@ const day = (v: unknown) => (v ? String(v).slice(0, 10) : "");
 const toFormValues = (r: BaseRecord) => ({
     dueDate: day(r.dueDate),
     paymentStatus: r.paymentStatus ?? undefined,
+    createNextAutomatically: Boolean(r.createNextAutomatically),
 });
 
 const PaymentsEdit = () => {
@@ -47,6 +49,8 @@ const PaymentsEdit = () => {
         },
     });
 
+
+
     // Load the saved payment into the form once it arrives.
     // Deferred with setTimeout so it runs after Refine's own reset (which uses the raw record with nulls).
     const { reset } = form;
@@ -61,9 +65,9 @@ const PaymentsEdit = () => {
     const onDelete = () => {
         if (!paymentId) return;
         const ok = window.confirm(
-            "Delete this payment? It will disappear from your payments list. This can't be undone from the app." +
-            "If you would like the reccuring payemnts to continue working, please create a new payment for this athlete",
-        );
+            "Delete this payment? It will disappear from your payments list. This can't be undone from the app. " +
+            "If you want recurring payments to continue, create a new payment for this athlete.",
+            );
         if (!ok) return;
         deletePayment(
             { resource: "payments", id: paymentId },
@@ -134,6 +138,25 @@ const PaymentsEdit = () => {
                                                 <FormMessage />
                                             </FormItem>
                                         )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="createNextAutomatically"
+                                        render={({ field }) => (
+                                            <FormItem className="md:col-span-2 flex flex-row items-center justify-between rounded-lg border p-4">
+                                                <div className="space-y-0.5">
+                                                    <FormLabel>Create next payment automatically</FormLabel>
+                                                    <FormDescription>
+                                                        When this payment is paid, the next one is added for you.
+                                                    </FormDescription>
+                                                </div>
+                                                <FormControl>
+                                                    <Switch
+                                                        checked={field.value ?? false}
+                                                        onCheckedChange={field.onChange}
+                                                    />
+                                                </FormControl>
+                                            </FormItem>)}
                                     />
                                 </div>
 

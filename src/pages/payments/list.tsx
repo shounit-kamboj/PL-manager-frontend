@@ -24,6 +24,7 @@ const PaymentsList = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedPaymentStatus, setselectedPaymentStatus] = useState("all");
     const [selectedCurrentStatus, setselectedCurrentStatus] = useState("current");
+    const [selectedAutoRenew, setSelectedAutoRenew] = useState("all");
 
     const searchFilters = searchQuery ? [
         {field: 'search', operator: 'contains' as const, value: searchQuery}
@@ -37,6 +38,11 @@ const PaymentsList = () => {
     const currentStatusFilter = selectedCurrentStatus === "all" ? [] :
         [
             {field: 'isCurrent', operator: 'eq' as const, value: selectedCurrentStatus === 'current'},
+        ];
+
+    const autoRenewFilter = selectedAutoRenew === "all" ? [] :
+        [
+            {field: 'createNextAutomatically', operator: 'eq' as const, value: selectedAutoRenew === 'on'},
         ];
 
     const [sortIndex, setSortIndex] = useState(0);
@@ -134,7 +140,7 @@ const PaymentsList = () => {
             resource: 'payments',
             pagination:{pageSize:20,mode:'server'},
             filters: {
-                permanent: [...searchFilters, ...paymentStatusFilter, ...currentStatusFilter]
+                permanent: [...searchFilters, ...paymentStatusFilter, ...currentStatusFilter, ...autoRenewFilter]
             },
             sorters: {
                 permanent: [{ field: currentSort.field, order: currentSort.order }]
@@ -178,6 +184,17 @@ const PaymentsList = () => {
                                 <SelectItem value="unpaid">Unpaid</SelectItem>
                                 <SelectItem value="overdue">Overdue</SelectItem>
                                 <SelectItem value="paid_late">Paid Late</SelectItem>
+                            </SelectContent>
+                        </Select>
+
+                        <Select value={selectedAutoRenew} onValueChange={setSelectedAutoRenew}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Auto-renew" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">Auto create next status</SelectItem>
+                                <SelectItem value="on">Auto create next: On</SelectItem>
+                                <SelectItem value="off">Auto create next: Off</SelectItem>
                             </SelectContent>
                         </Select>
 

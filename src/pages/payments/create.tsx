@@ -7,9 +7,10 @@ import * as z from "zod";
 import { paymentSchema } from "@/lib/schema.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
+import { Switch } from "@/components/ui/switch";
 
 type PaymentFormValues = z.input<typeof paymentSchema>;
 
@@ -25,6 +26,7 @@ const PaymentsCreate = () => {
         defaultValues: {
             paymentStatus: "unpaid",
             isCurrent: true,
+            createNextAutomatically: false,
         },
     });
 
@@ -87,6 +89,27 @@ const PaymentsCreate = () => {
                                                 <FormLabel>Due Date <span className="text-orange-500">*</span></FormLabel>
                                                 <DatePicker value={field.value} onChange={field.onChange} />
                                                 <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="createNextAutomatically"
+                                        render={({ field }) => (
+                                            <FormItem className="md:col-span-2 flex flex-row items-center justify-between rounded-lg border p-4">
+                                                <div className="space-y-0.5">
+                                                    <FormLabel>Create next payment automatically?</FormLabel>
+                                                    <FormDescription>
+                                                        When this payment is paid and past its due date
+                                                        the next one is added for you.
+                                                    </FormDescription>
+                                                </div>
+                                                <FormControl>
+                                                    <Switch
+                                                        checked={field.value ?? false}
+                                                        onCheckedChange={field.onChange}
+                                                    />
+                                                </FormControl>
                                             </FormItem>
                                         )}
                                     />
