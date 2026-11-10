@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { EditView } from "@/components/refine-ui/views/edit-view.tsx";
-import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb.tsx";
 import { useBack, useDelete, useGo } from "@refinedev/core";
 import { Button } from "@/components/ui/button.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
@@ -15,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "@/components/ui/date-picker";
-import { WEIGHTCLASSES_OPTIONS, TIMEZONE_OPTIONS } from "@/constants";
+import { WEIGHTCLASSES_OPTIONS } from "@/constants";
 
 type AthleteFormValues = z.infer<typeof athleteSchema>;
 
@@ -30,6 +29,13 @@ const EQUIPMENT_OPTIONS = [
     { label: "Classic/Raw", value: "Classic/Raw" },
     { label: "Equipped", value: "Equipped" },
     { label: "Both", value: "both" },
+];
+
+const QUAL_OPTIONS = [
+    { label: "Local", value: "Local" },
+    { label: "Provincial/State", value: "Provincial/State" },
+    { label: "Regional", value: "Regional" },
+    { label: "National", value: "National" },
 ];
 
 const STATUS_OPTIONS = [
@@ -56,6 +62,7 @@ const toFormValues = (a: BaseRecord) => ({
     timezone: text(a.timezone),
     weightClass: a.weightClass ?? undefined,
     equipment: a.equipment ?? undefined,
+    highestQual: a.highestQual ?? undefined,
     paymentPrice: num(a.paymentPrice),
     paymentCycleLengthWeeks: num(a.paymentCycleLengthWeeks),
     prSquat: num(a.prSquat),
@@ -325,6 +332,28 @@ const AthletesEdit = () => {
                                                     </FormControl>
                                                     <SelectContent>
                                                         {EQUIPMENT_OPTIONS.map((opt) => (
+                                                            <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="highestQual"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Highest Qualification</FormLabel>
+                                                <Select onValueChange={field.onChange} value={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select Qualification Level" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        {QUAL_OPTIONS.map((opt) => (
                                                             <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
                                                         ))}
                                                     </SelectContent>

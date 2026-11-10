@@ -23,7 +23,14 @@ export const FEDS_OPTIONS = FEDS.map((fdrtns) => ({
     value: fdrtns,
     label: fdrtns,
 }))
+export const QUAL_OPTIONS = ['Local','Provincial/State', 'Regional', 'National'] as const;
 
+export const QUAL_OPTIONS_OPTIONS = QUAL_OPTIONS.map((qual) => ({
+    value: qual,
+    label: qual,
+}))
+
+//dashboard selection values
 export const BLOCK_DAY = ['1','2','3','4','5','6','7'] as const;
 
 export const BLOCK_DAY_OPTIONS = BLOCK_DAY.map((day) => ({

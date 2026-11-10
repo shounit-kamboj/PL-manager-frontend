@@ -13,7 +13,7 @@ import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Textarea} from "@/components/ui/textarea";
 import {DatePicker} from "@/components/ui/date-picker";
-import {WEIGHTCLASSES_OPTIONS, TIMEZONE_OPTIONS} from "@/constants";
+import {WEIGHTCLASSES_OPTIONS} from "@/constants";
 import { localTodayYmd } from "@/lib/dates.ts";
 
 const GENDER_OPTIONS = [
@@ -27,6 +27,13 @@ const EQUIPMENT_OPTIONS = [
     { label: "Classic/Raw", value: "Classic/Raw" },
     { label: "Equipped", value: "Equipped" },
     { label: "Both", value: "both" },
+];
+
+const QUAL_OPTIONS = [
+    { label: "Local", value: "Local" },
+    { label: "Provincial/State", value: "Provincial/State" },
+    { label: "Regional", value: "Regional" },
+    { label: "National", value: "National" },
 ];
 
 const AthletesCreate = () => {
@@ -62,6 +69,7 @@ const AthletesCreate = () => {
             notes: "",
             link: "",
             joinedAt: localTodayYmd(),
+            highestQual: undefined,
         },
     });
 
@@ -223,7 +231,7 @@ const AthletesCreate = () => {
                                 </div>
 
                                 <Separator />
-                                <h3 className="text-lg font-semibold">Training & Equipment</h3>
+                                <h3 className="text-lg font-semibold">Competitive Details</h3>
                                 <div className="grid sm:grid-cols-2 gap-4">
                                     <FormField
                                         control={form.control}
@@ -269,6 +277,30 @@ const AthletesCreate = () => {
                                             </FormItem>
                                         )}
                                     />
+
+                                    <FormField
+                                        control={form.control}
+                                        name="highestQual"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Highest Qualification</FormLabel>
+                                                <Select onValueChange={field.onChange} value={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select Qualification Level" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        {QUAL_OPTIONS.map((opt) => (
+                                                            <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
                                 </div>
 
                                 <Separator />

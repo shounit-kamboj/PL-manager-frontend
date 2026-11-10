@@ -11,6 +11,9 @@ export const athleteSchema = z.object({
     weightClass: z.enum(WEIGHTCLASSES, {
         message: 'Please select a weight class.',
     }),
+
+    highestQual:z.enum(['Local','Provincial/State', 'Regional', 'National']).optional(),
+
     dateOfBirth: z.string().min(1, { message: 'Date of birth is required.' }),
 
     phoneNumber: z.string().max(11).optional(),

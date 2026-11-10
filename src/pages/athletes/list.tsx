@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {ListView} from "@/components/refine-ui/views/list-view.tsx"
 import {Breadcrumb} from "@/components/refine-ui/layout/breadcrumb.tsx"
-import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
+import {ArrowUpDown, ChevronDown, ExternalLink, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {AGECLASSES_OPTIONS, WEIGHTCLASSES_OPTIONS} from "@/constants";
 import {CreateButton} from "@/components/refine-ui/buttons/create.tsx";
@@ -14,6 +14,16 @@ import {Badge} from "@/components/ui/badge.tsx";
 import {getAgeClass} from "@/lib/getAgeClass.ts";
 import {isLastYearOfAgeClass} from "@/lib/isLastYear.ts";
 import { Link } from "react-router";
+import { Button } from "@/components/ui/button.tsx";
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 
 
@@ -31,12 +41,24 @@ const SORTOPTIONS = [
     { field: 'meetPrTotal',                  order: 'desc' as const, label: 'Meet Total PR ↓' },
 ];
 
+// lowest to highest: same order as the database enum
+const QUAL_LEVELS = ['Local', 'Provincial/State', 'Regional', 'National'];
+
+const QUAL_COLOR_CLASS: Record<string, string> = {
+    Local: "bg-muted text-muted-foreground hover:bg-muted",
+    "Provincial/State": "bg-secondary text-secondary-foreground hover:bg-secondary",
+    Regional: "bg-chart-4 text-foreground hover:bg-chart-4",
+    National: "bg-primary text-primary-foreground hover:bg-primary",
+};
+
 const AthletesList = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const[selectedWeightClass, setselectedWeightClass] = useState("all");
     const[selectedAgeClass, setselectedAgeClass] = useState("all");
     const [selectedGender, setselectedGender] = useState("all");
+    const [selectedQual, setSelectedQual] = useState("all");
+    const [includeHigher, setIncludeHigher] = useState(false);
 
 
     const athleteWeightFilters = selectedWeightClass === 'all' ? []:
@@ -57,6 +79,22 @@ const AthletesList = () => {
         [
             {field: 'gender', operator: 'eq' as const, value: selectedGender}
         ];
+
+    // exact level by default; with the switch on, that level and every level above it
+    const athleteQualFilter = selectedQual === 'all' ? [] :
+        [
+            {field: 'highestQual', operator: 'eq' as const, value: selectedQual}
+        ];
+
+    const athleteQualAboveFilter = selectedQual !== 'all' && includeHigher ?
+        [
+            {field: 'highestQualAndAbove', operator: 'eq' as const, value: true}
+        ] : [];
+
+    // what the closed dropdown shows
+    const qualLabel = selectedQual === 'all'
+        ? 'All Qualifications'
+        : includeHigher ? `${selectedQual} and above` : selectedQual;
 
     const [sortIndex, setSortIndex] = useState(0);
     const currentSort = SORTOPTIONS[sortIndex];
@@ -113,6 +151,20 @@ const AthletesList = () => {
                             <Badge variant="secondary">{getAgeClass(dob)}</Badge>
                         </div>
                     );
+                },
+            },
+
+            {
+                id: 'highestQual',
+                accessorKey: 'highestQual',
+                size: 80,
+                header: () => <p className='column-title'>Qualification</p>,
+                cell: ({getValue}) => {
+                    const value = getValue<string | null>();
+                    if (!value) {
+                        return <span className="text-muted-foreground">—</span>;
+                    }
+                    return <Badge className={QUAL_COLOR_CLASS[value] ?? QUAL_COLOR_CLASS.Local}>{value}</Badge>;
                 },
             },
 
@@ -205,7 +257,7 @@ const AthletesList = () => {
             resource: 'athletes',
             pagination:{pageSize:20,mode:'server'},
             filters: {
-                permanent: [...searchFilters, ...athleteGenderFilter,...athleteWeightFilters,...athleteAgeFilters]
+                permanent: [...searchFilters, ...athleteGenderFilter, ...athleteWeightFilters, ...athleteAgeFilters, ...athleteQualFilter, ...athleteQualAboveFilter]
             },
             sorters: {
                 permanent: [{ field: currentSort.field, order: currentSort.order }]
@@ -257,6 +309,33 @@ const AthletesList = () => {
                                 ))}
                             </SelectContent>
                         </Select>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" className="justify-between gap-2 font-normal">
+                                    {qualLabel}
+                                    <ChevronDown className="h-4 w-4 opacity-50" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="start">
+                                <DropdownMenuRadioGroup value={selectedQual} onValueChange={setSelectedQual}>
+                                    <DropdownMenuRadioItem value="all">All Qualifications</DropdownMenuRadioItem>
+                                    {QUAL_LEVELS.map(level => (
+                                        <DropdownMenuRadioItem key={level} value={level}>
+                                            {level}
+                                        </DropdownMenuRadioItem>
+                                    ))}
+                                </DropdownMenuRadioGroup>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuCheckboxItem
+                                    checked={includeHigher}
+                                    onCheckedChange={setIncludeHigher}
+                                    disabled={selectedQual === 'all'}
+                                    onSelect={(e) => e.preventDefault()}
+                                >
+                                    Include higher levels
+                                </DropdownMenuCheckboxItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                         <div className='flex gap-2 w-full sm:w-auto'>
 
                             <Select value={selectedAgeClass}

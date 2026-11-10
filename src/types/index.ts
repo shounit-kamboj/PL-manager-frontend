@@ -2,6 +2,7 @@ export type Gender = 'male' | 'female' | 'non-binary' | 'prefer-not-to-say';
 
 export type Equip = 'Classic/Raw'| 'Equipped'|'both';
 export type PaymentStatus = "paid" | "unpaid" | "overdue" | "paid_late";
+export type highestQualified = "Local" | "Provincial/State" | "Regional" | "National";
 
 import { WEIGHTCLASSES } from '@/constants';
 
@@ -84,6 +85,7 @@ export type Athlete = {
 
     weightClass: WeightClass;
     equipment?: Equip;
+    highestQual: highestQualified;
     prSquat?: number;
     prBench?: number;
     prDeadlift?: number;

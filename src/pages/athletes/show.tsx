@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { useBack, useShow } from "@refinedev/core";
 import type { BaseRecord, HttpError } from "@refinedev/core";
 import { ShowView } from "@/components/refine-ui/views/show-view.tsx";
@@ -21,6 +21,13 @@ const EQUIPMENT_LABELS: Record<string, string> = {
     "Classic/Raw": "Classic/Raw",
     Equipped: "Equipped",
     both: "Both",
+};
+
+const qualColorClass : Record<string, string> = {
+    Local: "bg-muted text-muted-foreground hover:bg-muted",
+    "Provincial/State": "bg-secondary text-secondary-foreground hover:bg-secondary",
+    Regional: "bg-chart-4 text-foreground hover:bg-chart-4",
+    National: "bg-primary text-primary-foreground hover:bg-primary",
 };
 
 // numbers can arrive as strings from the API (numeric columns), so convert before formatting
@@ -100,6 +107,8 @@ const AthletesShow = () => {
                             <Badge variant={record.isActive === false ? "outline" : "secondary"}>
                                 {record.isActive === false ? "Inactive" : "Active"}
                             </Badge>
+
+                            <Badge className={qualColorClass[record.highestQual]}>{record.highestQual}</Badge>
                         </div>
                         <div className="flex gap-2">
                             <Button variant="outline" onClick={back}>Back</Button>
