@@ -1,10 +1,13 @@
 import {getAgeClass} from "@/lib/getAgeClass.ts";
 
+export function competitiveAge(dateOfBirth: string): number {
+    const birthYear = Number(dateOfBirth.slice(0, 4));
+    return new Date().getFullYear() - birthYear;
+}
+
 export const isLastYearOfAgeClass = (dateOfBirth: string): boolean => {
-    const dob = new Date(dateOfBirth);
-    const birthYear = dob.getFullYear();
-    const currentYear = new Date().getFullYear();
-    const competitiveAge = currentYear - birthYear;    // Junior is 19-23, last year is 23
+
+    const age = competitiveAge(dateOfBirth)// Junior is 19-23, last year is 23
     // Sub-Junior is under 19, last year is 18
     // Master 1 is 40-49, last year is 49
     const lastYears: Record<string, number> = {
@@ -16,5 +19,5 @@ export const isLastYearOfAgeClass = (dateOfBirth: string): boolean => {
     };
 
     const ageClass = getAgeClass(dateOfBirth);
-    return competitiveAge === lastYears[ageClass];
+    return age === lastYears[ageClass];
 };
