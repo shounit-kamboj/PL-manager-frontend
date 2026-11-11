@@ -27,6 +27,7 @@ const AthleteCompetitionsList = () => {
     const [sortIndex, setSortIndex] = useState(0);
     const currentSort = SORTOPTIONS[sortIndex];
     const[selectedFed, setselectedFed] = useState("all");
+    const [selectedStatus, setSelectedStatus] = useState<'upcoming' | 'past'>("upcoming");
     const todayLocal = localTodayYmd();
 
     const fedFilters = selectedFed === 'all' ? []:
@@ -184,6 +185,8 @@ const AthleteCompetitionsList = () => {
                 permanent: [
                     ...searchFilters,
                     ...fedFilters,
+                    // upcoming or past is worked out on the server from the entry's date and today
+                    { field: 'status', operator: 'eq' as const, value: selectedStatus },
                     { field: 'today', operator: 'eq' as const, value: todayLocal },
                 ]
             },
@@ -209,6 +212,15 @@ const AthleteCompetitionsList = () => {
                             onChange={(e) => setSearchQuery(e.target.value)} //on chnage  it sets searchq to new val
                         />
                     </div>
+                    <Select value={selectedStatus} onValueChange={(val) => setSelectedStatus(val as 'upcoming' | 'past')}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Upcoming or Past"/>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="upcoming">Upcoming</SelectItem>
+                            <SelectItem value="past">Past</SelectItem>
+                        </SelectContent>
+                    </Select>
                     <Select value={selectedFed}
                             onValueChange={setselectedFed}>
                         <SelectTrigger>
