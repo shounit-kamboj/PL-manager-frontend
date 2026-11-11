@@ -11,7 +11,6 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
-import { format } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 
 
@@ -27,7 +26,6 @@ const TrainingBlockCreate = () => {
             action: "create",
         },
         defaultValues: {
-            isCurrent: true,
             createNextAutomatically: false,
         },
     });
@@ -39,11 +37,9 @@ const TrainingBlockCreate = () => {
         pagination: { pageSize: 100 },
     });
 
+    // the server decides isCurrent (newest block for the athlete), so the form doesn't send it or today
     const onSubmit = async (values: ResourceFormValues) => {
-        await form.refineCore.onFinish({
-            ...values,
-            today: format(new Date(), "yyyy-MM-dd"),
-        } as ResourceFormValues);
+        await form.refineCore.onFinish(values);
     };
     return (
         <CreateView className="class-view">
@@ -182,8 +178,7 @@ const TrainingBlockCreate = () => {
                                                 <div className="space-y-0.5">
                                                     <FormLabel>Create next block automatically?</FormLabel>
                                                     <FormDescription>
-                                                        When this block is done
-                                                        the next one is added for you with a generic name
+                                                        When this block ends, a new one is created for you with information based on the future-most block. Only an athlete’s future-most block renews.
                                                     </FormDescription>
                                                 </div>
                                                 <FormControl>

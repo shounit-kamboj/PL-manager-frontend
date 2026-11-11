@@ -10,7 +10,7 @@ import {useTable} from "@refinedev/react-table";
 import {TrainingBlock} from "@/types";
 import {ColumnDef} from "@tanstack/react-table";
 import {getNextUpdateDate} from "@/lib/nextUpdateDate.ts";
-import {formatDay} from "@/lib/dates.ts";
+import {formatDay, localTodayYmd} from "@/lib/dates.ts";
 
 const SORTOPTIONS = [
     { field: 'id',           order: 'desc' as const, label: 'Default' },
@@ -24,18 +24,25 @@ const SORTOPTIONS = [
     { field: 'nextUpdate',   order: 'desc' as const, label: 'Next Update ↓' },
 ];
 
+type BlockStatus = 'current' | 'upcoming' | 'past';
+
 const TrainingBlockList = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
-    const [selectedCurrentStatus, setselectedCurrentStatus] = useState<'current' | 'past'>("current");
+    const [selectedCurrentStatus, setselectedCurrentStatus] = useState<BlockStatus>("current");
     const [selectedAutoRenew, setSelectedAutoRenew] = useState("all");
 
     const searchFilters = searchQuery ? [
         {field: 'search', operator: 'contains' as const, value: searchQuery}
     ]:[];
 
+    // the coach's own date, so "current" and "past" follow their day and not the server's
+    const today = localTodayYmd();
+
+    // status is worked out from the block's dates on the server; it needs today to compare against
     const currentStatusFilter = [
-        {field: 'isCurrent', operator: 'eq' as const, value: selectedCurrentStatus === 'current'},
+        {field: 'status', operator: 'eq' as const, value: selectedCurrentStatus},
+        {field: 'today', operator: 'eq' as const, value: today},
     ];
     const autoRenewFilter = selectedAutoRenew === "all" ? [] :
         [
@@ -118,7 +125,9 @@ const TrainingBlockList = () => {
                 header: () => <p className='column-title'>Next Update</p>,
                 cell: ({row}) => {
                     const block = row.original;
-                    if (!block.lastUpdate || !block.daysBetweenUpdates || block.isCurrent === false) return <span className="text-muted-foreground">—</span>;
+                    // a block is over on its end date (that is the day the next one starts)
+                    const hasEnded = String(block.endDate).slice(0, 10) <= today;
+                    if (!block.lastUpdate || !block.daysBetweenUpdates || hasEnded) return <span className="text-muted-foreground">—</span>;
                     return (
                         <span className="text-foreground">
                             {getNextUpdateDate(block.lastUpdate, block.daysBetweenUpdates)}
@@ -150,7 +159,7 @@ const TrainingBlockList = () => {
                 ),
             },
 
-        ],[]),
+        ],[today]),
         refineCoreProps: {
             resource: 'training-blocks',
             pagination:{pageSize:20,mode:'server'},
@@ -179,12 +188,13 @@ const TrainingBlockList = () => {
                         />
                     </div>
                     <div className="flex gap-2 w-full sm:w-auto">
-                        <Select value={selectedCurrentStatus} onValueChange={(val) => setselectedCurrentStatus(val as 'current' | 'past')}>
+                        <Select value={selectedCurrentStatus} onValueChange={(val) => setselectedCurrentStatus(val as BlockStatus)}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Current or Past" />
+                                <SelectValue placeholder="Status" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="current">Current</SelectItem>
+                                <SelectItem value="upcoming">Upcoming</SelectItem>
                                 <SelectItem value="past">Past</SelectItem>
                             </SelectContent>
                         </Select>
@@ -195,7 +205,7 @@ const TrainingBlockList = () => {
                                 <SelectValue placeholder="Auto-renew" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="all">Auto create next status</SelectItem>
+                                <SelectItem value="all">Auto create next status: All</SelectItem>
                                 <SelectItem value="on">Auto create next: On</SelectItem>
                                 <SelectItem value="off">Auto create next: Off</SelectItem>
                             </SelectContent>

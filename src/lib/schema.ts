@@ -134,7 +134,6 @@ export const trainingBlockSchema = z.object({
     sendPostBlockOverviewReminder: z.boolean().default(false),
     link: z.string().url({ message: 'Must be a valid URL.' }).optional().or(z.literal('')),
     name: z.string().trim().min(1, { message: "Block name is required" }).max(100, { message: "Block name must be 100 characters or less" }),
-    isCurrent: z.boolean().default(true),
     createNextAutomatically: z.boolean().default(false),
 });
 

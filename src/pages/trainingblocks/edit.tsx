@@ -12,7 +12,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.t
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/ui/date-picker";
-import { format } from "date-fns";
 import {Switch} from "@/components/ui/switch.tsx";
 
 
@@ -70,11 +69,9 @@ const TrainingBlockEdit = () => {
         );
     };
 
+    // editing never changes isCurrent on the server, so the form doesn't need to send today
     const onSubmit = async (values: TrainingBlockEditValues) => {
-        await form.refineCore.onFinish({
-            ...values,
-            today: format(new Date(), "yyyy-MM-dd"),
-        } as TrainingBlockEditValues);
+        await form.refineCore.onFinish(values);
     };
 
     return (
@@ -201,8 +198,7 @@ const TrainingBlockEdit = () => {
                                                 <div className="space-y-0.5">
                                                     <FormLabel>Create next block automatically?</FormLabel>
                                                     <FormDescription>
-                                                        When this block is done
-                                                        the next one is added for you with a generic name
+                                                        When this block ends, a new one is created for you with information based on the future-most block. Only an athlete’s future-most block renews.
                                                     </FormDescription>
                                                 </div>
                                                 <FormControl>

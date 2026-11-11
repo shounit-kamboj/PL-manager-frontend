@@ -192,7 +192,7 @@ const PaymentsList = () => {
                                 <SelectValue placeholder="Auto-renew" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="all">Auto create next status</SelectItem>
+                                <SelectItem value="all">Auto create next status: All</SelectItem>
                                 <SelectItem value="on">Auto create next: On</SelectItem>
                                 <SelectItem value="off">Auto create next: Off</SelectItem>
                             </SelectContent>
