@@ -181,7 +181,7 @@ const TrainingBlockList = () => {
                         <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none"/>
                         <input
                             type="text"
-                            placeholder="Search by Athlete Name"
+                            placeholder="Search by Athlete or Block Name"
                             className="pl-10 w-full"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
