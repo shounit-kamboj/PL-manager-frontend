@@ -61,7 +61,7 @@ export function Combobox({
                     className={cn("w-full justify-between font-normal", !selected && "text-muted-foreground", className)}
                     {...buttonProps}
                 >
-                    <span className="truncate">{selected ? selected.label : placeholder}</span>
+                    <span className="truncate" title={selected ? selected.label : placeholder}>{selected ? selected.label : placeholder}</span>
                     <ChevronsUpDown className="opacity-50" />
                 </Button>
             </PopoverTrigger>
@@ -83,9 +83,9 @@ export function Combobox({
                                     }}
                                 >
                                     <div className="flex min-w-0 flex-col">
-                                        <span className="truncate">{opt.label}</span>
+                                        <span className="truncate" title={opt.label}>{opt.label}</span>
                                         {opt.detail && (
-                                            <span className="text-muted-foreground truncate text-xs">{opt.detail}</span>
+                                            <span className="text-muted-foreground truncate text-xs" title={opt.detail}>{opt.detail}</span>
                                         )}
                                     </div>
                                     <Check className={cn("ml-auto", opt.value === value ? "opacity-100" : "opacity-0")} />

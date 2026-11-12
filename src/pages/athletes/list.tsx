@@ -24,6 +24,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {FullText} from "@/components/full-text.tsx";
 
 
 
@@ -111,7 +112,7 @@ const AthletesList = () => {
                         to={`/athletes/show/${row.original.id}`}
                         className="text-foreground font-medium underline-offset-4 hover:underline"
                     >
-                        {row.original.name}
+                        <FullText text={row.original.name} />
                     </Link>
                 ),
                 filterFn: 'includesString' as const

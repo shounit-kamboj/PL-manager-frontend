@@ -11,6 +11,7 @@ import {TrainingBlock} from "@/types";
 import {ColumnDef} from "@tanstack/react-table";
 import {getNextUpdateDate} from "@/lib/nextUpdateDate.ts";
 import {formatDay, localTodayYmd} from "@/lib/dates.ts";
+import {FullText} from "@/components/full-text.tsx";
 
 const SORTOPTIONS = [
     { field: 'id',           order: 'desc' as const, label: 'Default' },
@@ -63,7 +64,7 @@ const TrainingBlockList = () => {
                 header: () => <p className='column-title'>Athlete</p>,
                 cell: ({getValue}) =>
                     <span className="text-foreground">
-                        {getValue<string>() ?? '—'}
+                        <FullText text={getValue<string>()} />
                     </span>,
                 filterFn: 'includesString' as const
             },
@@ -74,7 +75,7 @@ const TrainingBlockList = () => {
                 header: () => <p className='column-title'>Block Name</p>,
                 cell: ({getValue}) =>
                     <span className="text-foreground">
-                        {getValue<string>() || '—'}
+                        <FullText text={getValue<string>()} />
                     </span>,
             },
             {

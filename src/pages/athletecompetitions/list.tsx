@@ -15,6 +15,7 @@ import {Badge} from "@/components/ui/badge.tsx";
 import {FEDS_OPTIONS} from "@/constants";
 import {formatDay, localTodayYmd, parseDay} from "@/lib/dates.ts";
 import {normalTime} from "@/lib/normalTime.ts";
+import {FullText} from "@/components/full-text.tsx";
 
 const SORTOPTIONS = [
     { field: 'id',                     order: 'desc' as const, label: 'Default' },
@@ -50,7 +51,7 @@ const AthleteCompetitionsList = () => {
                 header: () => <p className='column-title'>Athlete</p>,
                 cell: ({row}) => (
                     <span className="text-foreground">
-                        {row.original.athleteName ?? '-'}
+                        <FullText text={row.original.athleteName} />
                     </span>
                 ),
                 filterFn: 'includesString' as const
@@ -62,7 +63,7 @@ const AthleteCompetitionsList = () => {
                 header: () => <p className='column-title'>Competition</p>,
                 cell: ({row}) => (
                     <span className="text-foreground">
-                        {row.original.competition?.name ?? '-'}
+                        <FullText text={row.original.competition?.name} />
                     </span>
                 ),
                 filterFn: 'includesString' as const

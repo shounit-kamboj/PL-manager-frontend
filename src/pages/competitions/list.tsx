@@ -12,6 +12,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {formatDay, localTodayYmd} from "@/lib/dates.ts";
 import {FEDS_OPTIONS} from "@/constants";
 import {CompetitionDialog} from "@/components/competition-dialog.tsx";
+import {FullText} from "@/components/full-text.tsx";
 
 const SORTOPTIONS = [
     { field: 'id',                     order: 'desc' as const, label: 'Default' },
@@ -50,7 +51,7 @@ const UpcomingCompetitionsList = () => {
                 header: () => <p className='column-title'>Meet Name</p>,
                 cell: ({getValue}) => (
                     <span className="text-foreground">
-                        {getValue<string>()}
+                        <FullText text={getValue<string>()} />
                     </span>
                 ),
                 filterFn: 'includesString' as const

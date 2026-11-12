@@ -12,6 +12,7 @@ import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge.tsx";
 import { isOverdue } from '@/lib/isOverdue';
 import {formatDay} from "@/lib/dates.ts";
+import {FullText} from "@/components/full-text.tsx";
 
 const SORTOPTIONS = [
     { field: 'id',       order: 'desc' as const, label: 'Default' },
@@ -57,7 +58,7 @@ const PaymentsList = () => {
                 header: () => <p className='column-title'>Athlete</p>,
                 cell: ({getValue}) =>
                     <span className="text-foreground">
-                        {getValue<string>() ?? '—'}
+                        <FullText text={getValue<string>()} />
                     </span>,
                 filterFn: 'includesString' as const
             },
