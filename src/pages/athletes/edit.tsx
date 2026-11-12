@@ -48,6 +48,9 @@ const STATUS_OPTIONS = [
 const text = (v: unknown) => (v == null ? "" : String(v));
 const num = (v: unknown) => (v == null || v === "" ? undefined : Number(v));
 const day = (v: unknown) => (v ? String(v).slice(0, 10) : "");
+const maxDate = new Date();
+maxDate.setFullYear(maxDate.getFullYear() + 1);
+
 
 const toFormValues = (a: BaseRecord) => ({
     name: text(a.name),
@@ -204,7 +207,7 @@ const AthletesEdit = () => {
                                                 <DatePicker
                                                     value={field.value}
                                                     onChange={field.onChange}
-                                                    yearRange={{ from: 1920, to: new Date().getFullYear() + 1 }}
+                                                    yearRange={{ from: 1920, to: new Date().getFullYear()}}
                                                     disabled={(d) => d > new Date()}
                                                 />
                                                 <FormMessage />
@@ -221,7 +224,7 @@ const AthletesEdit = () => {
                                                     value={field.value}
                                                     onChange={field.onChange}
                                                     yearRange={{ from: 1920, to: new Date().getFullYear() + 1 }}
-                                                    disabled={(d) => d > new Date() + 1}
+                                                    disabled={(d) => d > maxDate}
                                                 />
                                                 <FormMessage />
                                             </FormItem>

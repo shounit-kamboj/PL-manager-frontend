@@ -36,6 +36,9 @@ const QUAL_OPTIONS = [
     { label: "National", value: "National" },
 ];
 
+const maxDate = new Date();
+maxDate.setFullYear(maxDate.getFullYear() + 1);
+
 const AthletesCreate = () => {
     const back = useBack();
     const form = useForm<BaseRecord, HttpError, z.infer<typeof athleteSchema>>({
@@ -182,7 +185,7 @@ const AthletesCreate = () => {
                                                     value={field.value}
                                                     onChange={field.onChange}
                                                     yearRange={{ from: 1920, to: new Date().getFullYear() + 1 }}
-                                                    disabled={(d) => d > new Date() + 1}
+                                                    disabled={(d) => d > maxDate}
                                                 />
                                                 <FormMessage />
                                             </FormItem>
