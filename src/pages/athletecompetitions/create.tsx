@@ -15,7 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
 import { CompetitionDialog } from "@/components/competition-dialog.tsx";
-import { localTodayYmd, toYmd } from "@/lib/dates.ts";
+import { Combobox } from "@/components/combobox.tsx";
+import type { ComboboxOption } from "@/components/combobox.tsx";
+import { formatDay, localTodayYmd, toYmd } from "@/lib/dates.ts";
 
 type MeetEntryFormValues = z.infer<typeof athletesAndCompetitionsSchema>;
 
@@ -43,13 +45,28 @@ const AthleteCompetitionsCreate = () => {
         pagination: { pageSize: 100 },
     });
 
-    const { options: compOptions, query: compQuery } = useSelect({
+    const { query: compQuery } = useSelect({
         resource: "competitions",
-        optionLabel: (c: BaseRecord) =>
-            `${c.name ?? `Competition #${c.id}`}${c.startDate ? ` (${String(c.startDate).slice(0, 10)})` : ""}`,
-        optionValue: (c: BaseRecord) => String(c.id),
         pagination: { pageSize: 100 },
         filters: [{ field: "today", operator: "eq", value: localTodayYmd() }],
+        // soonest first, so the list reads like a calendar
+        sorters: [{ field: "startDate", order: "asc" }],
+    });
+
+    // what the competition search box shows and matches for each competition
+    const compOptions: ComboboxOption[] = (compQuery.data?.data ?? []).map((c: BaseRecord) => {
+        const start = formatDay(c.startDate);
+        const end = formatDay(c.endDate);
+        const dates = start === end ? start : `${start} - ${end}`;
+        const place = [c.city, c.province].filter(Boolean).join(", ");
+        return {
+            value: String(c.id),
+            label: c.name ?? `Competition #${c.id}`,
+            // e.g. "Nov 29, 2026 · Kelowna, BC · BCPA"
+            detail: [dates, place, c.federation].filter(Boolean).join(" · "),
+            // not shown, but typing these finds the competition too
+            keywords: [c.country ?? "", String(c.startDate).slice(0, 10)],
+        };
     });
 
     // the date picker is limited to the selected competition's dates
@@ -117,35 +134,28 @@ const AthleteCompetitionsCreate = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Competition <span className="text-orange-500">*</span></FormLabel>
-                                                <Select
-                                                    onValueChange={(v) => {
-                                                        field.onChange(Number(v));
-                                                        const c = compQuery.data?.data?.find(
-                                                            (x: BaseRecord) => x.id === Number(v),
-                                                        );
-                                                        if (!c) return;
-                                                        const start = String(c.startDate).slice(0, 10);
-                                                        const end = String(c.endDate).slice(0, 10);
-                                                        const current = form.getValues("date");
-                                                        if (!current || current < start || current > end) {
-                                                            form.setValue("date", start);
-                                                        }
-                                                    }}
-                                                    value={field.value ? String(field.value) : ""}
-                                                >
-                                                    <FormControl>
-                                                        <SelectTrigger className="w-full">
-                                                            <SelectValue placeholder="Select Competition" />
-                                                        </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent>
-                                                        {compOptions.map((opt) => (
-                                                            <SelectItem key={String(opt.value)} value={String(opt.value)}>
-                                                                {opt.label}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
+                                                <FormControl>
+                                                    <Combobox
+                                                        options={compOptions}
+                                                        value={field.value ? String(field.value) : ""}
+                                                        onChange={(v) => {
+                                                            field.onChange(Number(v));
+                                                            const c = compQuery.data?.data?.find(
+                                                                (x: BaseRecord) => x.id === Number(v),
+                                                            );
+                                                            if (!c) return;
+                                                            const start = String(c.startDate).slice(0, 10);
+                                                            const end = String(c.endDate).slice(0, 10);
+                                                            const current = form.getValues("date");
+                                                            if (!current || current < start || current > end) {
+                                                                form.setValue("date", start);
+                                                            }
+                                                        }}
+                                                        placeholder="Select Competition"
+                                                        searchPlaceholder="Search by name, city, federation or date..."
+                                                        emptyText="No competition found."
+                                                    />
+                                                </FormControl>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
