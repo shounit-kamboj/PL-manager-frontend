@@ -9,16 +9,19 @@ const SignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [submitting, setSubmitting] = useState(false);
     const { data: session } = useSession();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
 
+        setSubmitting(true);
         const { error } = await signIn.email({ email, password });
 
         if (error) {
             setError(error.message ?? 'Invalid email or password');
+            setSubmitting(false);
             return;
         }
     };
@@ -31,7 +34,7 @@ const SignIn = () => {
 
     return (
 
-       <div className="flex items-center justify-center min-h-svh px-4 bg-[url('@/components/collar-pl-weights-horizontal.png')] bg-cover bg-center bg-no-repeat">
+        <div className="flex items-center justify-center min-h-svh px-4 bg-[url('@/components/collar-pl-weights-horizontal.png')] bg-cover bg-center bg-no-repeat">
             <Card className="w-full max-w-sm">
                 <CardHeader className="text-ring">
                     <CardTitle >Sign in to CollarPL</CardTitle>
@@ -61,8 +64,8 @@ const SignIn = () => {
                             Forgot password?
                         </Link>
 
-                        <Button type="submit" className="w-full">
-                            Sign In
+                        <Button type="submit" className="w-full" disabled={submitting}>
+                            {submitting ? 'Signing in...' : 'Sign In'}
                         </Button>
 
                         <div className="border-t pt-4 text-center">
@@ -90,4 +93,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-

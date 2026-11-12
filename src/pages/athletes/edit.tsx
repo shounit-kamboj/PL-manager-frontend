@@ -556,7 +556,7 @@ const AthletesEdit = () => {
                                         Delete athlete
                                     </Button>
                                     <Button type="button" variant="outline" onClick={back}>Cancel</Button>
-                                    <Button type="submit">Save changes</Button>
+                                    <Button type="submit" disabled={form.formState.isSubmitting}>Save changes</Button>
                                 </div>
                             </form>
                         </Form>

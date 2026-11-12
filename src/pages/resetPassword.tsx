@@ -13,6 +13,7 @@ const ResetPassword = () => {
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
     const [error, setError] = useState('');
+    const [submitting, setSubmitting] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,10 +25,12 @@ const ResetPassword = () => {
             return;
         }
 
+        setSubmitting(true);
         const { error } = await authClient.resetPassword({ newPassword: password, token });
 
         if (error) {
             setError(error.message ?? 'This link is invalid or has expired');
+            setSubmitting(false);
             return;
         }
 
@@ -65,7 +68,9 @@ const ResetPassword = () => {
                                 required
                             />
                             {error && <p className="text-sm text-destructive">{error}</p>}
-                            <Button type="submit" className="w-full">Reset password</Button>
+                            <Button type="submit" className="w-full" disabled={submitting}>
+                                {submitting ? 'Resetting...' : 'Reset password'}
+                            </Button>
                         </form>
                     )}
                 </CardContent>

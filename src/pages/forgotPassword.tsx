@@ -9,11 +9,13 @@ const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState('');
+    const [submitting, setSubmitting] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
 
+        setSubmitting(true);
         const { error } = await authClient.requestPasswordReset({
             email,
             redirectTo: `${window.location.origin}/reset-password`,
@@ -21,6 +23,7 @@ const ForgotPassword = () => {
 
         if (error) {
             setError(error.message ?? 'Something went wrong');
+            setSubmitting(false);
             return;
         }
 
@@ -49,7 +52,9 @@ const ForgotPassword = () => {
                                 required
                             />
                             {error && <p className="text-sm text-destructive">{error}</p>}
-                            <Button type="submit" className="w-full">Send reset link</Button>
+                            <Button type="submit" className="w-full" disabled={submitting}>
+                                {submitting ? 'Sending...' : 'Send reset link'}
+                            </Button>
                         </form>
                     )}
                     <Link to="/sign-in" className="block text-center text-sm text-muted-foreground hover:underline mt-4">

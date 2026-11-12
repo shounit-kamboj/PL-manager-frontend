@@ -232,7 +232,7 @@ const AthleteCompetitionsCreate = () => {
 
                                 <div className="flex justify-end gap-4">
                                     <Button type="button" variant="outline" onClick={back}>Cancel</Button>
-                                    <Button type="submit">Add entry</Button>
+                                    <Button type="submit" disabled={form.formState.isSubmitting}>Add entry</Button>
                                 </div>
                             </form>
                         </Form>

@@ -13,23 +13,36 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState('');
+    const [submitting, setSubmitting] = useState(false);
 //todo:add a confirm password + be able to view password + minimun password req shown
     const handleSubmit = async (e: React.FormEvent) => {
-            e.preventDefault();
-            setError('');
+        e.preventDefault();
+        setError('');
 
-            const result = await signUp.email({ name, email, password });
+        // the messages under the fields only warn; this stops the account being created
+        if (email !== confirmEmail) {
+            setError("Emails don't match.");
+            return;
+        }
+        if (password !== confirmPassword) {
+            setError("Passwords don't match.");
+            return;
+        }
 
-            console.log("SIGN UP RESULT:", result);
+        setSubmitting(true);
+        const result = await signUp.email({ name, email, password });
 
-            if (result.error) {
-                console.error("SIGN UP ERROR:", result.error);
-                setError(result.error.message ?? 'Something went wrong');
-                return;
-            }
+        console.log("SIGN UP RESULT:", result);
 
-            navigate('/');
-        };
+        if (result.error) {
+            console.error("SIGN UP ERROR:", result.error);
+            setError(result.error.message ?? 'Something went wrong');
+            setSubmitting(false);
+            return;
+        }
+
+        navigate('/');
+    };
 
     return (
         <div className="flex items-center justify-center min-h-svh px-4 bg-[url('@/components/collar-pl-weights-horizontal.png')] bg-cover bg-center bg-no-repeat">
@@ -94,8 +107,8 @@ const SignUp = () => {
                         {confirmPassword && confirmPassword !== password && (
                             <p className="text-sm text-destructive">Passwords don't match.</p>
                         )}
-                        <Button type="submit" className="w-full">
-                            Sign Up
+                        <Button type="submit" className="w-full" disabled={submitting}>
+                            {submitting ? 'Creating account...' : 'Sign Up'}
                         </Button>
                     </form>
                 </CardContent>
@@ -105,4 +118,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-

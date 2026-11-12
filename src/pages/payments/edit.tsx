@@ -166,7 +166,7 @@ const PaymentsEdit = () => {
 
                                 <div className="flex justify-end gap-4">
                                     <Button type="button" variant="outline" onClick={back}>Cancel</Button>
-                                    <Button type="submit">Save changes</Button>
+                                    <Button type="submit" disabled={form.formState.isSubmitting}>Save changes</Button>
                                     <Button type="button" variant="destructive" onClick={onDelete} disabled={deleting}>
                                         Delete payment
                                     </Button>

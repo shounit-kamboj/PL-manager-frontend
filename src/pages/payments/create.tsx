@@ -121,7 +121,7 @@ const PaymentsCreate = () => {
 
                                 <div className="flex justify-end gap-4">
                                     <Button type="button" variant="outline" onClick={back}>Cancel</Button>
-                                    <Button type="submit">Add payment</Button>
+                                    <Button type="submit" disabled={form.formState.isSubmitting}>Add payment</Button>
                                 </div>
                             </form>
                         </Form>
