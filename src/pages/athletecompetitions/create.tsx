@@ -15,8 +15,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
 import { CompetitionDialog } from "@/components/competition-dialog.tsx";
-import { Combobox } from "@/components/combobox.tsx";
-import type { ComboboxOption } from "@/components/combobox.tsx";
+import { Combobox } from "@/components/ui/combobox.tsx";
+import type { ComboboxOption } from "@/components/ui/combobox.tsx";
 import { formatDay, localTodayYmd, toYmd } from "@/lib/dates.ts";
 
 type MeetEntryFormValues = z.infer<typeof athletesAndCompetitionsSchema>;
