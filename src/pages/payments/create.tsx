@@ -87,7 +87,12 @@ const PaymentsCreate = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Due Date <span className="text-orange-500">*</span></FormLabel>
-                                                <DatePicker value={field.value} onChange={field.onChange} />
+                                                <DatePicker
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    yearRange={{ from: 1920, to: new Date().getFullYear() + 1 }}
+                                                    disabled={(d) => d > new Date()}
+                                                />
                                                 <FormMessage />
                                             </FormItem>
                                         )}

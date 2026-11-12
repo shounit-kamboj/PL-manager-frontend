@@ -138,14 +138,20 @@ export const CompetitionDialog = ({ open, onOpenChange, competition, onSaved }: 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <label className="text-sm font-medium">Start date <span className="text-orange-500">*</span></label>
-                            <DatePicker value={values.startDate} onChange={setDate("startDate")} />
+                            <DatePicker
+                                value={values.startDate}
+                                onChange={setDate("startDate")}
+                                yearRange={{ from: 1920, to: new Date().getFullYear() + 1 }}
+                                disabled={(d) => d > new Date()}
+                            />
                         </div>
                         <div className="space-y-2">
                             <label className="text-sm font-medium">End date <span className="text-orange-500">*</span></label>
                             <DatePicker
                                 value={values.endDate}
                                 onChange={setDate("endDate")}
-                                disabled={(d) => toYmd(d) < endMin}
+                                yearRange={{ from: 1920, to: new Date().getFullYear() + 1 }}
+                                disabled={(d) => d > new Date() || toYmd(d) < endMin}
                             />
                         </div>
                     </div>

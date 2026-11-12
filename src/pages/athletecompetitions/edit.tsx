@@ -124,9 +124,10 @@ const AthleteCompetitionsEdit = () => {
                                                 <DatePicker
                                                     value={field.value}
                                                     onChange={field.onChange}
+                                                    yearRange={{ from: 1920, to: new Date().getFullYear() + 1 }}
                                                     disabled={(d) => {
                                                         const ymd = toYmd(d);
-                                                        return (!!minDate && ymd < minDate) || (!!maxDate && ymd > maxDate);
+                                                        return d > new Date() || (!!minDate && ymd < minDate) || (!!maxDate && ymd > maxDate);
                                                     }}
                                                 />
                                                 <FormMessage />
