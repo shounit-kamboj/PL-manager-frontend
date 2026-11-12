@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {ListView} from "@/components/refine-ui/views/list-view.tsx"
 import {Breadcrumb} from "@/components/refine-ui/layout/breadcrumb.tsx"
-import {ArrowUpDown, Search} from "lucide-react";
+import {ArrowUpDown, Pencil, Search} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {CreateButton} from "@/components/refine-ui/buttons/create.tsx";
 import {EditButton} from "@/components/refine-ui/buttons/edit.tsx";
@@ -132,7 +132,9 @@ const PaymentsList = () => {
                 size: 35,
                 header: () => <p className='column-title'></p>,
                 cell: ({row}) => (
-                    <EditButton recordItemId={row.original.id} variant="link" />
+                    <EditButton recordItemId={row.original.id} variant="ghost" size="icon" aria-label="Edit" title="Edit">
+                        <Pencil className="h-4 w-4" />
+                    </EditButton>
                 ),
             },
 

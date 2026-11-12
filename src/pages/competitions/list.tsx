@@ -134,16 +134,16 @@ const UpcomingCompetitionsList = () => {
                     row.original.isOwn ? (
                         <Button
                             type="button"
-                            variant="link"
+                            variant="ghost"
+                            size="icon"
+                            aria-label="Edit"
+                            title="Edit"
                             onClick={() => {
                                 setEditing(row.original);
                                 setDialogOpen(true);
                             }}
                         >
-                            <div className="flex items-center gap-2 font-semibold">
-                                <Pencil className="h-4 w-4" />
-                                <span>Edit</span>
-                            </div>
+                            <Pencil className="h-4 w-4" />
                         </Button>
                     ) : null,
             },

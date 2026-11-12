@@ -6,7 +6,7 @@ import {useTable} from "@refinedev/react-table";
 import {AthleteCompetition} from "@/types";
 import {ColumnDef} from "@tanstack/react-table";
 import {CreateButton} from "@/components/refine-ui/buttons/create.tsx";
-import {ArrowUpDown, ExternalLink, Search} from "lucide-react";
+import {ArrowUpDown, ExternalLink, Search, Pencil} from "lucide-react";
 import {EditButton} from "@/components/refine-ui/buttons/edit.tsx";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {differenceInDays, startOfToday} from "date-fns";
@@ -175,7 +175,9 @@ const AthleteCompetitionsList = () => {
                 header: () => <p className='column-title'></p>,
                 cell: ({row}) => (
 
-                    <EditButton recordItemId={row.original.id}   variant="link" />
+                    <EditButton recordItemId={row.original.id} variant="ghost" size="icon" aria-label="Edit" title="Edit">
+                        <Pencil className="h-4 w-4" />
+                    </EditButton>
                 ),
             },
         ], []),
