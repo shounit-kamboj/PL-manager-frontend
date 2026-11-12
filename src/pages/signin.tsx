@@ -4,6 +4,14 @@ import { signIn, useSession } from '@/lib/auth-client.js';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {InputGroupAddon, InputGroupButton} from "@/components/ui/input-group.tsx";
+import {Eye, EyeOff} from "lucide-react";
+
+
+
+
+
+
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
@@ -11,6 +19,7 @@ const SignIn = () => {
     const [error, setError] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const { data: session } = useSession();
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,7 +38,19 @@ const SignIn = () => {
     if (session) return <Navigate to="/" replace />;
 
 
-
+    const showHideButton = (
+        <InputGroupAddon align="inline-end">
+            <InputGroupButton
+                type="button"
+                size="icon-xs"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                title={showPassword ? 'Hide password' : 'Show password'}
+                onClick={() => setShowPassword((prev) => !prev)}
+            >
+                {showPassword ? <EyeOff /> : <Eye />}
+            </InputGroupButton>
+        </InputGroupAddon>
+    );
 
 
     return (
@@ -49,14 +70,21 @@ const SignIn = () => {
                             className="text-ring placeholder:text-muted-foreground"
                             required
                         />
-                        <Input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="text-ring placeholder:text-muted-foreground"
-                            required
-                        />
+                        <div className="space-y-1">
+                            <InputGroup>
+                                <InputGroupInput
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="text-ring placeholder:text-muted-foreground"
+                                    autoComplete="new-password"
+                                    required
+                                />
+                                {showHideButton}
+                            </InputGroup>
+                            <p className="text-xs text-muted-foreground">At least 8 characters.</p>
+                        </div>
                         {error && (
                             <p className="text-sm text-destructive">{error}</p>
                         )}
