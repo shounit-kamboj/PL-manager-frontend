@@ -33,11 +33,13 @@ export const CompetitionDialog = ({ open, onOpenChange, competition, onSaved }: 
     const isEdit = !!competition;
     const [values, setValues] = useState<CompForm>(EMPTY);
     const [error, setError] = useState("");
+    // true while onSaved runs after a successful save (e.g. refetching the list), when the mutation is no longer pending
+    const [finishing, setFinishing] = useState(false);
 
     const { mutate: createComp, mutation: createMutation } = useCreate();
     const { mutate: updateComp, mutation: updateMutation } = useUpdate();
     const { mutate: deleteComp, mutation: deleteMutation } = useDelete();
-    const busy = createMutation.isPending || updateMutation.isPending || deleteMutation.isPending;
+    const busy = createMutation.isPending || updateMutation.isPending || deleteMutation.isPending || finishing;
 
     // Fill the form each time the dialog opens. Reads the latest competition through a ref so a background
     // refetch of the list can't wipe what the coach is typing.
@@ -96,8 +98,13 @@ export const CompetitionDialog = ({ open, onOpenChange, competition, onSaved }: 
         };
 
         const done = async (res: { data: BaseRecord }) => {
-            await onSaved?.(res.data);
-            onOpenChange(false);
+            setFinishing(true);
+            try {
+                await onSaved?.(res.data);
+                onOpenChange(false);
+            } finally {
+                setFinishing(false);
+            }
         };
 
         if (competition) {
@@ -205,7 +212,7 @@ export const CompetitionDialog = ({ open, onOpenChange, competition, onSaved }: 
                     <div className="flex gap-2">
                         <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
                         <Button type="button" onClick={onSubmit} disabled={busy}>
-                            {isEdit ? "Save changes" : "Create competition"}
+                            {busy ? "Saving..." : isEdit ? "Save changes" : "Create competition"}
                         </Button>
                     </div>
                 </DialogFooter>
