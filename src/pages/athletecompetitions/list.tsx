@@ -206,7 +206,7 @@ const AthleteCompetitionsList = () => {
                         <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none"/>
                         <input
                             type="text"
-                            placeholder="Search by Athlete Name"
+                            placeholder="Search by Athlete or Comp Name"
                             className="pl-10 w-full"
                             value={searchQuery} //takes value from searchQ
                             onChange={(e) => setSearchQuery(e.target.value)} //on chnage  it sets searchq to new val
