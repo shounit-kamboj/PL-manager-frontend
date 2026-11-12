@@ -142,7 +142,6 @@ export const CompetitionDialog = ({ open, onOpenChange, competition, onSaved }: 
                                 value={values.startDate}
                                 onChange={setDate("startDate")}
                                 yearRange={{ from: 1920, to: new Date().getFullYear() + 1 }}
-                                disabled={(d) => d > new Date()}
                             />
                         </div>
                         <div className="space-y-2">
@@ -151,7 +150,7 @@ export const CompetitionDialog = ({ open, onOpenChange, competition, onSaved }: 
                                 value={values.endDate}
                                 onChange={setDate("endDate")}
                                 yearRange={{ from: 1920, to: new Date().getFullYear() + 1 }}
-                                disabled={(d) => d > new Date() || toYmd(d) < endMin}
+                                disabled={(d) => toYmd(d) < endMin}
                             />
                         </div>
                     </div>

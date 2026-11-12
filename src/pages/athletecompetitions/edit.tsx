@@ -127,7 +127,7 @@ const AthleteCompetitionsEdit = () => {
                                                     yearRange={{ from: 1920, to: new Date().getFullYear() + 1 }}
                                                     disabled={(d) => {
                                                         const ymd = toYmd(d);
-                                                        return d > new Date() || (!!minDate && ymd < minDate) || (!!maxDate && ymd > maxDate);
+                                                        return (!!minDate && ymd < minDate) || (!!maxDate && ymd > maxDate);
                                                     }}
                                                 />
                                                 <FormMessage />

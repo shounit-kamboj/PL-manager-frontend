@@ -116,7 +116,6 @@ const PaymentsEdit = () => {
                                                     value={field.value}
                                                     onChange={field.onChange}
                                                     yearRange={{ from: 1920, to: new Date().getFullYear() + 1 }}
-                                                    disabled={(d) => d > new Date()}
                                                 />
                                                 <FormMessage />
                                             </FormItem>
