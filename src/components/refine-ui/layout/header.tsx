@@ -27,13 +27,16 @@ function DesktopHeader() {
                 "border-b",
                 "border-border",
                 "bg-sidebar",
-                "pr-3",
-                "justify-end",
+                "px-3",
+                "justify-between",
                 "z-40"
             )}
         >
-            <ThemeToggle />
-            <SignOutButton />
+            <SidebarTrigger className="text-muted-foreground" />
+                <div className="flex items-center gap-4">
+                    <ThemeToggle />
+                    <SignOutButton />
+                </div>
         </header>
     );
 }
