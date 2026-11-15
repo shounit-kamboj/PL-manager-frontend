@@ -19,7 +19,8 @@ import { Fragment, useMemo } from "react";
 export function Breadcrumb() {
   const Link = useLink();
   const { breadcrumbs } = useBreadcrumb();
-  const { resources } = useResourceParams();
+  const { resources, resource, action } = useResourceParams();
+  const showLabel: string | undefined = action === "show" ? resource?.meta?.showLabel : undefined;
   const rootRouteResource = matchResourceFromRoute("/", resources);
 
   const breadCrumbItems = useMemo(() => {
@@ -41,16 +42,18 @@ export function Breadcrumb() {
       ),
     });
 
-    for (const { label, href } of breadcrumbs) {
+    breadcrumbs.forEach(({ label: refineLabel, href }, index) => {
+      const isLast = index === breadcrumbs.length - 1;
+      const label = isLast && showLabel ? showLabel : refineLabel;
       list.push({
         key: `breadcrumb-item-${label}`,
         href: href ?? "",
         Component: href ? <Link to={href}>{label}</Link> : <span>{label}</span>,
       });
-    }
+    });
 
     return list;
-  }, [breadcrumbs, Link, rootRouteResource]);
+  }, [breadcrumbs, Link, rootRouteResource, showLabel]);
 
   return (
     <ShadcnBreadcrumb>

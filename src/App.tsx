@@ -176,6 +176,7 @@ function App() {
                                     show: '/athletes/show/:id',
                                     meta: {
                                         label: 'Athletes',
+                                        showLabel: 'Athlete Profile',
                                         icon: <Users />
                                     }
                                 },
