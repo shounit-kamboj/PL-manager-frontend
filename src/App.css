@@ -181,6 +181,15 @@
     @apply text-3xl font-bold text-foreground tracking-tight;
   }
 
+  .class-form-card {
+    @apply max-w-3xl w-full mx-auto relative overflow-hidden border shadow-sm border-foreground/20;
+    --outer-radius: calc(var(--radius) + 8px);  /* 16px */
+    --outer-padding: 0.5rem;                    /* 8px */
+  }
+  .class-form-inner {
+    border-radius: max(0px, calc(var(--outer-radius) - var(--outer-padding)));  /* 8px */
+  }
+
   .column-title {
     @apply flex items-center gap-1 font-bold;
   }

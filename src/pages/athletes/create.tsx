@@ -82,9 +82,6 @@ const AthletesCreate = () => {
 
     return (
         <CreateView className="class-view">
-
-
-
             <div className='my-4 flex items-center justify-center'>
                 <Card className='class-form-card'>
                     <CardHeader className="relative z-10">
