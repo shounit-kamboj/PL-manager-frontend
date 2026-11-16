@@ -37,6 +37,8 @@ import ForgotPassword from "@/pages/forgotPassword";
 import ResetPassword from "@/pages/resetPassword";
 import Privacy from "@/pages/privacy";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Settings as SettingsIcon } from 'lucide-react'; // renamed so it doesn't clash with the page
+import Settings from '@/pages/settings.tsx';
 
 
 const APP_NAME = "Collar PL";
@@ -124,6 +126,7 @@ const AppRoutes = () => {
                         <Route path="create" element={<TrainingBlockCreate />} />
                         <Route path=":id/edit" element={<TrainingBlockEdit />} />
                     </Route>
+                    <Route path="settings" element={<Settings />} />
                 </Route>
             </Routes>
 
@@ -221,6 +224,15 @@ function App() {
                                     meta: {
                                         label: 'Training Blocks',
                                         icon: <FileSpreadsheet/>
+                                    }
+                                },
+
+                                {
+                                    name: 'settings',
+                                    list:'/settings',
+                                    meta:{
+                                        label: 'User Settings',
+                                        icon: <SettingsIcon/>
                                     }
                                 }
                             ]}
