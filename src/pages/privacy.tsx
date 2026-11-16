@@ -87,7 +87,7 @@ const Privacy = () => (
         </Section>
 
         <Section title="Changes and contact">
-            <p>If this policy changes, the date at the top will be updated. Questions: [CONTACT EMAIL].</p>
+            <p>If this policy changes, the date at the top will be updated. Questions: shoun7777@gmail.com.</p>
         </Section>
     </div>
 );
