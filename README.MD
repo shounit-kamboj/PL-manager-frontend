@@ -1,48 +1,54 @@
-# PL-manager
+# Collar PL
 
-<div align="center" style="margin: 30px;">
-    <a href="https://refine.dev">
-    <img alt="refine logo" src="https://refine.ams3.cdn.digitaloceanspaces.com/readme/refine-readme-banner.png">
-    </a>
-</div>
-<br/>
+Web app for powerlifting coaches to manage their athletes, payments, training blocks and competitions in one place.
 
-This [Refine](https://github.com/refinedev/refine) project was generated with [create refine-app](https://github.com/refinedev/refine/tree/master/packages/create-refine-app).
+[Live app](https://www.collarpl.com) · [API repository](https://github.com/shounit-kamboj/PL-manager-backend)
 
-## Getting Started
+## Features
 
-A React Framework for building internal tools, admin panels, dashboards & B2B apps with unmatched flexibility ✨
+- **Dashboard** with revenue, retention, overdue payments and upcoming meets at a glance
+- **Athletes** with search, sorting and filters by status, age class, federation and qualification level
+- **Payments** with paid, unpaid and overdue status, renewing automatically on each athlete's billing cycle
+- **Training blocks** showing current, upcoming and past blocks, with update reminders and automatic renewal
+- **Meet entries** with a searchable picker over a shared competition calendar, plus custom competitions
+- **Accounts** with email verification and password reset
+- **Light and dark themes,** and a layout that works on desktop and mobile
 
-Refine's hooks and components simplifies the development process and eliminates the repetitive tasks by providing industry-standard solutions for crucial aspects of a project, including authentication, access control, routing, networking, state management, and i18n.
+## Built with
 
-## Available Scripts
+| Area | Technology |
+| --- | --- |
+| Framework | React 19, Vite, TypeScript |
+| App framework | Refine (data, routing, tables) |
+| UI | shadcn/ui on Radix, Tailwind CSS v4 |
+| Forms | React Hook Form with Zod validation |
+| Auth | Better Auth |
+| Hosting | Vercel |
 
-### Running the development server.
+## Engineering notes
 
-```bash
-    npm run dev
+- **One source of truth for resources.** Each resource is declared once, and that declaration drives the routes, sidebar, breadcrumbs and page titles.
+- **Server-side data handling.** Filtering, sorting and pagination run on the API, so lists stay fast as data grows.
+- **Dates that never shift.** Dates are treated as calendar days in the coach's timezone rather than UTC timestamps, so a meet on the 16th always shows as the 16th.
+- **Accessible, consistent UI.** Built on Radix primitives through shadcn/ui, with keyboard support and labelled controls.
+
+## Project structure
+
+```
+src/
+├── App.tsx               Resources, routes and providers
+├── pages/                One folder per resource, plus the auth pages
+├── components/ui/        shadcn/ui components
+├── components/refine-ui/ Layout, views, sidebar and breadcrumbs
+├── providers/            REST data provider
+└── lib/                  Auth client, date utilities, form schemas
 ```
 
-### Building for production.
+## Scripts
 
-```bash
-    npm run build
-```
-
-### Running the production server.
-
-```bash
-    npm run start
-```
-
-## Learn More
-
-To learn more about **Refine**, please check out the [Documentation](https://refine.dev/docs)
-
-- **REST Data Provider** [Docs](https://refine.dev/docs/core/providers/data-provider/#overview)
-- **shadcn/ui** [Docs](https://refine.dev/docs/guides-concepts/general-concepts/#headless-concept)
-- **React Router** [Docs](https://refine.dev/docs/core/providers/router-provider/)
-
-## License
-
-MIT
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Type-check and build for production |
+| `npm start` | Serve the production build |
+| `npm test` | Run the test suite (Vitest) |
