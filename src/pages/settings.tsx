@@ -117,10 +117,10 @@ const Settings = () => {
                             </Button>
                         </form>
                     </CardContent>
-                </Card>
+
 
                 {/* ---- password ---- */}
-                <Card>
+
                     <CardHeader>
                         <CardTitle>Password</CardTitle>
                         <CardDescription>Changing it signs you out on every other device.</CardDescription>
