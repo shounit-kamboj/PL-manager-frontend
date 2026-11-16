@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router';
+import { Link, Navigate, useSearchParams } from 'react-router';
 import { signIn, useSession } from '@/lib/auth-client.js';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput} from "@/components/ui/input-group.tsx";
 import {Eye, EyeOff} from "lucide-react";
-
-
-
-
 
 
 
@@ -20,16 +16,22 @@ const SignIn = () => {
     const [submitting, setSubmitting] = useState(false);
     const { data: session } = useSession();
     const [showPassword, setShowPassword] = useState(false);
+    const [searchParams] = useSearchParams();
+    const verified = searchParams.get('verified');
+    const linkError = searchParams.get('error');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
 
         setSubmitting(true);
-        const { error } = await signIn.email({ email, password });
+        const { error } = await signIn.email({ email, password, callbackURL: `${window.location.origin}/sign-in?verified=1`});
 
         if (error) {
-            setError(error.message ?? 'Invalid email or password');
+            setError(error.code === 'EMAIL_NOT_VERIFIED'
+                ? 'Please verify your email first. Check your inbox for a link.'
+                : error.message ?? 'Invalid email or password');
+
             setSubmitting(false);
             return;
         }
@@ -61,6 +63,14 @@ const SignIn = () => {
                     <CardTitle >Sign in to CollarPL</CardTitle>
                 </CardHeader>
                 <CardContent>
+                    {verified && !linkError && (
+                        <p className="text-sm text-muted-foreground">Email confirmed. Sign in to continue.</p>
+                    )}
+                    {linkError && (
+                        <p role="alert" className="text-sm text-destructive">
+                            That link has expired or was already used. Sign in and we'll send you a new one.
+                        </p>
+                    )}
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <Input
                             type="email"
