@@ -86,7 +86,7 @@ const Settings = () => {
     );
 
     return (
-        <ListView className="class-view">
+        <ListView className="class-view bg-[url('@/components/collar-pl-weights-horizontal.png')] bg-cover bg-center bg-no-repeat">
             <Breadcrumb />
 
             <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
