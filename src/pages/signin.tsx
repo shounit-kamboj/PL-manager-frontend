@@ -19,6 +19,7 @@ const SignIn = () => {
     const [searchParams] = useSearchParams();
     const verified = searchParams.get('verified');
     const linkError = searchParams.get('error');
+    const deleted = searchParams.get('deleted');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -63,6 +64,7 @@ const SignIn = () => {
                     <CardTitle >Sign in to CollarPL</CardTitle>
                 </CardHeader>
                 <CardContent>
+                    {deleted && <p className="text-sm text-muted-foreground">Your account has been deleted.</p>}
                     {verified && !linkError && (
                         <p className="text-sm text-muted-foreground">Email confirmed. Sign in to continue.</p>
                     )}

@@ -9,6 +9,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group';
 import { Label } from '@/components/ui/label';
+import {
+    AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+    AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 const MAX_NAME_LENGTH = 100;
 
@@ -84,6 +88,32 @@ const Settings = () => {
             </InputGroupButton>
         </InputGroupAddon>
     );
+
+    // ---- delete account ----
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [deletePassword, setDeletePassword] = useState('');
+    const [deleteError, setDeleteError] = useState('');
+    const [deleting, setDeleting] = useState(false);
+    const [emailSent, setEmailSent] = useState(false);
+
+    const handleDelete = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!deletePassword) return;
+        setDeleteError('');
+        setDeleting(true);
+
+        const { error } = await authClient.deleteUser({
+            password: deletePassword,
+            callbackURL: `${window.location.origin}/sign-in?deleted=1`,
+        });
+        if (error) {
+            setDeleteError(error.message ?? 'Could not delete your account');
+            setDeleting(false);
+            return;
+        }
+        setDeleting(false);
+        setEmailSent(true);
+    };
 
     return (
         <ListView className="class-view bg-[url('@/components/collar-pl-weights-horizontal.png')] bg-cover bg-center bg-no-repeat">
@@ -178,6 +208,65 @@ const Settings = () => {
                                 {savingPassword ? 'Saving...' : 'Change password'}
                             </Button>
                         </form>
+                    </CardContent>
+                </Card>
+
+                <Card className="border-destructive/50">
+                    <CardHeader>
+                        <CardTitle>Delete account</CardTitle>
+                        <CardDescription>
+                            Permanently deletes your account and all your athletes, payments, training blocks,
+                            meet entries and custom competitions. This can't be undone.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <AlertDialog
+                            open={deleteOpen}
+                            onOpenChange={(o) => {
+                                if (deleting) return;
+                                setDeleteOpen(o);
+                                if (!o) { setDeletePassword(''); setDeleteError(''); setEmailSent(false); }
+                            }}
+                        >
+                            <AlertDialogTrigger asChild>
+                                <Button variant="destructive">Delete account</Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Delete your account?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        {emailSent
+                                            ? "Check your email. Your account will be deleted when you open the link in this browser."
+                                            : "Enter your password and we'll email you a link to confirm."}
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+
+                                {emailSent ? (
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Close</AlertDialogCancel>
+                                    </AlertDialogFooter>
+                                ) : (
+                                    <form onSubmit={handleDelete} className="grid gap-4">
+                                        <Label htmlFor="delete-password">Password</Label>
+                                        <Input
+                                            id="delete-password"
+                                            type="password"
+                                            autoComplete="current-password"
+                                            value={deletePassword}
+                                            onChange={(e) => setDeletePassword(e.target.value)}
+                                            required
+                                        />
+                                        {deleteError && <p role="alert" className="text-sm text-destructive">{deleteError}</p>}
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+                                            <Button type="submit" variant="destructive" disabled={!deletePassword || deleting}>
+                                                {deleting ? 'Sending...' : 'Send confirmation email'}
+                                            </Button>
+                                        </AlertDialogFooter>
+                                    </form>
+                                )}
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </CardContent>
                 </Card>
             </div>
