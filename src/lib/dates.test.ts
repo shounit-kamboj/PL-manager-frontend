@@ -7,7 +7,8 @@
 //   - faking the clock for a function that reads "now"
 //   - running one check under several timezones with vi.stubEnv
 //
-// To write a todo: change  it.todo("name")  into  it("name", () => { ... })
+// The empty tests are still to be written: add an expect(...) inside each one.
+// An empty test passes, so it shows as green until you fill it in.
 
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { formatDay, localTodayYmd, parseDay, toYmd } from "@/lib/dates";
@@ -30,10 +31,28 @@ describe("parseDay", () => {
         expect(day?.getDate()).toBe(16);
     });
 
-    it.todo("accepts a plain yyyy-mm-dd string: 2026-10-16 -> Oct 16");
-    it.todo("returns null for null, undefined and an empty string");
-    it.todo("DECIDE: a Date is read by its UTC day, so 8 pm on Oct 16 in BC comes back as Oct 17. Is the Date branch needed at all?");
-    it.todo("DECIDE: what should text that isn't a date return? Today parseDay('garbage') gives an Invalid Date, not null");
+    it("accepts a plain yyyy-mm-dd string: 2026-10-16 -> Oct 16", () => {
+
+        const day = parseDay("2026-10-16");
+
+        expect(day?.getFullYear()).toBe(2026);
+        expect(day?.getMonth()).toBe(9); // months count from 0, so 9 is October
+        expect(day?.getDate()).toBe(16);
+
+    });
+
+    it("returns null for null, undefined and an empty string", () => {
+        expect(parseDay(null)).toBe(null);
+        expect(parseDay(undefined)).toBe(null);
+        expect(parseDay("")).toBe(null);
+
+    });
+
+
+    it("DECIDE: what should text that isn't a date return? Today parseDay('garbage') gives an Invalid Date, not null", () => {
+        expect(parseDay("garbage")).toBe(null);
+
+    });
 });
 
 describe("formatDay", () => {
@@ -49,9 +68,21 @@ describe("formatDay", () => {
         expect(formatDay("2026-10-16T00:00:00.000Z")).toBe("Oct 16, 2026");
     });
 
-    it.todo("returns '-' for null and undefined");
-    it.todo("uses a custom pattern: formatDay('2026-10-16', 'yyyy/MM/dd') -> 2026/10/16");
-    it.todo("DECIDE: should text that isn't a date show '-'? Today formatDay('garbage') throws, which would break the table it is in");
+    it("returns '-' for null and undefined", () => {
+        expect(formatDay(null)).toBe("-");
+        expect(formatDay(undefined)).toBe("-");
+
+    });
+
+    it("uses a custom pattern: formatDay('2026-10-16', 'yyyy/MM/dd') -> 2026/10/16", () => {
+        expect(formatDay("2026-10-16", "yyyy/MM/dd")).toBe("2026/10/16");
+
+    });
+
+    it("garbage dates show up as -", () => {
+        expect(formatDay("garbage")).toBe("-")
+
+    });
 });
 
 describe("toYmd", () => {
@@ -60,8 +91,15 @@ describe("toYmd", () => {
         expect(toYmd(new Date(2026, 10, 11))).toBe("2026-11-11");
     });
 
-    it.todo("zero-pads the month and day: new Date(2026, 2, 5) -> 2026-03-05");
-    it.todo("uses the local day late in the evening: new Date(2026, 10, 11, 23, 30) -> 2026-11-11");
+    it("zero-pads the month and day: new Date(2026, 2, 5) -> 2026-03-05", () => {
+        expect(toYmd(new Date(2026, 2, 5))).toBe("2026-03-05");
+
+    });
+
+    it("uses the local day late in the evening: new Date(2026, 10, 11, 23, 30) -> 2026-11-11", () => {
+        expect(toYmd(new Date(2026, 10, 11, 23, 30))).toBe("2026-11-11");
+
+    });
 });
 
 describe("localTodayYmd", () => {
@@ -75,6 +113,19 @@ describe("localTodayYmd", () => {
         expect(localTodayYmd()).toBe("2026-11-10");
     });
 
-    it.todo("returns the new day after local midnight: 2026-11-11T08:30:00Z -> 2026-11-11");
-    it.todo("follows the coach's timezone: at 2026-11-11T06:30:00Z it is already 2026-11-11 in Asia/Tokyo (use vi.stubEnv)");
+    it("returns the new day after local midnight: 2026-11-11T08:30:00Z -> 2026-11-11", () => {
+        vi.useFakeTimers();
+        vi.setSystemTime(new Date("2026-11-11T08:30:00Z"));
+
+        expect(localTodayYmd()).toBe("2026-11-11");
+
+    });
+
+    it("follows the coach's timezone: at 2026-11-11T06:30:00Z it is already 2026-11-11 in Asia/Tokyo (use vi.stubEnv)", () => {
+        vi.stubEnv("TZ", "Asia/Tokyo");
+        vi.setSystemTime(new Date("2026-11-11T06:30:00Z"));
+
+        expect(localTodayYmd()).toBe("2026-11-11");
+
+    });
 });
