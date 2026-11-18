@@ -21,7 +21,16 @@ describe("getStartTime", () => {
         expect(getStartTime("08:00")).toBe("10:00");
     });
 
-    it.todo("keeps the minutes: 07:45 -> 09:45");
-    it.todo("wraps past midnight: 22:30 -> 00:30 and 23:00 -> 01:00");
-    it.todo("accepts a time with seconds, as the database sends it: 08:00:00 -> 10:00");
+    it("keeps the minutes: 07:45 -> 09:45", ()  => {
+        expect(getStartTime("07:45")).toBe("09:45");
+    });
+
+    it("wraps past midnight: 22:30 -> 00:30 and 23:00 -> 01:00", () => {
+        expect(getStartTime("22:30")).toBe("00:30");
+        expect(getStartTime("23:00")).toBe("01:00");
+    });
+    it("accepts a time with seconds, as the database sends it: 08:00:00 -> 10:00", () => {
+        expect(getStartTime("08:00:00")).toBe("10:00");
+
+    });
 });
