@@ -1,7 +1,7 @@
 // Unit tests for src/lib/normalTime.ts
 //
 // What this file shows: writing a test makes you decide what "correct" means.
-// The last todo is a case where the function is inconsistent today.
+// The last test settles a case where the function used to be inconsistent.
 
 import { describe, expect, it } from "vitest";
 import { normalTime } from "@/lib/normalTime";
@@ -16,8 +16,19 @@ describe("normalTime", () => {
         expect(normalTime("00:30")).toBe("12:30 AM");
     });
 
-    it.todo("shows noon as PM: 12:00 -> 12:00 PM");
-    it.todo("shows the last minute of the morning: 11:59 -> 11:59 AM");
-    it.todo("shows the last minute of the day: 23:59 -> 11:59 PM");
-    it.todo("DECIDE: should a morning time keep its leading zero? Today 09:05 -> '09:05 AM' but 13:05 -> '1:05 PM'. Pick one, write the test, then make the code match");
+    it("shows noon as PM: 12:00 -> 12:00 PM", () => {
+        expect(normalTime("12:00")).toBe("12:00 PM");
+    });
+
+    it("shows the last minute of the morning: 11:59 -> 11:59 AM", () => {
+        expect(normalTime("11:59")).toBe("11:59 AM");
+    });
+
+    it("shows the last minute of the day: 23:59 -> 11:59 PM", () => {
+        expect(normalTime("23:59")).toBe("11:59 PM");
+    });
+
+    it("drops the leading zero from a morning hour, like afternoon times: 09:05 -> 9:05 AM", () => {
+        expect(normalTime("09:05")).toBe("9:05 AM");
+    });
 });

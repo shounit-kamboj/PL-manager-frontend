@@ -8,8 +8,19 @@ describe("getNextUpdateDate", () => {
         expect(getNextUpdateDate("2026-10-16", 7)).toBe("Oct 23, 2026");
     });
 
-    it.todo("accepts the API's midnight-UTC format: 2026-10-16T00:00:00.000Z + 20 -> Nov 5, 2026");
-    it.todo("crosses a year end: 2026-12-28 + 7 -> Jan 4, 2027");
-    it.todo("returns the same day for 0 days");
-    it.todo("returns '-' when there is no last update: an empty string");
+    it("accepts the API's midnight-UTC format: 2026-10-16T00:00:00.000Z + 20 -> Nov 5, 2026", () => {
+        expect(getNextUpdateDate("2026-10-16T00:00:00.000Z", 20)).toBe("Nov 5, 2026");
+    });
+
+    it("crosses a year end: 2026-12-28 + 7 -> Jan 4, 2027", () => {
+        expect(getNextUpdateDate("2026-12-28", 7)).toBe("Jan 4, 2027");
+    });
+
+    it("returns '-' when there is no last update: an empty string", () => {
+        expect(getNextUpdateDate("", 7)).toBe("-");
+    });
+
+    it("returns '-' when the last update isn't a real day", () => {
+        expect(getNextUpdateDate("2026-02-31", 7)).toBe("-");
+    });
 });
