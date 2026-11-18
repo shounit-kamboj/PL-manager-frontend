@@ -3,6 +3,9 @@
 // What this file shows:
 //   - boundary testing: mistakes live at the edges of a range (18 and 19, 23 and 24, ...)
 //   - freezing the year, so these tests still pass next January
+//
+// The empty tests are still to be written: add an expect(...) inside each one.
+// An empty test passes, so it shows as green until you fill it in.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { competitiveAge, getAgeClass } from "@/lib/getAgeClass";
@@ -22,9 +25,19 @@ describe("competitiveAge", () => {
         expect(competitiveAge("2000-08-20")).toBe(26);
     });
 
-    it.todo("ignores the month and day: born 2000-12-31 is also 26 in 2026");
-    it.todo("reads the year from the text, so a Jan 1 birthday isn't shifted: 2000-01-01 -> 26");
-    it.todo("uses the local year on New Year's Eve: at 11:30 pm on Dec 31, 2026 in BC, born 2000 is still 26 (set the clock to new Date(2026, 11, 31, 23, 30))");
+    it("ignores the month and day: born 2000-12-31 is also 26 in 2026", () => {
+        expect(competitiveAge("2000-12-12")).toBe(26);
+
+    });
+
+    it("reads the year from the text, so a Jan 1 birthday isn't shifted: 2000-01-01 -> 26", () => {
+        expect(competitiveAge("2000-01-01")).toBe(26);
+
+    });
+
+    it("uses the local year on New Year's Eve: at 11:30 pm on Dec 31, 2026 in BC, born 2000 is still 26 (set the clock to new Date(2026, 11, 31, 23, 30))", () => {
+        expect(competitiveAge("2000-08-20")).toBe(26);
+    });
 });
 
 describe("getAgeClass", () => {
@@ -33,14 +46,26 @@ describe("getAgeClass", () => {
     it.each([
         ["2008-03-10", "SJR"],
         ["2007-03-10", "JR"],
+        ["2003-03-10", "JR"],
+        ["2002-03-10", "O"],
+        ["1987-03-10", "O"],
+        ["1986-03-10", "M1"],
+        ["1977-03-10", "M1"],
+        ["1976-03-10", "M2"],
+        ["1967-03-10", "M2"],
+        ["1966-03-10", "M3"],
+        ["1957-03-10", "M3"],
+        ["1956-03-10", "M4"],
     ])("puts an athlete born %s in %s", (dateOfBirth, expected) => {
         expect(getAgeClass(dateOfBirth)).toBe(expected);
     });
 
-    it.todo("Junior and Open: born 2003 (23) -> JR, born 2002 (24) -> O");
-    it.todo("Open and Masters 1: born 1987 (39) -> O, born 1986 (40) -> M1");
-    it.todo("Masters 1 and 2: born 1977 (49) -> M1, born 1976 (50) -> M2");
-    it.todo("Masters 2 and 3: born 1967 (59) -> M2, born 1966 (60) -> M3");
-    it.todo("Masters 3 and 4: born 1957 (69) -> M3, born 1956 (70) -> M4");
-    it.todo("moves an athlete up when the year changes: born 2008 is SJR in 2026 and JR in 2027 (move the clock inside the test)");
+
+
+    it("moves an athlete up when the year changes: born 2008 is SJR in 2026 and JR in 2027 (move the clock inside the test)", () => {
+        expect(getAgeClass("2008-03-10")).toBe("SJR");
+        vi.setSystemTime(new Date(2027, 5, 15));
+        expect(getAgeClass("2008-03-10")).toBe("JR");
+
+    });
 });
