@@ -124,7 +124,7 @@ const AthletesShow = () => {
                             <Field label="Phone Number" value={record.phoneNumber} />
                             <Field label="Gender" value={GENDER_LABELS[record.gender] ?? record.gender} />
                             <Field label="Date of Birth" value={day(record.dateOfBirth)} />
-                            <Field label="Joined At" value={day(record.joinedAt)} />
+                            <Field label="Joined On" value={day(record.joinedAt)} />
                         </Section>
 
                         <Section title="Location">

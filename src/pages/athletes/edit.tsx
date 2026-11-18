@@ -219,7 +219,7 @@ const AthletesEdit = () => {
                                         name="joinedAt"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Joined At <span className="text-orange-500">*</span></FormLabel>
+                                                <FormLabel>Joined On <span className="text-orange-500">*</span></FormLabel>
                                                 <DatePicker
                                                     value={field.value}
                                                     onChange={field.onChange}
